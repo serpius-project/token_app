@@ -3,7 +3,7 @@
 }
 
 html {
-  --bg: #efefef;
+  --bg: #ffffff;
   --fg: #1e1e1e;
   --gray: #555;
   --light-gray: #ccc;
@@ -30,7 +30,7 @@ main {
 }
 
 h1 {
-  background-image: url(/logo-black.eab7a939.svg);
+  background-image: url(/logo.e9a9c890.png);
   background-position: center 1em;
   background-repeat: no-repeat;
   background-size: auto 1.5em;
@@ -172,7 +172,7 @@ aside footer *:last-child {
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
+  /* html {
     --bg: #1e1e1e;
     --fg: #efefef;
     --gray: #aaa;
@@ -180,11 +180,11 @@ aside footer *:last-child {
     --light-gray: #444;
   }
   h1 {
-    background-image: url(/logo-white.7fec831f.svg);
+    background-image: url(assets/logo-white.svg);
   }
   input:focus {
     box-shadow: 0 0 10em rgba(255, 255, 255, 0.02) inset;
-  }
+  } */
 }
 
 
