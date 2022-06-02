@@ -15,7 +15,7 @@ html {
   background-color: var(--bg);
   color: var(--fg);
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  font-size: calc(0.9em + 0.5vw);
+  font-size: calc(0.9em + 0.2vw);
   line-height: 1.3;
 }
 
@@ -26,17 +26,17 @@ body {
 
 main {
   margin: 0 auto;
-  max-width: 25em;
+  max-width: 100vh;
 }
 
 h1 {
   background-image: url(assets/logo.png);
-  background-position: center 1em;
+  background-position: left 1em;
   background-repeat: no-repeat;
-  background-size: auto 1.5em;
+  background-size: auto 1.0em;
   margin-top: 0;
   padding: 3.5em 0 0.5em;
-  text-align: center;
+  text-align: left;
 }
 
 a,
@@ -62,7 +62,7 @@ button, input {
 
 button {
   background-color: var(--secondary);
-  border-radius: 5px;
+  border-radius: 10px;
   border: none;
   color: #efefef;
   cursor: pointer;
