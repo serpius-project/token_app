@@ -21,7 +21,7 @@ document.querySelector('form').onsubmit = async (event) => {
 
   try {
     // make an update call to the smart contract
-    await window.contract.setGreeting({
+    await window.contract.set_greeting({
       // pass the value that the user entered in the greeting field
       message: greeting.value
     })
@@ -94,7 +94,7 @@ function signedInFlow() {
 
 // update global currentGreeting variable; update DOM with it
 async function fetchGreeting() {
-  currentGreeting = await contract.getGreeting({ accountId: window.accountId })
+  currentGreeting = await contract.get_greeting({ account_id: window.accountId })
   document.querySelectorAll('[data-behavior=greeting]').forEach(el => {
     // set divs, spans, etc
     el.innerText = currentGreeting

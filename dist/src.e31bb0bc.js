@@ -20876,7 +20876,7 @@ __exportStar(require("./browser-connect"), exports);
 require("error-polyfill");
 
 },{"./key_stores/browser-index":"../node_modules/near-api-js/lib/key_stores/browser-index.js","./common-index":"../node_modules/near-api-js/lib/common-index.js","./browser-connect":"../node_modules/near-api-js/lib/browser-connect.js","error-polyfill":"../node_modules/error-polyfill/index.js"}],"config.js":[function(require,module,exports) {
-var CONTRACT_NAME = "dev-1654148257841-18817819402656" || 'token_app';
+var CONTRACT_NAME = "dev-1654168748790-97571814943855" || 'token_app';
 
 function getConfig(env) {
   switch (env) {
@@ -21000,9 +21000,9 @@ function _initContract() {
             _context.next = 7;
             return new _nearApiJs.Contract(window.walletConnection.account(), nearConfig.contractName, {
               // View methods are read only. They don't modify the state, but usually return some value.
-              viewMethods: ['getGreeting'],
+              viewMethods: ['get_greeting'],
               // Change methods can modify the state. But you don't receive the returned value when called.
-              changeMethods: ['setGreeting']
+              changeMethods: ['set_greeting']
             });
 
           case 7:
@@ -21073,7 +21073,7 @@ document.querySelector('form').onsubmit = /*#__PURE__*/function () {
             fieldset.disabled = true;
             _context.prev = 3;
             _context.next = 6;
-            return window.contract.setGreeting({
+            return window.contract.set_greeting({
               // pass the value that the user entered in the greeting field
               message: greeting.value
             });
@@ -21170,8 +21170,8 @@ function _fetchGreeting() {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return contract.getGreeting({
-              accountId: window.accountId
+            return contract.get_greeting({
+              account_id: window.accountId
             });
 
           case 2:
@@ -21224,7 +21224,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62161" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53038" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
