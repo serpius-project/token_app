@@ -59,7 +59,7 @@
         </div>
       </div>
       <div id="obj_chart2" style="width: 100%; margin: auto;">
-        <canvas id="chart2" style="margin: auto; width: 100%; margin-top: 20px;"></canvas>
+        <canvas id="chart2" style="margin: auto; width: 93vh; margin-top: 20px;"></canvas>
       </div>
       <form>
         <fieldset id="fieldset">
@@ -154,12 +154,13 @@ var chart2 = new Chart(ctx2, {
     // radius: 70,
     plugins: {
       legend: {
-        display: true,
+        display: false,
         position: 'right'
       },
       title: {
-        display: false,
+        display: true,
         text: 'Price (USD)',
+        position: 'left',
         padding: {
           top: 0,
           bottom: 0
