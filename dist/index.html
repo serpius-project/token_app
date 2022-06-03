@@ -58,6 +58,9 @@
           <canvas id="chart" style="max-width: 90%; margin: auto; max-height: 300px; margin-top: -50px;"></canvas>
         </div>
       </div>
+      <div id="obj_chart2" style="width: 100%; margin: auto;">
+        <canvas id="chart2" style="margin: auto; width: 100%; margin-top: 20px;"></canvas>
+      </div>
       <form>
         <fieldset id="fieldset">
           <div style="display: flex">
@@ -89,7 +92,7 @@ if (chartStatus != undefined) {
 }
 
 ;
-var chart2 = new Chart(ctx, {
+var chart = new Chart(ctx, {
   type: 'doughnut',
   data: {
     labels: ['ex1', 'ex2', 'ex3'],
@@ -124,6 +127,51 @@ var chart2 = new Chart(ctx, {
         bottom: 0
       },
       autoPadding: false
+    }
+  }
+});
+var ctx2 = document.getElementById('chart2').getContext('2d');
+chartStatus = Chart.getChart('chart2');
+
+if (chartStatus != undefined) {
+  chartStatus.destroy();
+}
+
+;
+var chart2 = new Chart(ctx2, {
+  type: 'line',
+  data: {
+    labels: ['ex1', 'ex2', 'ex3'],
+    datasets: [{
+      label: 'Price (USD)',
+      data: [65, 59, 80, 81, 56, 55, 40],
+      fill: true,
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    }]
+  },
+  options: {
+    // radius: 70,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right'
+      },
+      title: {
+        display: false,
+        text: 'Price (USD)',
+        padding: {
+          top: 0,
+          bottom: 0
+        }
+      }
+    },
+    layout: {
+      padding: {
+        top: 0,
+        bottom: 0
+      },
+      autoPadding: true
     }
   }
 });</script>
