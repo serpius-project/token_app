@@ -1,5 +1,4 @@
 import 'regenerator-runtime/runtime'
-
 import { initContract, login, logout } from './utils'
 
 import getConfig from './config'
@@ -111,3 +110,4 @@ window.nearInitPromise = initContract()
     else signedOutFlow()
   })
   .catch(console.error)
+

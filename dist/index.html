@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
   <title>Serpius | Dashboard </title>
   <link rel="stylesheet" href="/global.e50bbfba.css">
 <script src="/global.e50bbfba.js"></script></head>
+
 <body>
   <main id="signed-out-flow" style="display: none">
     <h1>Welcome to NEAR!</h1>
@@ -35,15 +37,29 @@
     </button>
     <main>
       <h1>
-        <label for="greeting" data-behavior="greeting" style="color: var(--secondary); border-bottom: 2px solid var(--secondary);">
-        </label>
+        <h2> Overview </h2>
+        <!-- <label
+          for="greeting"
+          data-behavior="greeting"
+          style="color: var(--secondary); border-bottom: 2px solid var(--secondary);"
+        >
+        </label> -->
         <!-- <span data-behavior="account-id"></span>! -->
       </h1>
+      <div class="calculation-box" style="display: inline-flex;">
+        <p> Your Balance </p>
+      </div>
+      <div class="calculation-box" style="display: inline-flex;">
+        <p> NEAR Balance </p>
+      </div>
+      <div class="calculation-box" style="display: inline-flex;">
+        <p>Assets Allocation</p>
+        <div id="obj_chart" style="width: 80%; margin: auto;">
+          <canvas id="chart" style="max-width: 90%; margin: auto; max-height: 300px; margin-top: -50px;"></canvas>
+        </div>
+      </div>
       <form>
         <fieldset id="fieldset">
-          <label for="greeting" style="display: block; color: var(--gray); margin-bottom: 0.5em">
-            Balance
-          </label>
           <div style="display: flex">
             <input style="flex: 1" autocomplete="off" id="greeting" data-behavior="greeting">
             <button disabled="" style="border-radius: 0 5px 5px 0">Save</button>
@@ -64,5 +80,54 @@
   </aside>
 
   <script src="/src.e31bb0bc.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>var ctx = document.getElementById('chart').getContext('2d');
+chartStatus = Chart.getChart('chart');
+
+if (chartStatus != undefined) {
+  chartStatus.destroy();
+}
+
+;
+var chart2 = new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: ['ex1', 'ex2', 'ex3'],
+    datasets: [{
+      label: 'Crops',
+      data: [1.0, 1.0, 1.0],
+      backgroundColor: ['#ff0000', '#00ff00', '#0000ff'],
+      borderColor: '#ffff00',
+      borderWidth: 0,
+      hoverOffset: 4
+    }]
+  },
+  options: {
+    // radius: 70,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right'
+      },
+      title: {
+        display: false,
+        text: 'Frequency (counts)',
+        padding: {
+          top: 0,
+          bottom: 0
+        }
+      }
+    },
+    layout: {
+      padding: {
+        top: 0,
+        bottom: 0
+      },
+      autoPadding: false
+    }
+  }
+});</script>
+
 </body>
+
 </html>

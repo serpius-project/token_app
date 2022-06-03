@@ -1,4 +1,4 @@
-const CONTRACT_NAME = process.env.CONTRACT_NAME ||'token_app'
+const CONTRACT_NAME = process.env.CONTRACT_NAME ||'token.serpius_v0.testnet'
 
 function getConfig(env) {
   switch (env) {

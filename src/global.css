@@ -39,6 +39,15 @@ h1 {
   text-align: left;
 }
 
+p {
+  background-position: left 1em;
+  background-repeat: no-repeat;
+  background-size: auto 1.0em;
+  margin-top: 0;
+  padding: 1.0em 0 1.0em 1.0em;
+  text-align: left;
+}
+
 a,
 .link {
   color: var(--primary);
@@ -62,7 +71,7 @@ button, input {
 
 button {
   background-color: var(--secondary);
-  border-radius: 10px;
+  border-radius: 5px;
   border: none;
   color: #efefef;
   cursor: pointer;
@@ -186,3 +195,35 @@ aside footer *:last-child {
     box-shadow: 0 0 10em rgba(255, 255, 255, 0.02) inset;
   } */
 }
+
+.calculation-box {
+  display: flex;
+  flex-flow: column;
+  height: 23vh;
+  width: 31vh;
+  position: relative;
+  background-color: rgba(255, 255, 255, 1.0);
+  border-width: 0px;
+  color: #696969;
+  text-align: left;
+  border-radius: 5px;
+  z-index: 1;
+  box-shadow: 0px 5px 15px 0px rgba(128, 128, 128, 0.2);
+  margin-right: 1vh;
+}
+
+@media screen and (max-width: 960px) {
+  .calculation-box {
+    width: 45vw;
+    /* The width is 100%, when the viewport is 800px or smaller */
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .calculation-box {
+    width: 92vw;
+    left: 0px;
+    top: 0px;
+  }
+}
+
