@@ -37,7 +37,7 @@
     </button>
     <main>
       <h1>
-        <h2> Overview </h2>
+        <h2> Your Assets </h2>
         <!-- <label
           for="greeting"
           data-behavior="greeting"
@@ -48,20 +48,25 @@
       </h1>
       <div class="calculation-box" style="display: inline-flex;">
         <p> Your Balance </p>
+        <label class="Biglabel" id="l_balance"> </label>
       </div>
       <div class="calculation-box" style="display: inline-flex;">
         <p> NEAR Balance </p>
+        <label class="Biglabel" id="l_balance_near"> </label>
       </div>
       <div class="calculation-box" style="display: inline-flex;">
-        <p>Assets Allocation</p>
-        <div id="obj_chart" style="width: 80%; margin: auto;">
-          <canvas id="chart" style="max-width: 90%; margin: auto; max-height: 300px; margin-top: -50px;"></canvas>
-        </div>
+        <p>Buy/Sell</p>
       </div>
-      <div id="obj_chart2" style="width: 100%; margin: auto;">
-        <canvas id="chart2" style="margin: auto; width: 93vh; margin-top: 20px;"></canvas>
+      <h2> Overview </h2>
+      <div id="obj_chart2" class="graph-box">
+        <p>Serpius to USD Chart</p>
+        <canvas id="chart2" style="margin: auto; width: 90%; height: 70%; margin-top: 20px; max-height: 70%; max-width: 90%;"></canvas>
       </div>
-      <form>
+      <div id="obj_chart" class="graph-box">
+        <p>Actual Composition</p>
+        <canvas id="chart" style="margin: auto; width: 90%; height: 60%; margin-top: 20px; max-height: 60%; max-width: 90%;"></canvas>
+      </div>
+      <form style="display: none;">
         <fieldset id="fieldset">
           <div style="display: flex">
             <input style="flex: 1" autocomplete="off" id="greeting" data-behavior="greeting">
@@ -83,7 +88,8 @@
   </aside>
 
   <script src="/src.e31bb0bc.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
   <script>var ctx = document.getElementById('chart').getContext('2d');
 chartStatus = Chart.getChart('chart');
 
@@ -94,23 +100,47 @@ if (chartStatus != undefined) {
 ;
 var chart = new Chart(ctx, {
   type: 'doughnut',
+  plugins: [ChartDataLabels],
   data: {
-    labels: ['ex1', 'ex2', 'ex3'],
+    labels: ['BTC', 'ETH', 'NEAR', 'USDC'],
     datasets: [{
-      label: 'Crops',
-      data: [1.0, 1.0, 1.0],
-      backgroundColor: ['#ff0000', '#00ff00', '#0000ff'],
-      borderColor: '#ffff00',
-      borderWidth: 0,
+      data: [0.8, 0.5, 1.0, 1.2],
+      backgroundColor: ['#E2CF56', '#56E289', '#5668E2', '#E256AE'],
+      borderColor: '#ffffff',
+      borderWidth: 4,
       hoverOffset: 4
     }]
   },
   options: {
-    // radius: 70,
+    //        aspectRatio: 1.77,
+    radius: '80%',
+    cutout: '80%',
     plugins: {
+      datalabels: {
+        formatter: function formatter(value, ctx) {
+          var sum = 0;
+          var dataArr = ctx.chart.data.datasets[0].data;
+          dataArr.map(function (data) {
+            sum += data;
+          });
+          var percentage = (value * 100 / sum).toFixed(1) + "%";
+          return percentage;
+        },
+        color: '#696969',
+        align: 'end',
+        offset: 10,
+        font: {
+          size: "14vw"
+        }
+      },
       legend: {
         display: true,
-        position: 'right'
+        position: 'right',
+        labels: {
+          font: {
+            size: "12vw"
+          }
+        }
       },
       title: {
         display: false,
@@ -126,7 +156,7 @@ var chart = new Chart(ctx, {
         top: 0,
         bottom: 0
       },
-      autoPadding: false
+      autoPadding: true
     }
   }
 });
@@ -146,19 +176,22 @@ var chart2 = new Chart(ctx2, {
       label: 'Price (USD)',
       data: [65, 59, 80, 81, 56, 55, 40],
       fill: true,
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1
+      backgroundColor: 'rgb(86, 104, 226, 0.5)',
+      tension: 0.1,
+      borderWidth: 2,
+      borderColor: '#5668E2',
+      pointRadius: 0
     }]
   },
   options: {
-    // radius: 70,
+    //        aspectRatio: 1.77,
     plugins: {
       legend: {
         display: false,
         position: 'right'
       },
       title: {
-        display: true,
+        display: false,
         text: 'Price (USD)',
         position: 'left',
         padding: {
@@ -173,6 +206,28 @@ var chart2 = new Chart(ctx2, {
         bottom: 0
       },
       autoPadding: true
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false
+        },
+        ticks: {
+          font: {
+            size: "14vw"
+          }
+        }
+      },
+      y: {
+        grid: {
+          display: true
+        },
+        ticks: {
+          font: {
+            size: "14vw"
+          }
+        }
+      }
     }
   }
 });</script>

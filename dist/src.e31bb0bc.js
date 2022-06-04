@@ -20995,20 +20995,21 @@ function _initContract() {
             // is hosted at https://wallet.testnet.near.org
             window.walletConnection = new _nearApiJs.WalletConnection(near); // Getting the Account ID. If still unauthorized, it's just empty string
 
-            window.accountId = window.walletConnection.getAccountId(); // Initializing our contract APIs by contract name and configuration
+            window.accountId = window.walletConnection.getAccountId();
+            window.account = window.walletConnection.account(); // Initializing our contract APIs by contract name and configuration
 
-            _context.next = 7;
+            _context.next = 8;
             return new _nearApiJs.Contract(window.walletConnection.account(), nearConfig.contractName, {
               // View methods are read only. They don't modify the state, but usually return some value.
-              viewMethods: ['get_greeting'],
+              viewMethods: ['ft_balance_of', 'ft_metadata'],
               // Change methods can modify the state. But you don't receive the returned value when called.
               changeMethods: ['set_greeting']
             });
 
-          case 7:
+          case 8:
             window.contract = _context.sent;
 
-          case 8:
+          case 9:
           case "end":
             return _context.stop();
         }
@@ -21055,81 +21056,49 @@ var _getConfig = (0, _config.default)("development" || 'development'),
     networkId = _getConfig.networkId; // global variable used throughout
 
 
-var currentGreeting;
-var submitButton = document.querySelector('form button');
-
-document.querySelector('form').onsubmit = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(event) {
-    var _event$target$element, fieldset, greeting;
-
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            event.preventDefault(); // get elements from the form using their id attribute
-
-            _event$target$element = event.target.elements, fieldset = _event$target$element.fieldset, greeting = _event$target$element.greeting; // disable the form while the value gets updated on-chain
-
-            fieldset.disabled = true;
-            _context.prev = 3;
-            _context.next = 6;
-            return window.contract.set_greeting({
-              // pass the value that the user entered in the greeting field
-              message: greeting.value
-            });
-
-          case 6:
-            _context.next = 12;
-            break;
-
-          case 8:
-            _context.prev = 8;
-            _context.t0 = _context["catch"](3);
-            alert('Something went wrong! ' + 'Maybe you need to sign out and back in? ' + 'Check your browser console for more info.');
-            throw _context.t0;
-
-          case 12:
-            _context.prev = 12;
-            // re-enable the form, whether the call succeeded or failed
-            fieldset.disabled = false;
-            return _context.finish(12);
-
-          case 15:
-            // disable the save button, since it now matches the persisted value
-            submitButton.disabled = true; // update the greeting in the UI
-
-            _context.next = 18;
-            return fetchGreeting();
-
-          case 18:
-            // show notification
-            document.querySelector('[data-behavior=notification]').style.display = 'block'; // remove notification again after css animation completes
-            // this allows it to be shown again next time the form is submitted
-
-            setTimeout(function () {
-              document.querySelector('[data-behavior=notification]').style.display = 'none';
-            }, 11000);
-
-          case 20:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, null, [[3, 8, 12, 15]]);
-  }));
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-document.querySelector('input#greeting').oninput = function (event) {
-  if (event.target.value !== currentGreeting) {
-    submitButton.disabled = false;
-  } else {
-    submitButton.disabled = true;
-  }
-};
+var currentGreeting; // const submitButton = document.querySelector('form button')
+// document.querySelector('form').onsubmit = async (event) => {
+//   event.preventDefault()
+//   // get elements from the form using their id attribute
+//   const { fieldset, greeting } = event.target.elements
+//   // disable the form while the value gets updated on-chain
+//   fieldset.disabled = true
+//   try {
+//     // make an update call to the smart contract
+//     await window.contract.set_greeting({
+//       // pass the value that the user entered in the greeting field
+//       message: greeting.value
+//     })
+//   } catch (e) {
+//     alert(
+//       'Something went wrong! ' +
+//       'Maybe you need to sign out and back in? ' +
+//       'Check your browser console for more info.'
+//     )
+//     throw e
+//   } finally {
+//     // re-enable the form, whether the call succeeded or failed
+//     fieldset.disabled = false
+//   }
+//   // disable the save button, since it now matches the persisted value
+//   submitButton.disabled = true
+//   // update the greeting in the UI
+//   await fetchBalance()
+//   // show notification
+//   document.querySelector('[data-behavior=notification]').style.display = 'block'
+//   // remove notification again after css animation completes
+//   // this allows it to be shown again next time the form is submitted
+//   setTimeout(() => {
+//     document.querySelector('[data-behavior=notification]').style.display = 'none'
+//   }, 11000)
+// }
+// document.querySelector('input#greeting').oninput = (event) => {
+//   if (event.target.value !== currentGreeting) {
+//     submitButton.disabled = false
+//   } else {
+//     submitButton.disabled = true
+//   }
+// }
 
 document.querySelector('#sign-in-button').onclick = _utils.login;
 document.querySelector('#sign-out-button').onclick = _utils.logout; // Display the signed-out-flow container
@@ -21154,28 +21123,40 @@ function signedInFlow() {
 
   accountLink.href = accountLink.href.replace('testnet', networkId);
   contractLink.href = contractLink.href.replace('testnet', networkId);
-  fetchGreeting();
+  fetchBalance();
 } // update global currentGreeting variable; update DOM with it
 
 
-function fetchGreeting() {
-  return _fetchGreeting.apply(this, arguments);
+function fetchBalance() {
+  return _fetchBalance.apply(this, arguments);
 } // `nearInitPromise` gets called on page load
 
 
-function _fetchGreeting() {
-  _fetchGreeting = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+function _fetchBalance() {
+  _fetchBalance = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context.prev = _context.next) {
           case 0:
-            _context2.next = 2;
-            return contract.get_greeting({
+            _context.next = 2;
+            return contract.ft_balance_of({
               account_id: window.accountId
             });
 
           case 2:
-            currentGreeting = _context2.sent;
+            balance = _context.sent;
+            _context.next = 5;
+            return contract.ft_metadata({});
+
+          case 5:
+            decimals = _context.sent.decimals;
+            document.getElementById("l_balance").innerHTML = balance / Math.pow(10, decimals) + ' SER';
+            _context.next = 9;
+            return account.getAccountBalance();
+
+          case 9:
+            near_balance = _context.sent;
+            document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / Math.pow(10, 24)) / 1000 + ' NEAR';
             document.querySelectorAll('[data-behavior=greeting]').forEach(function (el) {
               // set divs, spans, etc
               el.innerText = currentGreeting; // set input elements
@@ -21183,14 +21164,14 @@ function _fetchGreeting() {
               el.value = currentGreeting;
             });
 
-          case 4:
+          case 12:
           case "end":
-            return _context2.stop();
+            return _context.stop();
         }
       }
-    }, _callee2);
+    }, _callee);
   }));
-  return _fetchGreeting.apply(this, arguments);
+  return _fetchBalance.apply(this, arguments);
 }
 
 window.nearInitPromise = (0, _utils.initContract)().then(function () {
