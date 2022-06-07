@@ -21001,7 +21001,7 @@ function _initContract() {
             _context.next = 8;
             return new _nearApiJs.Contract(window.walletConnection.account(), nearConfig.contractName, {
               // View methods are read only. They don't modify the state, but usually return some value.
-              viewMethods: ['ft_balance_of', 'ft_metadata'],
+              viewMethods: ['ft_balance_of', 'ft_metadata', 'check_distro'],
               // Change methods can modify the state. But you don't receive the returned value when called.
               changeMethods: ['set_greeting']
             });
@@ -21134,6 +21134,7 @@ function fetchBalance() {
 
 function _fetchBalance() {
   _fetchBalance = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var ctx, chart;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -21157,6 +21158,88 @@ function _fetchBalance() {
           case 9:
             near_balance = _context.sent;
             document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / Math.pow(10, 24)) / 1000 + ' NEAR';
+            _context.next = 13;
+            return contract.check_distro({});
+
+          case 13:
+            window.distro = _context.sent;
+            window.distro[0] = window.distro[0] / Math.pow(10, 24);
+            window.distro[1] = Math.pow(10, -15) * window.distro[1] / Math.pow(10, 6);
+            window.distro[2] = window.distro[2] / Math.pow(10, 8);
+            window.distro[3] = 10 * window.distro[3] / Math.pow(10, 2); //from here
+
+            ctx = document.getElementById('chart').getContext('2d');
+            chartStatus = Chart.getChart('chart');
+
+            if (chartStatus != undefined) {
+              chartStatus.destroy();
+            }
+
+            ;
+            chart = new Chart(ctx, {
+              type: 'doughnut',
+              plugins: [ChartDataLabels],
+              data: {
+                labels: ['BTC', 'ETH', 'NEAR', 'USDC'],
+                datasets: [{
+                  //        data: [0.8, 0.5, 1.0, 1.2],
+                  data: window.distro,
+                  backgroundColor: ['#E2CF56', '#56E289', '#5668E2', '#E256AE'],
+                  borderColor: '#ffffff',
+                  borderWidth: 4,
+                  hoverOffset: 4
+                }]
+              },
+              options: {
+                //        aspectRatio: 1.77,
+                radius: '80%',
+                cutout: '80%',
+                plugins: {
+                  datalabels: {
+                    formatter: function formatter(value, ctx) {
+                      var sum = 0;
+                      var dataArr = ctx.chart.data.datasets[0].data;
+                      dataArr.map(function (data) {
+                        sum += data;
+                      });
+                      var percentage = (value * 100 / sum).toFixed(1) + "%";
+                      return percentage;
+                    },
+                    color: '#696969',
+                    align: 'end',
+                    offset: 10,
+                    font: {
+                      size: "13vw"
+                    }
+                  },
+                  legend: {
+                    display: true,
+                    position: 'right',
+                    labels: {
+                      font: {
+                        size: "12vw"
+                      }
+                    }
+                  },
+                  title: {
+                    display: false,
+                    text: 'Frequency (counts)',
+                    padding: {
+                      top: 0,
+                      bottom: 0
+                    }
+                  }
+                },
+                layout: {
+                  padding: {
+                    top: 0,
+                    bottom: 0
+                  },
+                  autoPadding: true
+                }
+              }
+            }); //to here
+
             document.querySelectorAll('[data-behavior=greeting]').forEach(function (el) {
               // set divs, spans, etc
               el.innerText = currentGreeting; // set input elements
@@ -21164,7 +21247,7 @@ function _fetchBalance() {
               el.value = currentGreeting;
             });
 
-          case 12:
+          case 24:
           case "end":
             return _context.stop();
         }
@@ -21205,7 +21288,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64315" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65183" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

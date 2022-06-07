@@ -30,12 +30,12 @@ main {
 }
 
 h1 {
-  background-image: url(assets/logo.png);
+  /* background-image: url(assets/logo.png);
   background-position: left 1em;
   background-repeat: no-repeat;
-  background-size: auto 1.0em;
+  background-size: auto 1.0em; */
   margin-top: 0;
-  padding: 3.5em 0 0.0em;
+  padding: 1.0em 0 0.0em;
   text-align: left;
 }
 
@@ -49,7 +49,7 @@ p {
 
 .Biglabel {
   font-size: calc(0.8em + 0.5vw);
-  margin: 0.5em 0 1.0em 1.0em;
+  margin: 0.0em 0 1.0em 1.0em;
   font-weight: bold;
 }
 
@@ -223,7 +223,7 @@ aside footer *:last-child {
 .graph-box {
   display: inline-flex;
   flex-flow: column;
-  height: 35vh;
+  height: 33vh;
   width: 47.5vh;
   position: relative;
   background-color: rgba(255, 255, 255, 1.0);

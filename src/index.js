@@ -6,7 +6,6 @@ const { networkId } = getConfig(process.env.NODE_ENV || 'development')
 
 // global variable used throughout
 let currentGreeting
-
 // const submitButton = document.querySelector('form button')
 
 // document.querySelector('form').onsubmit = async (event) => {
@@ -71,7 +70,7 @@ function signedOutFlow() {
 // Displaying the signed in flow container and fill in account-specific data
 function signedInFlow() {
   document.querySelector('#signed-in-flow').style.display = 'block'
- 
+
   document.querySelectorAll('[data-behavior=account-id]').forEach(el => {
     el.innerText = window.accountId
   })
@@ -94,11 +93,85 @@ function signedInFlow() {
 // update global currentGreeting variable; update DOM with it
 async function fetchBalance() {
   balance = await contract.ft_balance_of({ account_id: window.accountId })
-  decimals = ( await contract.ft_metadata({}) ).decimals
-  document.getElementById("l_balance").innerHTML = balance / 10**decimals + ' SER'
-  
+  decimals = (await contract.ft_metadata({})).decimals
+  document.getElementById("l_balance").innerHTML = balance / 10 ** decimals + ' SER'
+
   near_balance = await account.getAccountBalance();
-  document.getElementById("l_balance_near").innerHTML = Math.round( near_balance.available * 1000 / 10**24 ) / 1000 + ' NEAR' 
+  document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / 10 ** 24) / 1000 + ' NEAR'
+
+  window.distro = await contract.check_distro({});
+  window.distro[0] = window.distro[0] / 10 ** 24;
+  window.distro[1] = (10**-15) * window.distro[1] / 10 ** 6;
+  window.distro[2] = window.distro[2] / 10 ** 8;
+  window.distro[3] = 10 * window.distro[3] / 10 ** 2;
+
+  //from here
+
+  var ctx = document.getElementById('chart').getContext('2d');
+  chartStatus = Chart.getChart('chart');
+  if (chartStatus != undefined) { chartStatus.destroy() };
+  var chart = new Chart(ctx, {
+    type: 'doughnut',
+    plugins: [ChartDataLabels],
+    data: {
+      labels: ['BTC', 'ETH', 'NEAR', 'USDC'],
+      datasets: [{
+//        data: [0.8, 0.5, 1.0, 1.2],
+        data: window.distro,
+        backgroundColor: ['#E2CF56', '#56E289', '#5668E2', '#E256AE'],
+        borderColor: '#ffffff',
+        borderWidth: 4,
+        hoverOffset: 4,
+      }]
+    },
+    options: {
+      //        aspectRatio: 1.77,
+      radius: '80%',
+      cutout: '80%',
+      plugins: {
+        datalabels: {
+          formatter: (value, ctx) => {
+            let sum = 0;
+            let dataArr = ctx.chart.data.datasets[0].data;
+            dataArr.map(data => {
+              sum += data;
+            });
+            let percentage = (value * 100 / sum).toFixed(1) + "%";
+            return percentage;
+          },
+          color: '#696969',
+          align: 'end',
+          offset: 10,
+          font: { size: "13vw" }
+        },
+        legend: {
+          display: true,
+          position: 'right',
+          labels: {
+            font: { size: "12vw" }
+          }
+        },
+        title: {
+          display: false,
+          text: 'Frequency (counts)',
+          padding: {
+            top: 0,
+            bottom: 0
+          }
+        }
+      },
+      layout: {
+        padding: {
+          top: 0,
+          bottom: 0
+        },
+        autoPadding: true,
+      }
+    }
+  });
+
+
+  //to here
 
   document.querySelectorAll('[data-behavior=greeting]').forEach(el => {
     // set divs, spans, etc
