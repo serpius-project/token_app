@@ -90,6 +90,22 @@ function signedInFlow() {
   fetchBalance()
 }
 
+function get_prices() {
+
+  var rawFile = new XMLHttpRequest();
+  rawFile.open("GET", "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin%2Cethereum%2Cnear&vs_currencies=usd", false);
+  rawFile.onreadystatechange = function () {
+    if (rawFile.readyState === 4) {
+      if (rawFile.status === 200 || rawFile.status == 0) {
+        var allText = JSON.parse(rawFile.responseText);
+        window.prices = [allText.near.usd, allText.bitcoin.usd, allText.ethereum.usd, 1.0];
+      }
+    }
+  }
+  rawFile.send(null);
+
+}
+
 // update global currentGreeting variable; update DOM with it
 async function fetchBalance() {
   balance = await contract.ft_balance_of({ account_id: window.accountId })
@@ -97,15 +113,26 @@ async function fetchBalance() {
   document.getElementById("l_balance").innerHTML = balance / 10 ** decimals + ' SER'
 
   near_balance = await account.getAccountBalance();
-  document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / 10 ** 24) / 1000 + ' NEAR'
+  document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / 10 ** 24) / 1000 + ' NEAR';
 
   window.distro = await contract.check_distro({});
-  window.distro[0] = window.distro[0] / 10 ** 24;
-  window.distro[1] = (10**-15) * window.distro[1] / 10 ** 6;
-  window.distro[2] = window.distro[2] / 10 ** 8;
-  window.distro[3] = 10 * window.distro[3] / 10 ** 2;
+  window.distro_s = window.distro;
+  window.distro_s[0] = window.distro[0] / 10 ** 24;
+  window.distro_s[1] = (10 ** -15) * window.distro[1] / 10 ** 6;
+  window.distro_s[2] = window.distro[2] / 10 ** 8;
+  window.distro_s[3] = 10 * window.distro[3] / 10 ** 2;
 
+  get_prices();
+  total_supply = await contract.ft_total_supply({});
+  document.getElementById("total_usd").innerHTML = "<text> &#8776 </text> $" + Math.round(near_balance.available * window.prices[0] * 100 / 10 ** 24) / 100;
   //from here
+
+  let total_value = 0;
+  for (let i = 0; i < 4; i++) { 
+    total_value += window.distro_s[i] * window.prices[i];
+  }
+  ser_price = total_value / ( total_supply / 10 ** decimals );
+  document.getElementById("total_ser").innerHTML = "<text> &#8776 </text> $" + Math.round(ser_price * balance * 100 / 10 ** decimals) / 100;
 
   var ctx = document.getElementById('chart').getContext('2d');
   chartStatus = Chart.getChart('chart');
@@ -114,10 +141,10 @@ async function fetchBalance() {
     type: 'doughnut',
     plugins: [ChartDataLabels],
     data: {
-      labels: ['BTC', 'ETH', 'NEAR', 'USDC'],
+      labels: ['NEAR', 'BTC', 'ETH', 'USDC'],
       datasets: [{
-//        data: [0.8, 0.5, 1.0, 1.2],
-        data: window.distro,
+        //        data: [0.8, 0.5, 1.0, 1.2],
+        data: window.distro_s,
         backgroundColor: ['#E2CF56', '#56E289', '#5668E2', '#E256AE'],
         borderColor: '#ffffff',
         borderWidth: 4,

@@ -21001,7 +21001,7 @@ function _initContract() {
             _context.next = 8;
             return new _nearApiJs.Contract(window.walletConnection.account(), nearConfig.contractName, {
               // View methods are read only. They don't modify the state, but usually return some value.
-              viewMethods: ['ft_balance_of', 'ft_metadata', 'check_distro'],
+              viewMethods: ['ft_balance_of', 'ft_metadata', 'check_distro', 'ft_total_supply'],
               // Change methods can modify the state. But you don't receive the returned value when called.
               changeMethods: ['set_greeting']
             });
@@ -21124,6 +21124,22 @@ function signedInFlow() {
   accountLink.href = accountLink.href.replace('testnet', networkId);
   contractLink.href = contractLink.href.replace('testnet', networkId);
   fetchBalance();
+}
+
+function get_prices() {
+  var rawFile = new XMLHttpRequest();
+  rawFile.open("GET", "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin%2Cethereum%2Cnear&vs_currencies=usd", false);
+
+  rawFile.onreadystatechange = function () {
+    if (rawFile.readyState === 4) {
+      if (rawFile.status === 200 || rawFile.status == 0) {
+        var allText = JSON.parse(rawFile.responseText);
+        window.prices = [allText.near.usd, allText.bitcoin.usd, allText.ethereum.usd, 1.0];
+      }
+    }
+  };
+
+  rawFile.send(null);
 } // update global currentGreeting variable; update DOM with it
 
 
@@ -21134,7 +21150,7 @@ function fetchBalance() {
 
 function _fetchBalance() {
   _fetchBalance = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var ctx, chart;
+    var total_value, i, ctx, chart;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -21163,11 +21179,27 @@ function _fetchBalance() {
 
           case 13:
             window.distro = _context.sent;
-            window.distro[0] = window.distro[0] / Math.pow(10, 24);
-            window.distro[1] = Math.pow(10, -15) * window.distro[1] / Math.pow(10, 6);
-            window.distro[2] = window.distro[2] / Math.pow(10, 8);
-            window.distro[3] = 10 * window.distro[3] / Math.pow(10, 2); //from here
+            window.distro_s = window.distro;
+            window.distro_s[0] = window.distro[0] / Math.pow(10, 24);
+            window.distro_s[1] = Math.pow(10, -15) * window.distro[1] / Math.pow(10, 6);
+            window.distro_s[2] = window.distro[2] / Math.pow(10, 8);
+            window.distro_s[3] = 10 * window.distro[3] / Math.pow(10, 2);
+            get_prices();
+            _context.next = 22;
+            return contract.ft_total_supply({});
 
+          case 22:
+            total_supply = _context.sent;
+            document.getElementById("total_usd").innerHTML = "<text> &#8776 </text> $" + Math.round(near_balance.available * window.prices[0] * 100 / Math.pow(10, 24)) / 100; //from here
+
+            total_value = 0;
+
+            for (i = 0; i < 4; i++) {
+              total_value += window.distro_s[i] * window.prices[i];
+            }
+
+            ser_price = total_value / (total_supply / Math.pow(10, decimals));
+            document.getElementById("total_ser").innerHTML = "<text> &#8776 </text> $" + Math.round(ser_price * balance * 100 / Math.pow(10, decimals)) / 100;
             ctx = document.getElementById('chart').getContext('2d');
             chartStatus = Chart.getChart('chart');
 
@@ -21180,10 +21212,10 @@ function _fetchBalance() {
               type: 'doughnut',
               plugins: [ChartDataLabels],
               data: {
-                labels: ['BTC', 'ETH', 'NEAR', 'USDC'],
+                labels: ['NEAR', 'BTC', 'ETH', 'USDC'],
                 datasets: [{
                   //        data: [0.8, 0.5, 1.0, 1.2],
-                  data: window.distro,
+                  data: window.distro_s,
                   backgroundColor: ['#E2CF56', '#56E289', '#5668E2', '#E256AE'],
                   borderColor: '#ffffff',
                   borderWidth: 4,
@@ -21247,7 +21279,7 @@ function _fetchBalance() {
               el.value = currentGreeting;
             });
 
-          case 24:
+          case 34:
           case "end":
             return _context.stop();
         }
