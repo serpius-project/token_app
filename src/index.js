@@ -104,14 +104,59 @@ function get_prices() {
   }
   rawFile.send(null);
 
-}
+  coin_list = ["near", "bitcoin", "ethereum"];
+  now_date = Date.now() / 1000;
+  one_year_ago = (now_date * 1000 - 2629800000) / 1000;
+  window.time_date = [];
+  window.price_data = [];
 
+  for (let j = 0; j < coin_list.length; j++) {
+    rawFile = new XMLHttpRequest();
+    rawFile.open("GET", "https://api.coingecko.com/api/v3/coins/" + coin_list[j] + "/market_chart/range?vs_currency=usd&from=" + (one_year_ago).toString() + "&to=" + (now_date).toString(), false);
+    rawFile.onreadystatechange = function () {
+      if (rawFile.readyState === 4) {
+        if (rawFile.status === 200 || rawFile.status == 0) {
+          var allText = JSON.parse(rawFile.responseText);
+          for (let i = 0; i < allText['prices'].length; i++) {
+            if (j == 0) {
+              sdate = new Date(allText['prices'][i][0]);
+              window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
+              window.price_data[i] = (allText['prices'][i][1] * window.distro_s[0] + window.distro_s[coin_list.length]) * window.multi;
+            } else {
+              window.price_data[i] += allText['prices'][i][1] * window.distro_s[j] * window.multi;
+            }
+          }
+        }
+      }
+    }
+    rawFile.send(null);
+  }
+
+
+}
+function commarize(min) {
+  min = min || 1e3;
+  // Alter numbers larger than 1k
+  if (this >= min) {
+    var units = ["k", "M", "B", "T"];
+
+    var order = Math.floor(Math.log(this) / Math.log(1000));
+
+    var unitname = units[(order - 1)];
+    var num = Math.floor(this / 1000 ** order);
+
+    // output number remainder + unitname
+    return num + unitname
+  }
+  // return formatted original number
+  return this.toLocaleString()
+}
 // update global currentGreeting variable; update DOM with it
 async function fetchBalance() {
   balance = await contract.ft_balance_of({ account_id: window.accountId })
-  decimals = (await contract.ft_metadata({})).decimals
+  window.decimals = (await contract.ft_metadata({})).decimals
   document.getElementById("l_balance").innerHTML = balance / 10 ** decimals + ' SER'
-
+  window.total_supply = await contract.ft_total_supply({});
   near_balance = await account.getAccountBalance();
   document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / 10 ** 24) / 1000 + ' NEAR';
 
@@ -122,17 +167,18 @@ async function fetchBalance() {
   window.distro_s[2] = window.distro[2] / 10 ** 8;
   window.distro_s[3] = 10 * window.distro[3] / 10 ** 2;
 
+  window.multi = 1.0 / (total_supply / 10 ** decimals);
+
   get_prices();
-  total_supply = await contract.ft_total_supply({});
-  document.getElementById("total_usd").innerHTML = "<text> &#8776 </text> $" + Math.round(near_balance.available * window.prices[0] * 100 / 10 ** 24) / 100;
+  document.getElementById("total_usd").innerHTML = "$ " + Math.round(near_balance.available * window.prices[0] * 100 / 10 ** 24) / 100;
   //from here
 
   let total_value = 0;
-  for (let i = 0; i < 4; i++) { 
+  for (let i = 0; i < 4; i++) {
     total_value += window.distro_s[i] * window.prices[i];
   }
-  ser_price = total_value / ( total_supply / 10 ** decimals );
-  document.getElementById("total_ser").innerHTML = "<text> &#8776 </text> $" + Math.round(ser_price * balance * 100 / 10 ** decimals) / 100;
+  ser_price = total_value * window.multi;
+  document.getElementById("total_ser").innerHTML = "$ " + Math.round(ser_price * balance * 100 / 10 ** decimals) / 100;
 
   var ctx = document.getElementById('chart').getContext('2d');
   chartStatus = Chart.getChart('chart');
@@ -196,6 +242,63 @@ async function fetchBalance() {
       }
     }
   });
+
+  var ctx2 = document.getElementById('chart2').getContext('2d');
+  chartStatus = Chart.getChart('chart2');
+  if (chartStatus != undefined) { chartStatus.destroy() };
+  var chart2 = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: window.time_date,
+      datasets: [{
+        label: 'Price (USD)',
+        data: price_data,
+        fill: true,
+        backgroundColor: 'rgb(86, 104, 226, 0.5)',
+        tension: 0.1,
+        borderWidth: 2,
+        borderColor: '#5668E2',
+        pointRadius: 0,
+      }]
+    },
+    options: {
+      //        aspectRatio: 1.77,
+      plugins: {
+        legend: {
+          display: false,
+          position: 'right',
+        },
+        title: {
+          display: false,
+          text: 'Price (USD)',
+          position: 'left',
+          padding: {
+            top: 0,
+            bottom: 0
+          }
+        }
+      },
+      layout: {
+        padding: {
+          top: 0,
+          bottom: 0,
+        },
+        autoPadding: true,
+      },
+      //      scales: { x: { type: 'time', time: {unit: 'millisecond', displayFormats: {quarter: 'YYYY'}}, grid: { display: false }, ticks: { font: { size: "12vw" } } }, y: { grid: { display: true }, ticks: { font: { size: "12vw" } } } },
+      scales: { x: { grid: { display: true, drawOnChartArea: true }, ticks: { font: { size: "11vw" }, maxRotation: 0, autoSkipPadding: 10 } }, y: { grid: { display: true, drawOnChartArea: true }, ticks: { font: { size: "11vw" }, callback: function (value, index, values) {
+        if (value >= 1000000000 || value <= -1000000000) {
+          return value / 1e9 + 'bill';
+        } else if (value >= 1000000 || value <= -1000000) {
+          return value / 1e6 + 'mill';
+        } else if (value >= 1000 || value <= -1000) {
+          return value / 1e3 + 'k';
+        }
+        return value;
+      } } } },
+    }
+  });
+
 
 
   //to here

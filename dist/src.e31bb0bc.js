@@ -21140,6 +21140,56 @@ function get_prices() {
   };
 
   rawFile.send(null);
+  coin_list = ["near", "bitcoin", "ethereum"];
+  now_date = Date.now() / 1000;
+  one_year_ago = (now_date * 1000 - 2629800000) / 1000;
+  window.time_date = [];
+  window.price_data = [];
+
+  var _loop = function _loop(j) {
+    rawFile = new XMLHttpRequest();
+    rawFile.open("GET", "https://api.coingecko.com/api/v3/coins/" + coin_list[j] + "/market_chart/range?vs_currency=usd&from=" + one_year_ago.toString() + "&to=" + now_date.toString(), false);
+
+    rawFile.onreadystatechange = function () {
+      if (rawFile.readyState === 4) {
+        if (rawFile.status === 200 || rawFile.status == 0) {
+          var allText = JSON.parse(rawFile.responseText);
+
+          for (var i = 0; i < allText['prices'].length; i++) {
+            if (j == 0) {
+              sdate = new Date(allText['prices'][i][0]);
+              window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
+              window.price_data[i] = (allText['prices'][i][1] * window.distro_s[0] + window.distro_s[coin_list.length]) * window.multi;
+            } else {
+              window.price_data[i] += allText['prices'][i][1] * window.distro_s[j] * window.multi;
+            }
+          }
+        }
+      }
+    };
+
+    rawFile.send(null);
+  };
+
+  for (var j = 0; j < coin_list.length; j++) {
+    _loop(j);
+  }
+}
+
+function commarize(min) {
+  min = min || 1e3; // Alter numbers larger than 1k
+
+  if (this >= min) {
+    var units = ["k", "M", "B", "T"];
+    var order = Math.floor(Math.log(this) / Math.log(1000));
+    var unitname = units[order - 1];
+    var num = Math.floor(this / Math.pow(1000, order)); // output number remainder + unitname
+
+    return num + unitname;
+  } // return formatted original number
+
+
+  return this.toLocaleString();
 } // update global currentGreeting variable; update DOM with it
 
 
@@ -21150,7 +21200,7 @@ function fetchBalance() {
 
 function _fetchBalance() {
   _fetchBalance = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var total_value, i, ctx, chart;
+    var total_value, i, ctx, chart, ctx2, chart2;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -21166,31 +21216,32 @@ function _fetchBalance() {
             return contract.ft_metadata({});
 
           case 5:
-            decimals = _context.sent.decimals;
+            window.decimals = _context.sent.decimals;
             document.getElementById("l_balance").innerHTML = balance / Math.pow(10, decimals) + ' SER';
             _context.next = 9;
-            return account.getAccountBalance();
+            return contract.ft_total_supply({});
 
           case 9:
+            window.total_supply = _context.sent;
+            _context.next = 12;
+            return account.getAccountBalance();
+
+          case 12:
             near_balance = _context.sent;
             document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / Math.pow(10, 24)) / 1000 + ' NEAR';
-            _context.next = 13;
+            _context.next = 16;
             return contract.check_distro({});
 
-          case 13:
+          case 16:
             window.distro = _context.sent;
             window.distro_s = window.distro;
             window.distro_s[0] = window.distro[0] / Math.pow(10, 24);
             window.distro_s[1] = Math.pow(10, -15) * window.distro[1] / Math.pow(10, 6);
             window.distro_s[2] = window.distro[2] / Math.pow(10, 8);
             window.distro_s[3] = 10 * window.distro[3] / Math.pow(10, 2);
+            window.multi = 1.0 / (total_supply / Math.pow(10, decimals));
             get_prices();
-            _context.next = 22;
-            return contract.ft_total_supply({});
-
-          case 22:
-            total_supply = _context.sent;
-            document.getElementById("total_usd").innerHTML = "<text> &#8776 </text> $" + Math.round(near_balance.available * window.prices[0] * 100 / Math.pow(10, 24)) / 100; //from here
+            document.getElementById("total_usd").innerHTML = "$ " + Math.round(near_balance.available * window.prices[0] * 100 / Math.pow(10, 24)) / 100; //from here
 
             total_value = 0;
 
@@ -21198,8 +21249,8 @@ function _fetchBalance() {
               total_value += window.distro_s[i] * window.prices[i];
             }
 
-            ser_price = total_value / (total_supply / Math.pow(10, decimals));
-            document.getElementById("total_ser").innerHTML = "<text> &#8776 </text> $" + Math.round(ser_price * balance * 100 / Math.pow(10, decimals)) / 100;
+            ser_price = total_value * window.multi;
+            document.getElementById("total_ser").innerHTML = "$ " + Math.round(ser_price * balance * 100 / Math.pow(10, decimals)) / 100;
             ctx = document.getElementById('chart').getContext('2d');
             chartStatus = Chart.getChart('chart');
 
@@ -21270,6 +21321,93 @@ function _fetchBalance() {
                   autoPadding: true
                 }
               }
+            });
+            ctx2 = document.getElementById('chart2').getContext('2d');
+            chartStatus = Chart.getChart('chart2');
+
+            if (chartStatus != undefined) {
+              chartStatus.destroy();
+            }
+
+            ;
+            chart2 = new Chart(ctx2, {
+              type: 'line',
+              data: {
+                labels: window.time_date,
+                datasets: [{
+                  label: 'Price (USD)',
+                  data: price_data,
+                  fill: true,
+                  backgroundColor: 'rgb(86, 104, 226, 0.5)',
+                  tension: 0.1,
+                  borderWidth: 2,
+                  borderColor: '#5668E2',
+                  pointRadius: 0
+                }]
+              },
+              options: {
+                //        aspectRatio: 1.77,
+                plugins: {
+                  legend: {
+                    display: false,
+                    position: 'right'
+                  },
+                  title: {
+                    display: false,
+                    text: 'Price (USD)',
+                    position: 'left',
+                    padding: {
+                      top: 0,
+                      bottom: 0
+                    }
+                  }
+                },
+                layout: {
+                  padding: {
+                    top: 0,
+                    bottom: 0
+                  },
+                  autoPadding: true
+                },
+                //      scales: { x: { type: 'time', time: {unit: 'millisecond', displayFormats: {quarter: 'YYYY'}}, grid: { display: false }, ticks: { font: { size: "12vw" } } }, y: { grid: { display: true }, ticks: { font: { size: "12vw" } } } },
+                scales: {
+                  x: {
+                    grid: {
+                      display: true,
+                      drawOnChartArea: true
+                    },
+                    ticks: {
+                      font: {
+                        size: "11vw"
+                      },
+                      maxRotation: 0,
+                      autoSkipPadding: 10
+                    }
+                  },
+                  y: {
+                    grid: {
+                      display: true,
+                      drawOnChartArea: true
+                    },
+                    ticks: {
+                      font: {
+                        size: "11vw"
+                      },
+                      callback: function callback(value, index, values) {
+                        if (value >= 1000000000 || value <= -1000000000) {
+                          return value / 1e9 + 'bill';
+                        } else if (value >= 1000000 || value <= -1000000) {
+                          return value / 1e6 + 'mill';
+                        } else if (value >= 1000 || value <= -1000) {
+                          return value / 1e3 + 'k';
+                        }
+
+                        return value;
+                      }
+                    }
+                  }
+                }
+              }
             }); //to here
 
             document.querySelectorAll('[data-behavior=greeting]').forEach(function (el) {
@@ -21279,7 +21417,7 @@ function _fetchBalance() {
               el.value = currentGreeting;
             });
 
-          case 34:
+          case 40:
           case "end":
             return _context.stop();
         }

@@ -62,14 +62,14 @@
       </div>
       <h2> Overview </h2>
       <div id="obj_chart2" class="graph-box">
-        <p>Serpius to USD Chart</p>
+        <p>SER/USD Price</p>
         <canvas id="chart2"
-          style="margin: auto; width: 90%; height: 70%; margin-top: 2%; max-height: 70%; max-width: 90%;"></canvas>
+          style="margin: auto; width: 90%; height: 70%; margin-top: 1%; margin-right: 30px; margin-left: 15px; max-height: 70%; max-width: 90%;"></canvas>
       </div>
       <div id="obj_chart" class="graph-box">
         <p>Actual Composition</p>
         <canvas id="chart"
-          style="margin: auto; width: 90%; height: 60%; margin-top: 2%; max-height: 70%; max-width: 90%;"></canvas>
+          style="margin: auto; width: 90%; height: 60%; margin-top: 1%; max-height: 70%; max-width: 80%;"></canvas>
       </div>
       <form style="display: none;">
         <fieldset id="fieldset">
@@ -81,7 +81,7 @@
       </form>
       <footer style="margin-top: 40px; font-size: 13px; text-align: center;">
         <p2>© copyright 2022 | All right reserved.</p2>
-      </footer>    
+      </footer>
     </main>
   </div>
 
@@ -95,57 +95,11 @@
     </footer>
   </aside>
 
-  <script src="./index.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <script src="./index.js"></script>
   <script>
-
-    var ctx2 = document.getElementById('chart2').getContext('2d');
-    chartStatus = Chart.getChart('chart2');
-    if (chartStatus != undefined) { chartStatus.destroy() };
-    var chart2 = new Chart(ctx2, {
-      type: 'line',
-      data: {
-        labels: ['ex1', 'ex2', 'ex3'],
-        datasets: [{
-          label: 'Price (USD)',
-          data: [65, 59, 80, 81, 56, 55, 40],
-          fill: true,
-          backgroundColor: 'rgb(86, 104, 226, 0.5)',
-          tension: 0.1,
-          borderWidth: 2,
-          borderColor: '#5668E2',
-          pointRadius: 0,
-        }]
-      },
-      options: {
-        //        aspectRatio: 1.77,
-        plugins: {
-          legend: {
-            display: false,
-            position: 'right',
-          },
-          title: {
-            display: false,
-            text: 'Price (USD)',
-            position: 'left',
-            padding: {
-              top: 0,
-              bottom: 0
-            }
-          }
-        },
-        layout: {
-          padding: {
-            top: 0,
-            bottom: 0,
-          },
-          autoPadding: true,
-        },
-        scales: { x: { grid: { display: false }, ticks: {font: {size: "12vw"}}}, y: { grid: { display: true }, ticks: {font: {size: "12vw"}} } },
-      }
-    });   
-
   </script>
 
 </body>
