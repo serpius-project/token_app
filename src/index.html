@@ -57,8 +57,14 @@
         <label class="Biglabel" id="l_balance_near"> </label>
         <label id="total_usd" class="p" style="font-size: 14px; margin-left: 20px;"></label>
       </div>
-      <div class="calculation-box" style="display: inline-flex; background-image: url(assets/serpius_near.png); background-position: 93% 90%;">
-        <p>Buy/Sell</p>
+      <div class="calculation-box"
+        style="display: inline-flex; background-image: url(assets/serpius_near.png); background-position: 93% 90%;">
+        <div class="btn-group" style="background-color: rgb(210, 210, 210); border-top-left-radius: 5px; border-top-right-radius: 5px;">
+          <input type="button" class="button_buy_sell" id="buy" value="Buy">
+          <input type="button" class="button_buy_sell" style="background-color: rgb(210, 210, 210);" id="sell"
+            value="Sell">
+        </div>
+        <input type="button" class="button_buy_sell" id="buy" value="Approve" style="position:absolute; bottom: 5px; left: 5px; background-color: #E256AE;">
       </div>
       <h2> Overview </h2>
       <div id="obj_chart2" class="graph-box">
@@ -97,9 +103,21 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
   <script src="./index.js"></script>
   <script>
+
+    document.getElementById("buy").onclick = function () {
+      document.getElementById("buy").style.backgroundColor = "#E256AE";
+      document.getElementById("sell").style.backgroundColor = "rgb(210, 210, 210)";
+    };
+    
+    document.getElementById("sell").onclick = function () {
+      document.getElementById("buy").style.backgroundColor = "rgb(210, 210, 210)";
+      document.getElementById("sell").style.backgroundColor = "#E256AE";
+    };
+
   </script>
 
 </body>
