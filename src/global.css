@@ -43,13 +43,13 @@ p {
   background-position: left 1em;
   background-repeat: no-repeat;
   background-size: auto 1.0em;
-  margin: 1.0em 0 1.0em 1.0em;
+  margin: 1.0em 0 0.0em 1.0em;
   text-align: left;
 }
 
 .Biglabel {
   font-size: calc(0.8em + 0.5vw);
-  margin: 0.5em 0 0.5em 1.0em;
+  margin: 3vh 0 1vh 1.0em;
   font-weight: bold;
 }
 
@@ -203,6 +203,10 @@ aside footer *:last-child {
 }
 
 .calculation-box {
+  background-image: url(assets/favicon_bw.png);
+  background-position: 95% 90%;
+  background-repeat: no-repeat;
+  background-size: auto 11%; 
   display: inline-flex;
   flex-flow: column;
   height: 20vh;
