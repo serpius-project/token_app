@@ -76,7 +76,7 @@ a:active,
   margin-right: 1%;
   font: inherit;
   outline: none;
-  background-color: black;
+  background-color: #5668E2;
   border-radius: 5px;
   border: none;
   color: #efefef;
@@ -87,6 +87,14 @@ a:active,
 
 .button_buy_sell:hover, .button_buy_sell:focus {
   box-shadow: 0 0 10em rgba(255, 255, 255, 0.2) inset;
+}
+
+.button_buy_sell[disabled] {
+  box-shadow: none;
+  background-color: var(--light-gray);
+  color: gray;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .button_small{

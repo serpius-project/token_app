@@ -217,7 +217,7 @@ async function fetchBalance() {
           color: '#696969',
           align: 'end',
           offset: 10,
-          font: { size: "13vw" }
+          font: { size: "12vw" }
         },
         legend: {
           display: true,

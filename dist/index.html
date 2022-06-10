@@ -59,17 +59,17 @@
       </div>
       <div class="calculation-box" style="display: inline-flex; background-image: url(/serpius_near.4c585a72.png);">
         <div class="btn-group" style="background-color: rgb(210, 210, 210); border-top-left-radius: 5px; border-top-right-radius: 5px;">
-          <input type="button" class="button_buy_sell" id="buy" value="Buy">
+          <input type="button" class="button_buy_sell" style="background-color: black;" id="buy" value="Buy">
           <input type="button" class="button_buy_sell" style="background-color: rgb(210, 210, 210);" id="sell" value="Sell">
         </div>
-        <input type="text" id="fname" name="fname" style="margin: 1.2em 20px 5px 20px; border-radius: 0px; text-align: right; font-size: calc(0.7em + 0.2vw);" placeholder="amount (NEAR)">
+        <input type="text" id="fname" name="fname" style="margin: 1.2em 20px 5px 20px; border-radius: 0px; text-align: right; font-size: calc(0.7em + 0.2vw);" placeholder="amount (NEAR)" onkeypress="return validate_text()">
         <div class="btn-group">
           <input type="button" class="button_small" id="p25" value="25%" style="font-size: 9px; margin-left: 19px; border-radius: 0px;">
           <input type="button" class="button_small" id="p50" value="50%" style="font-size: 9px; margin: 0px; border-radius: 0px;">
           <input type="button" class="button_small" id="p75" value="75%" style="font-size: 9px; margin: 0px; border-radius: 0px;">
           <input type="button" class="button_small" id="p100" value="100%" style="font-size: 9px; margin: 0px; border-radius: 0px;">
         </div>
-        <input type="button" class="button_buy_sell" id="buy" value="Approve" style="position:absolute; bottom: 1.0em; left: 20px; background-color: #5668E2; margin: 0px;">
+        <input type="button" class="button_buy_sell" id="approve" value="Approve" style="position:absolute; bottom: 1.0em; left: 20px; margin: 0px;">
       </div>
       <h2> Overview </h2>
       <div id="obj_chart2" class="graph-box">
@@ -78,7 +78,7 @@
       </div>
       <div id="obj_chart" class="graph-box">
         <p>Actual Composition</p>
-        <canvas id="chart" style="margin: auto; width: 90%; height: 60%; margin-top: 2vh; max-height: 70%; max-width: 80%;"></canvas>
+        <canvas id="chart" style="margin: auto; width: 80%; height: 60%; margin-top: 2vh; max-height: 70%; max-width: 80%;"></canvas>
       </div>
       <form style="display: none;">
         <fieldset id="fieldset">
@@ -145,6 +145,8 @@ document.getElementById("p25").onclick = function () {
   } else {
     document.getElementById("fname").value = Math.round(window.serpius_asset * 0.25 * 1000000) / 1000000;
   }
+
+  document.getElementById("approve").disabled = false;
 };
 
 document.getElementById("p50").onclick = function () {
@@ -158,6 +160,8 @@ document.getElementById("p50").onclick = function () {
   } else {
     document.getElementById("fname").value = Math.round(window.serpius_asset * 0.5 * 1000000) / 1000000;
   }
+
+  document.getElementById("approve").disabled = false;
 };
 
 document.getElementById("p75").onclick = function () {
@@ -171,6 +175,8 @@ document.getElementById("p75").onclick = function () {
   } else {
     document.getElementById("fname").value = Math.round(window.serpius_asset * 0.75 * 1000000) / 1000000;
   }
+
+  document.getElementById("approve").disabled = false;
 };
 
 document.getElementById("p100").onclick = function () {
@@ -184,7 +190,32 @@ document.getElementById("p100").onclick = function () {
   } else {
     document.getElementById("fname").value = Math.round(window.serpius_asset * 1000000) / 1000000;
   }
-};</script>
+
+  document.getElementById("approve").disabled = false;
+};
+
+function validate_text() {
+  return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46;
+}
+
+var textarea = document.getElementById("fname");
+textarea.addEventListener("input", function (event) {
+  document.getElementById("p25").style.backgroundColor = "rgb(210, 210, 210)";
+  document.getElementById("p50").style.backgroundColor = "rgb(210, 210, 210)";
+  document.getElementById("p75").style.backgroundColor = "rgb(210, 210, 210)";
+  document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
+  var mytext = textarea.value; //You already have the element as a variable
+
+  if (textarea.value > window.near_asset && actual_action == "BUY") {
+    document.getElementById("approve").disabled = true;
+  } else if (textarea.value > window.serpius_asset && actual_action == "SELL") {
+    document.getElementById("approve").disabled = true;
+  } else if (textarea.value == "") {
+    document.getElementById("approve").disabled = true;
+  } else {
+    document.getElementById("approve").disabled = false;
+  }
+});</script>
 
 </body>
 
