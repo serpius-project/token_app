@@ -21229,10 +21229,12 @@ function _fetchBalance() {
           case 12:
             near_balance = _context.sent;
             document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / Math.pow(10, 24)) / 1000 + ' NEAR';
-            _context.next = 16;
+            window.near_asset = Math.round(near_balance.available * 100000000 / Math.pow(10, 24)) / 100000000;
+            window.serpius_asset = Math.round(balance * 100000000 / Math.pow(10, decimals)) / 100000000;
+            _context.next = 18;
             return contract.check_distro({});
 
-          case 16:
+          case 18:
             window.distro = _context.sent;
             window.distro_s = window.distro;
             window.distro_s[0] = window.distro[0] / Math.pow(10, 24);
@@ -21275,7 +21277,7 @@ function _fetchBalance() {
               },
               options: {
                 //        aspectRatio: 1.77,
-                radius: '80%',
+                radius: '70%',
                 cutout: '80%',
                 plugins: {
                   datalabels: {
@@ -21417,7 +21419,7 @@ function _fetchBalance() {
               el.value = currentGreeting;
             });
 
-          case 40:
+          case 42:
           case "end":
             return _context.stop();
         }

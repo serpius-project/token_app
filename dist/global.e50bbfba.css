@@ -76,7 +76,7 @@ a:active,
   margin-right: 1%;
   font: inherit;
   outline: none;
-  background-color: #E256AE;
+  background-color: black;
   border-radius: 5px;
   border: none;
   color: #efefef;
@@ -88,6 +88,27 @@ a:active,
 .button_buy_sell:hover, .button_buy_sell:focus {
   box-shadow: 0 0 10em rgba(255, 255, 255, 0.2) inset;
 }
+
+.button_small{
+  float: left;
+  margin-left: 0;
+  margin-right: 0;
+  font: inherit;
+  outline: none;
+  background-color: var(--light-gray);
+  border-radius: 0px;
+  border: 1px;
+  border-style: solid;
+  color: white;
+  cursor: pointer;
+  transition: transform 30ms;
+  width: calc(25% - 9.25px);
+}
+
+.button_small:hover, .button_buy_sell:focus {
+  box-shadow: 0 0 10em rgba(255, 255, 255, 0.2) inset;
+}
+
 
 button, input {
   font: inherit;
@@ -223,7 +244,7 @@ aside footer *:last-child {
 
 .calculation-box {
   background-image: url(/favicon_bw.04a2a6ab.png);
-  background-position: 95% 90%;
+  background-position: calc(100% - 10px) calc(100% - 10px);
   background-repeat: no-repeat;
   background-size: auto 11%; 
   display: inline-flex;
@@ -241,13 +262,14 @@ aside footer *:last-child {
   margin-right: 1vh;
   margin-top: 1vh;
   margin-bottom: 1vh;
+  margin-left: 0;
 }
 
 .graph-box {
   display: inline-flex;
   flex-flow: column;
   height: 33vh;
-  width: 47.5vh;
+  width: 47.25vh;
   position: relative;
   background-color: rgba(255, 255, 255, 1.0);
   border-width: 0px;
@@ -258,6 +280,7 @@ aside footer *:last-child {
   box-shadow: 0px 5px 15px 0px rgba(128, 128, 128, 0.2);
   margin-right: 1vh;
   margin-top: 1vh;
+  margin-left: 0;
 }
 
 @media screen and (max-width: 960px) {

@@ -159,6 +159,8 @@ async function fetchBalance() {
   window.total_supply = await contract.ft_total_supply({});
   near_balance = await account.getAccountBalance();
   document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / 10 ** 24) / 1000 + ' NEAR';
+  window.near_asset = Math.round( near_balance.available * 100000000 / 10**24 ) / 100000000;
+  window.serpius_asset = Math.round( balance * 100000000 / 10 ** decimals ) / 100000000;
 
   window.distro = await contract.check_distro({});
   window.distro_s = window.distro;
@@ -199,7 +201,7 @@ async function fetchBalance() {
     },
     options: {
       //        aspectRatio: 1.77,
-      radius: '80%',
+      radius: '70%',
       cutout: '80%',
       plugins: {
         datalabels: {
