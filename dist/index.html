@@ -11,30 +11,23 @@
 <script src="/global.e50bbfba.js"></script></head>
 
 <body>
-  <main id="signed-out-flow" style="display: none">
-    <h1>Welcome to NEAR!</h1>
-    <p>
-      To make use of the NEAR blockchain, you need to sign in. The button
-      below will sign you in using NEAR Wallet.
-    </p>
-    <p>
-      By default, when your app runs in "development" mode, it connects
-      to a test network ("testnet") wallet. This works just like the main
-      network ("mainnet") wallet, but the NEAR Tokens on testnet aren't
-      convertible to other currencies – they're just for testing!
-    </p>
-    <p>
-      Go ahead and click the button below to try it out:
-    </p>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <main id="signed-out-flow" style="display: none; text-align: center; vertical-align: center; margin-top: 30vh;">
+    <img src="/logo.e9a9c890.png" alt="Serpius" style="height: 30px; position: absolute; margin: 1em; left: 0px; top: 0px;">
+    <p style="text-align: center; margin: 2.5em;">Please connect your NEAR wallet </p>
+    <img src="/favicon.6d47dbe5.png" alt="Serpius" style="height: 60px; margin: 0px;">
+    <img src="/loader.f881bb11.gif" alt="loading" style="height: 10px; margin-bottom: 25px; margin-left: 13px; margin-right: 10px;">
+    <img src="/near_solid_black.540ab54b.png" alt="near" style="height: 60px; margin: 0px;">
     <p style="text-align: center; margin-top: 2.5em">
-      <button id="sign-in-button">Connect</button>
+      <button id="sign-in-button">Connect wallet</button>
     </p>
   </main>
 
   <div id="signed-in-flow" style="display: none">
-    <button class="button" style="float: right" id="sign-out-button">
+    <button class="button" style="float: right; border-top-left-radius: 0px; border-bottom-left-radius: 0px;" id="sign-out-button">
       Disconnect
     </button>
+    <label id="account_id" style="float: right; padding: 0.3em 0.75em; background-color: #5669e28a; color: white; vertical-align: top; margin-top: 2px; border-top-left-radius: 5px; border-bottom-left-radius: 5px;"> </label>
     <img src="/logo.e9a9c890.png" alt="Serpius" style="height: 30px;">
     <main>
       <h1>
@@ -50,7 +43,11 @@
       <div class="calculation-box" style="display: inline-flex;">
         <p> Your Balance </p>
         <label class="Biglabel" id="l_balance"> </label>
-        <label id="total_ser" class="p" style="font-size: 14px; margin-left: 20px;"></label>
+        <div style="display: flex; align-items: center;">
+          <label id="total_ser" class="p" style="font-size: 14px; margin-left: 20px;"></label>
+          <img src="/near_bw.2968da01.png" alt="NEAR" style="height: 14px; width: 14px; vertical-align: top; margin: 0px 0px 0px 20px;">
+          <label id="total_ser_near" class="p" style="font-size: 14px; margin-left: 5px;"></label>
+        </div>
       </div>
       <div class="calculation-box" style="display: inline-flex; background-image: url(/near_bw.2968da01.png);">
         <p> NEAR Balance </p>
@@ -62,18 +59,19 @@
           <input type="button" class="button_buy_sell" style="background-color: black;" id="buy" value="Buy">
           <input type="button" class="button_buy_sell" style="background-color: rgb(210, 210, 210);" id="sell" value="Sell">
         </div>
-        <input type="text" id="fname" name="fname" style="margin: 1.2em 20px 5px 20px; border-radius: 0px; text-align: right; font-size: calc(0.7em + 0.2vw);" placeholder="amount (NEAR)" onkeypress="return validate_text()">
+        <input type="text" id="fname" name="fname" style="margin: 1.2em 20px 0px 20px; border-radius: 0px; text-align: right; font-size: calc(0.7em + 0.2vw);" placeholder="amount (NEAR)" onkeypress="return validate_text()">
         <div class="btn-group">
-          <input type="button" class="button_small" id="p25" value="25%" style="font-size: 9px; margin-left: 19px; border-radius: 0px;">
-          <input type="button" class="button_small" id="p50" value="50%" style="font-size: 9px; margin: 0px; border-radius: 0px;">
-          <input type="button" class="button_small" id="p75" value="75%" style="font-size: 9px; margin: 0px; border-radius: 0px;">
-          <input type="button" class="button_small" id="p100" value="100%" style="font-size: 9px; margin: 0px; border-radius: 0px;">
+          <input type="button" class="button_small" id="p25" value="25%" style="font-size: 10px; margin-left: 19px; border-radius: 0px;">
+          <input type="button" class="button_small" id="p50" value="50%" style="font-size: 10px; margin: 0px; border-radius: 0px;">
+          <input type="button" class="button_small" id="p75" value="75%" style="font-size: 10px; margin: 0px; border-radius: 0px;">
+          <input type="button" class="button_small" id="p100" value="100%" style="font-size: 10px; margin: 0px; border-radius: 0px;">
         </div>
-        <input type="button" class="button_buy_sell" id="approve" value="Approve" style="position:absolute; bottom: 1.0em; left: 20px; margin: 0px;">
+        <label style="font-size: 10px; margin: 0px 20px 0px 20px; text-align: right;"> Fees: 2% + Network </label>
+        <input type="button" class="button_buy_sell" id="approve" value="Approve" style="position:absolute; bottom: 1.0em; left: 20px; margin: 0px;" disabled="true">
       </div>
       <h2> Overview </h2>
       <div id="obj_chart2" class="graph-box">
-        <p>SER/USD Price</p>
+        <p>SER-USD Price</p>
         <canvas id="chart2" style="margin: auto; width: 90%; height: 70%; margin-top: 2vh; margin-right: 30px; margin-left: 15px; max-height: 70%; max-width: 90%;"></canvas>
       </div>
       <div id="obj_chart" class="graph-box">
@@ -135,7 +133,7 @@ document.getElementById("sell").onclick = function () {
 };
 
 document.getElementById("p25").onclick = function () {
-  document.getElementById("p25").style.backgroundColor = "#5668E2";
+  document.getElementById("p25").style.backgroundColor = "#E256AE";
   document.getElementById("p50").style.backgroundColor = "rgb(210, 210, 210)";
   document.getElementById("p75").style.backgroundColor = "rgb(210, 210, 210)";
   document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
@@ -150,8 +148,8 @@ document.getElementById("p25").onclick = function () {
 };
 
 document.getElementById("p50").onclick = function () {
-  document.getElementById("p50").style.backgroundColor = "#5668E2";
-  document.getElementById("p25").style.backgroundColor = "#5668E2";
+  document.getElementById("p50").style.backgroundColor = "#E256AE";
+  document.getElementById("p25").style.backgroundColor = "#E256AE";
   document.getElementById("p75").style.backgroundColor = "rgb(210, 210, 210)";
   document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
 
@@ -165,9 +163,9 @@ document.getElementById("p50").onclick = function () {
 };
 
 document.getElementById("p75").onclick = function () {
-  document.getElementById("p75").style.backgroundColor = "#5668E2";
-  document.getElementById("p25").style.backgroundColor = "#5668E2";
-  document.getElementById("p50").style.backgroundColor = "#5668E2";
+  document.getElementById("p75").style.backgroundColor = "#E256AE";
+  document.getElementById("p25").style.backgroundColor = "#E256AE";
+  document.getElementById("p50").style.backgroundColor = "#E256AE";
   document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
 
   if (actual_action == "BUY") {
@@ -180,10 +178,10 @@ document.getElementById("p75").onclick = function () {
 };
 
 document.getElementById("p100").onclick = function () {
-  document.getElementById("p100").style.backgroundColor = "#5668E2";
-  document.getElementById("p25").style.backgroundColor = "#5668E2";
-  document.getElementById("p50").style.backgroundColor = "#5668E2";
-  document.getElementById("p75").style.backgroundColor = "#5668E2";
+  document.getElementById("p100").style.backgroundColor = "#E256AE";
+  document.getElementById("p25").style.backgroundColor = "#E256AE";
+  document.getElementById("p50").style.backgroundColor = "#E256AE";
+  document.getElementById("p75").style.backgroundColor = "#E256AE";
 
   if (actual_action == "BUY") {
     document.getElementById("fname").value = Math.round(window.near_asset * 1000000) / 1000000;
@@ -195,7 +193,11 @@ document.getElementById("p100").onclick = function () {
 };
 
 function validate_text() {
-  return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46;
+  if (document.getElementById("fname").value.indexOf('.') === -1) {
+    return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46;
+  } else {
+    return event.charCode >= 48 && event.charCode <= 57;
+  }
 }
 
 var textarea = document.getElementById("fname");
@@ -210,7 +212,9 @@ textarea.addEventListener("input", function (event) {
     document.getElementById("approve").disabled = true;
   } else if (textarea.value > window.serpius_asset && actual_action == "SELL") {
     document.getElementById("approve").disabled = true;
-  } else if (textarea.value == "") {
+  } else if (textarea.value == "" || textarea.value == ".") {
+    document.getElementById("approve").disabled = true;
+  } else if (textarea.value == 0) {
     document.getElementById("approve").disabled = true;
   } else {
     document.getElementById("approve").disabled = false;

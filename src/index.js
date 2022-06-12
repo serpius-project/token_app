@@ -153,6 +153,9 @@ function commarize(min) {
 }
 // update global currentGreeting variable; update DOM with it
 async function fetchBalance() {
+  document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " " + window.accountId;
+//  document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " ********.testnet";
+
   balance = await contract.ft_balance_of({ account_id: window.accountId })
   window.decimals = (await contract.ft_metadata({})).decimals
   document.getElementById("l_balance").innerHTML = balance / 10 ** decimals + ' SER'
@@ -163,16 +166,24 @@ async function fetchBalance() {
   window.serpius_asset = Math.round( balance * 100000000 / 10 ** decimals ) / 100000000;
 
   window.distro = await contract.check_distro({});
-  window.distro_s = window.distro;
-  window.distro_s[0] = window.distro[0] / 10 ** 24;
-  window.distro_s[1] = (10 ** -15) * window.distro[1] / 10 ** 6;
-  window.distro_s[2] = window.distro[2] / 10 ** 8;
-  window.distro_s[3] = 10 * window.distro[3] / 10 ** 2;
+  window.distro_s = window.distro.slice();
+
+  window.distro[0] = window.distro[0] / 10 ** 24;
+  window.distro[1] = window.distro[1] / 10 ** 6;
+  window.distro[2] = window.distro[2] / 10 ** 8;
+  window.distro[3] = window.distro[3] / 10 ** 2;
+
+  //  window.distro_s = window.distro;
+  window.distro_s[0] = window.distro_s[0] / 10 ** 24;
+  window.distro_s[1] = (10 ** -15) * window.distro_s[1] / 10 ** 6;
+  window.distro_s[2] = window.distro_s[2] / 10 ** 8;
+  window.distro_s[3] = 10 * window.distro_s[3] / 10 ** 2;
 
   window.multi = 1.0 / (total_supply / 10 ** decimals);
 
   get_prices();
-  document.getElementById("total_usd").innerHTML = "$ " + Math.round(near_balance.available * window.prices[0] * 100 / 10 ** 24) / 100;
+  let dollar_near = Math.round(near_balance.available * window.prices[0] * 100 / 10 ** 24) / 100;
+  document.getElementById("total_usd").innerHTML = "$ " + dollar_near;
   //from here
 
   let total_value = 0;
@@ -180,8 +191,10 @@ async function fetchBalance() {
     total_value += window.distro_s[i] * window.prices[i];
   }
   ser_price = total_value * window.multi;
-  document.getElementById("total_ser").innerHTML = "$ " + Math.round(ser_price * balance * 100 / 10 ** decimals) / 100;
-
+  let dollar_serpius = Math.round(ser_price * balance * 100 / 10 ** decimals) / 100;
+  document.getElementById("total_ser").innerHTML = '$ ' + dollar_serpius; 
+  document.getElementById("total_ser_near").innerHTML = Math.round( dollar_serpius * 100 / window.prices[0] ) / 100;
+  
   var ctx = document.getElementById('chart').getContext('2d');
   chartStatus = Chart.getChart('chart');
   if (chartStatus != undefined) { chartStatus.destroy() };

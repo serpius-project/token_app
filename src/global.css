@@ -76,10 +76,10 @@ a:active,
   margin-right: 1%;
   font: inherit;
   outline: none;
-  background-color: #5668E2;
+  background-color: #E256AE;
   border-radius: 5px;
   border: none;
-  color: #efefef;
+  color: white;
   cursor: pointer;
   transition: transform 30ms;
   width: 48%;
@@ -110,7 +110,8 @@ a:active,
   color: white;
   cursor: pointer;
   transition: transform 30ms;
-  width: calc(25% - 9.25px);
+  width: calc(25% - 9.5px);
+  padding: 0px;
 }
 
 .button_small:hover, .button_buy_sell:focus {

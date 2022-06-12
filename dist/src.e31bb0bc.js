@@ -21003,7 +21003,7 @@ function _initContract() {
               // View methods are read only. They don't modify the state, but usually return some value.
               viewMethods: ['ft_balance_of', 'ft_metadata', 'check_distro', 'ft_total_supply'],
               // Change methods can modify the state. But you don't receive the returned value when called.
-              changeMethods: ['set_greeting']
+              changeMethods: ['buy_token', 'sell_token']
             });
 
           case 8:
@@ -21200,50 +21200,58 @@ function fetchBalance() {
 
 function _fetchBalance() {
   _fetchBalance = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var total_value, i, ctx, chart, ctx2, chart2;
+    var dollar_near, total_value, i, dollar_serpius, ctx, chart, ctx2, chart2;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
+            document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " " + window.accountId; //  document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " ********.testnet";
+
+            _context.next = 3;
             return contract.ft_balance_of({
               account_id: window.accountId
             });
 
-          case 2:
+          case 3:
             balance = _context.sent;
-            _context.next = 5;
+            _context.next = 6;
             return contract.ft_metadata({});
 
-          case 5:
+          case 6:
             window.decimals = _context.sent.decimals;
             document.getElementById("l_balance").innerHTML = balance / Math.pow(10, decimals) + ' SER';
-            _context.next = 9;
+            _context.next = 10;
             return contract.ft_total_supply({});
 
-          case 9:
+          case 10:
             window.total_supply = _context.sent;
-            _context.next = 12;
+            _context.next = 13;
             return account.getAccountBalance();
 
-          case 12:
+          case 13:
             near_balance = _context.sent;
             document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / Math.pow(10, 24)) / 1000 + ' NEAR';
             window.near_asset = Math.round(near_balance.available * 100000000 / Math.pow(10, 24)) / 100000000;
             window.serpius_asset = Math.round(balance * 100000000 / Math.pow(10, decimals)) / 100000000;
-            _context.next = 18;
+            _context.next = 19;
             return contract.check_distro({});
 
-          case 18:
+          case 19:
             window.distro = _context.sent;
-            window.distro_s = window.distro;
-            window.distro_s[0] = window.distro[0] / Math.pow(10, 24);
-            window.distro_s[1] = Math.pow(10, -15) * window.distro[1] / Math.pow(10, 6);
-            window.distro_s[2] = window.distro[2] / Math.pow(10, 8);
-            window.distro_s[3] = 10 * window.distro[3] / Math.pow(10, 2);
+            window.distro_s = window.distro.slice();
+            window.distro[0] = window.distro[0] / Math.pow(10, 24);
+            window.distro[1] = window.distro[1] / Math.pow(10, 6);
+            window.distro[2] = window.distro[2] / Math.pow(10, 8);
+            window.distro[3] = window.distro[3] / Math.pow(10, 2); //  window.distro_s = window.distro;
+
+            window.distro_s[0] = window.distro_s[0] / Math.pow(10, 24);
+            window.distro_s[1] = Math.pow(10, -15) * window.distro_s[1] / Math.pow(10, 6);
+            window.distro_s[2] = window.distro_s[2] / Math.pow(10, 8);
+            window.distro_s[3] = 10 * window.distro_s[3] / Math.pow(10, 2);
             window.multi = 1.0 / (total_supply / Math.pow(10, decimals));
             get_prices();
-            document.getElementById("total_usd").innerHTML = "$ " + Math.round(near_balance.available * window.prices[0] * 100 / Math.pow(10, 24)) / 100; //from here
+            dollar_near = Math.round(near_balance.available * window.prices[0] * 100 / Math.pow(10, 24)) / 100;
+            document.getElementById("total_usd").innerHTML = "$ " + dollar_near; //from here
 
             total_value = 0;
 
@@ -21252,7 +21260,9 @@ function _fetchBalance() {
             }
 
             ser_price = total_value * window.multi;
-            document.getElementById("total_ser").innerHTML = "$ " + Math.round(ser_price * balance * 100 / Math.pow(10, decimals)) / 100;
+            dollar_serpius = Math.round(ser_price * balance * 100 / Math.pow(10, decimals)) / 100;
+            document.getElementById("total_ser").innerHTML = '$ ' + dollar_serpius;
+            document.getElementById("total_ser_near").innerHTML = Math.round(dollar_serpius * 100 / window.prices[0]) / 100;
             ctx = document.getElementById('chart').getContext('2d');
             chartStatus = Chart.getChart('chart');
 
@@ -21419,7 +21429,7 @@ function _fetchBalance() {
               el.value = currentGreeting;
             });
 
-          case 42:
+          case 50:
           case "end":
             return _context.stop();
         }
@@ -21460,7 +21470,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56842" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53660" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
