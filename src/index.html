@@ -6,15 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="./assets/favicon.png" />
   <link rel="apple-touch-icon" href="./assets/favicon.png" />
-  <title>Serpius | Dashboard </title>
+  <title>Serpius | Exchange </title>
   <link rel="stylesheet" href="global.css">
 </head>
 
 <body>
-  <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-  <main id="signed-out-flow" style="display: none; text-align: center; vertical-align: center; margin-top: 33vh;">
-    <img src="/assets/logo.png" alt="Serpius"
-      style="height: 30px; position: absolute; margin: 1em; left: 0px; top: 0px;">
+  <img class="logo_full" src="/assets/logo.png" alt="Serpius"
+  style="height: 30px; position: absolute; margin: 1em; left: 0px; top: 0px;">
+  <img class="logo_mobile" src="/assets/favicon.png" alt="Serpius"
+  style="height: 30px; position: absolute; margin: 1em; left: 0px; top: 0px;">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <main id="signed-out-flow" style="display: none; text-align: center; vertical-align: center; margin-top: 33vh;">
     <p style="text-align: center; margin: 2.5em;">Please connect your NEAR wallet </p>
     <img src="/assets/favicon.png" alt="Serpius" style="height: 60px; margin: 0px;">
     <img src="/assets/loader.gif" alt="loading"
@@ -27,14 +29,13 @@
 
   <div id="blocker" style="z-index: 100; background-color: rgba(0, 0, 0, 0.4); width: 100%; height: 100%; position: absolute; left: 0; top: 0; display: none;">  </div>
   <div id="signed-in-flow" style="display: none">
-    <button class="button" style="float: right; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
+    <button class="button" style=" float:right; border-top-left-radius: 0px; border-bottom-left-radius: 0px; vertical-align: middle; margin-top: 0px;"
       id="sign-out-button">
       Disconnect
     </button>
     <label id="account_id"
-      style="float: right; padding: 0.3em 0.75em; background-color: #5669e28a; color: white; vertical-align: top; margin-top: 2px; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
+      style="float:right; padding: 0.3em 0.75em; background-color: #5669e28a; color: white; vertical-align: middle; margin-top: 0px; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
     </label>
-    <img src="/assets/logo.png" alt="Serpius" style="height: 30px;">
     <main>
       <h1>
         <h2> Your Assets </h2>
@@ -64,24 +65,24 @@
       <div class="calculation-box" style="display: inline-flex; background-image: url(assets/serpius_near.png);">
         <div class="btn-group"
           style="background-color: rgb(210, 210, 210); border-top-left-radius: 5px; border-top-right-radius: 5px;">
-          <input type="button" class="button_buy_sell" style="background-color: black;" id="buy" value="Buy">
-          <input type="button" class="button_buy_sell" style="background-color: rgb(210, 210, 210);" id="sell"
+          <input type="button" class="button_buy_sell" style="background-color: black; border-radius: 0px; border-top-left-radius: 5px; height: 100%;" id="buy" value="Buy">
+          <input type="button" class="button_buy_sell" style="background-color: rgb(210, 210, 210); border-radius: 0px; border-top-right-radius: 5px; height: 100%;" id="sell"
             value="Sell">
         </div>
         <input type="text" id="fname" name="fname"
-          style="margin: 0.8em 20px 0px 20px; border-radius: 0px; text-align: right; font-size: calc(0.7em + 0.2vw);"
+          style="margin: 1vh 20px 0px 20px; border-radius: 0px; text-align: right; font-size: calc(0.7em + 0.6vh);"
           placeholder="amount (NEAR)" onkeypress="return validate_text()">
         <div class="btn-group">
           <input type="button" class="button_small" id="p25" value="25%"
-            style="font-size: 10px; margin-left: 19px; border-radius: 0px;">
+            style="font-size: 10px; margin-left: 19px;">
           <input type="button" class="button_small" id="p50" value="50%"
-            style="font-size: 10px; margin: 0px; border-radius: 0px;">
+            style="font-size: 10px; margin: 0px;">
           <input type="button" class="button_small" id="p75" value="75%"
-            style="font-size: 10px; margin: 0px; border-radius: 0px;">
+            style="font-size: 10px; margin: 0px;">
           <input type="button" class="button_small" id="p100" value="100%"
-            style="font-size: 10px; margin: 0px; border-radius: 0px;">
+            style="font-size: 10px; margin: 0px;">
         </div>
-        <label id="conversion" style="font-size: 10px; margin: 0.2em 20px 0px 20px; text-align: right;"> </label>
+        <label id="conversion" style="font-size: 10px; margin: 0.25vh 20px 0px 20px; text-align: right;"> </label>
         <label style="font-size: 10px; margin: 0px 20px 0px 20px; text-align: right;"> 2% + Network Fees </label>
         <input type="button" class="button_buy_sell" id="approve" value="Approve"
           style="position:absolute; bottom: 0.7em; left: 20px; margin: 0px;" disabled="true" onclick="approve_func()">

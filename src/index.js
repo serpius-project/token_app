@@ -150,8 +150,8 @@ window.commarize = function commarize(x) {
 
 // update global currentGreeting variable; update DOM with it
 window.fetchBalance = async function fetchBalance() {
-  document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " " + window.accountId;
-  //document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " ********.testnet";
+  //document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + window.accountId;
+  document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + '********.testnet';
 
   balance = await contract.ft_balance_of({ account_id: window.accountId })
   window.decimals = (await contract.ft_metadata({})).decimals
