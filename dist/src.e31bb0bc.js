@@ -21176,36 +21176,30 @@ function get_prices() {
   }
 }
 
-function commarize(min) {
-  min = min || 1e3; // Alter numbers larger than 1k
-
-  if (this >= min) {
+window.commarize = function commarize(x) {
+  // Alter numbers larger than 1k
+  if (x >= 1e3) {
     var units = ["k", "M", "B", "T"];
-    var order = Math.floor(Math.log(this) / Math.log(1000));
+    var order = Math.floor(Math.log(x) / Math.log(1000));
     var unitname = units[order - 1];
-    var num = Math.floor(this / Math.pow(1000, order)); // output number remainder + unitname
+    var num = Math.round(x * 100 / Math.pow(1000, order)) / 100; // output number remainder + unitname
 
     return num + unitname;
-  } // return formatted original number
+  }
+
+  return Math.round(x * 100) / 100;
+}; // update global currentGreeting variable; update DOM with it
 
 
-  return this.toLocaleString();
-} // update global currentGreeting variable; update DOM with it
+window.fetchBalance = /*#__PURE__*/function () {
+  var _fetchBalance = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var labels_pie_c, i, dollar_near, total_value, _i, dollar_serpius, ctx, chart, ctx2, chart2;
 
-
-function fetchBalance() {
-  return _fetchBalance.apply(this, arguments);
-} // `nearInitPromise` gets called on page load
-
-
-function _fetchBalance() {
-  _fetchBalance = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var dollar_near, total_value, i, dollar_serpius, ctx, chart, ctx2, chart2;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " " + window.accountId; //  document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " ********.testnet";
+            document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " " + window.accountId; //document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " ********.testnet";
 
             _context.next = 3;
             return contract.ft_balance_of({
@@ -21219,7 +21213,7 @@ function _fetchBalance() {
 
           case 6:
             window.decimals = _context.sent.decimals;
-            document.getElementById("l_balance").innerHTML = balance / Math.pow(10, decimals) + ' SER';
+            document.getElementById("l_balance").innerHTML = Math.round(balance * 1000 / Math.pow(10, decimals)) / 1000 + ' SER';
             _context.next = 10;
             return contract.ft_total_supply({});
 
@@ -21248,21 +21242,34 @@ function _fetchBalance() {
             window.distro_s[1] = Math.pow(10, -15) * window.distro_s[1] / Math.pow(10, 6);
             window.distro_s[2] = window.distro_s[2] / Math.pow(10, 8);
             window.distro_s[3] = 10 * window.distro_s[3] / Math.pow(10, 2);
+            labels_pie_c = ['NEAR', 'BTC', 'ETH', 'USDC'];
+            window.labels_pie = [];
+            window.assets_pie = [];
+
+            for (i = 0; i < labels_pie_c.length; i++) {
+              if (window.distro[i] > 0) {
+                window.labels_pie.push(labels_pie_c[i]);
+                window.assets_pie.push(window.distro_s[i]);
+              }
+            }
+
             window.multi = 1.0 / (total_supply / Math.pow(10, decimals));
             get_prices();
             dollar_near = Math.round(near_balance.available * window.prices[0] * 100 / Math.pow(10, 24)) / 100;
-            document.getElementById("total_usd").innerHTML = "$ " + dollar_near; //from here
+            document.getElementById("total_usd").innerHTML = "$ " + commarize(dollar_near); //from here
 
             total_value = 0;
 
-            for (i = 0; i < 4; i++) {
-              total_value += window.distro_s[i] * window.prices[i];
+            for (_i = 0; _i < 4; _i++) {
+              total_value += window.distro_s[_i] * window.prices[_i];
             }
 
             ser_price = total_value * window.multi;
             dollar_serpius = Math.round(ser_price * balance * 100 / Math.pow(10, decimals)) / 100;
-            document.getElementById("total_ser").innerHTML = '$ ' + dollar_serpius;
-            document.getElementById("total_ser_near").innerHTML = Math.round(dollar_serpius * 100 / window.prices[0]) / 100;
+            document.getElementById("total_ser").innerHTML = '$ ' + commarize(dollar_serpius);
+            document.getElementById("total_ser_near").innerHTML = commarize(Math.round(dollar_serpius * 100 / window.prices[0]) / 100);
+            window.ser_near = ser_price / window.prices[0];
+            document.getElementById("conversion").innerHTML = '1 SER &#8776 ' + commarize(ser_price / window.prices[0]) + ' NEAR';
             ctx = document.getElementById('chart').getContext('2d');
             chartStatus = Chart.getChart('chart');
 
@@ -21275,10 +21282,10 @@ function _fetchBalance() {
               type: 'doughnut',
               plugins: [ChartDataLabels],
               data: {
-                labels: ['NEAR', 'BTC', 'ETH', 'USDC'],
+                labels: window.labels_pie,
                 datasets: [{
                   //        data: [0.8, 0.5, 1.0, 1.2],
-                  data: window.distro_s,
+                  data: window.assets_pie,
                   backgroundColor: ['#E2CF56', '#56E289', '#5668E2', '#E256AE'],
                   borderColor: '#ffffff',
                   borderWidth: 4,
@@ -21420,24 +21427,23 @@ function _fetchBalance() {
                   }
                 }
               }
-            }); //to here
-
-            document.querySelectorAll('[data-behavior=greeting]').forEach(function (el) {
-              // set divs, spans, etc
-              el.innerText = currentGreeting; // set input elements
-
-              el.value = currentGreeting;
             });
 
-          case 50:
+          case 55:
           case "end":
             return _context.stop();
         }
       }
     }, _callee);
   }));
-  return _fetchBalance.apply(this, arguments);
-}
+
+  function fetchBalance() {
+    return _fetchBalance.apply(this, arguments);
+  }
+
+  return fetchBalance;
+}(); // `nearInitPromise` gets called on page load
+
 
 window.nearInitPromise = (0, _utils.initContract)().then(function () {
   if (window.walletConnection.isSignedIn()) signedInFlow();else signedOutFlow();
@@ -21470,7 +21476,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58968" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63504" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

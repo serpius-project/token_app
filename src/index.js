@@ -134,36 +134,33 @@ function get_prices() {
 
 
 }
-function commarize(min) {
-  min = min || 1e3;
+
+window.commarize = function commarize(x) {
   // Alter numbers larger than 1k
-  if (this >= min) {
+  if ( x >= 1e3 ) {
     var units = ["k", "M", "B", "T"];
-
-    var order = Math.floor(Math.log(this) / Math.log(1000));
-
+    var order = Math.floor(Math.log(x) / Math.log(1000));
     var unitname = units[(order - 1)];
-    var num = Math.floor(this / 1000 ** order);
-
+    var num = Math.round(x * 100/ 1000 ** order) / 100;
     // output number remainder + unitname
     return num + unitname
   }
-  // return formatted original number
-  return this.toLocaleString()
+  return Math.round(x * 100) / 100;
 }
+
 // update global currentGreeting variable; update DOM with it
-async function fetchBalance() {
+window.fetchBalance = async function fetchBalance() {
   document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " " + window.accountId;
-//  document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " ********.testnet";
+  //document.getElementById("account_id").innerHTML = "<i style='font-size:calc(0.8em + 0.2vw); margin-right: 5px;' class='fas'>&#xf406;</i>" + " ********.testnet";
 
   balance = await contract.ft_balance_of({ account_id: window.accountId })
   window.decimals = (await contract.ft_metadata({})).decimals
-  document.getElementById("l_balance").innerHTML = balance / 10 ** decimals + ' SER'
+  document.getElementById("l_balance").innerHTML = Math.round( balance * 1000 / 10 ** decimals )/1000 + ' SER'
   window.total_supply = await contract.ft_total_supply({});
   near_balance = await account.getAccountBalance();
   document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / 10 ** 24) / 1000 + ' NEAR';
-  window.near_asset = Math.round( near_balance.available * 100000000 / 10**24 ) / 100000000;
-  window.serpius_asset = Math.round( balance * 100000000 / 10 ** decimals ) / 100000000;
+  window.near_asset = Math.round(near_balance.available * 100000000 / 10 ** 24) / 100000000;
+  window.serpius_asset = Math.round(balance * 100000000 / 10 ** decimals) / 100000000;
 
   window.distro = await contract.check_distro({});
   window.distro_s = window.distro.slice();
@@ -179,11 +176,21 @@ async function fetchBalance() {
   window.distro_s[2] = window.distro_s[2] / 10 ** 8;
   window.distro_s[3] = 10 * window.distro_s[3] / 10 ** 2;
 
+  let labels_pie_c = ['NEAR', 'BTC', 'ETH', 'USDC'];
+  window.labels_pie = [];
+  window.assets_pie = []
+  for (let i = 0; i <labels_pie_c.length; i++) {
+    if (window.distro[i] > 0){
+      window.labels_pie.push( labels_pie_c[i] );
+      window.assets_pie.push( window.distro_s[i] );
+    }
+  }
+
   window.multi = 1.0 / (total_supply / 10 ** decimals);
 
   get_prices();
   let dollar_near = Math.round(near_balance.available * window.prices[0] * 100 / 10 ** 24) / 100;
-  document.getElementById("total_usd").innerHTML = "$ " + dollar_near;
+  document.getElementById("total_usd").innerHTML = "$ " + commarize(dollar_near);
   //from here
 
   let total_value = 0;
@@ -192,9 +199,11 @@ async function fetchBalance() {
   }
   ser_price = total_value * window.multi;
   let dollar_serpius = Math.round(ser_price * balance * 100 / 10 ** decimals) / 100;
-  document.getElementById("total_ser").innerHTML = '$ ' + dollar_serpius; 
-  document.getElementById("total_ser_near").innerHTML = Math.round( dollar_serpius * 100 / window.prices[0] ) / 100;
-  
+  document.getElementById("total_ser").innerHTML = '$ ' + commarize( dollar_serpius );
+  document.getElementById("total_ser_near").innerHTML = commarize( Math.round(dollar_serpius * 100 / window.prices[0]) / 100 );
+  window.ser_near = ser_price / window.prices[0];
+  document.getElementById("conversion").innerHTML = '1 SER &#8776 ' + commarize(ser_price / window.prices[0]) + ' NEAR';
+
   var ctx = document.getElementById('chart').getContext('2d');
   chartStatus = Chart.getChart('chart');
   if (chartStatus != undefined) { chartStatus.destroy() };
@@ -202,10 +211,10 @@ async function fetchBalance() {
     type: 'doughnut',
     plugins: [ChartDataLabels],
     data: {
-      labels: ['NEAR', 'BTC', 'ETH', 'USDC'],
+      labels: window.labels_pie,
       datasets: [{
         //        data: [0.8, 0.5, 1.0, 1.2],
-        data: window.distro_s,
+        data: window.assets_pie,
         backgroundColor: ['#E2CF56', '#56E289', '#5668E2', '#E256AE'],
         borderColor: '#ffffff',
         borderWidth: 4,
@@ -301,30 +310,25 @@ async function fetchBalance() {
         autoPadding: true,
       },
       //      scales: { x: { type: 'time', time: {unit: 'millisecond', displayFormats: {quarter: 'YYYY'}}, grid: { display: false }, ticks: { font: { size: "12vw" } } }, y: { grid: { display: true }, ticks: { font: { size: "12vw" } } } },
-      scales: { x: { grid: { display: true, drawOnChartArea: true }, ticks: { font: { size: "11vw" }, maxRotation: 0, autoSkipPadding: 10 } }, y: { grid: { display: true, drawOnChartArea: true }, ticks: { font: { size: "11vw" }, callback: function (value, index, values) {
-        if (value >= 1000000000 || value <= -1000000000) {
-          return value / 1e9 + 'bill';
-        } else if (value >= 1000000 || value <= -1000000) {
-          return value / 1e6 + 'mill';
-        } else if (value >= 1000 || value <= -1000) {
-          return value / 1e3 + 'k';
+      scales: {
+        x: { grid: { display: true, drawOnChartArea: true }, ticks: { font: { size: "11vw" }, maxRotation: 0, autoSkipPadding: 10 } }, y: {
+          grid: { display: true, drawOnChartArea: true }, ticks: {
+            font: { size: "11vw" }, callback: function (value, index, values) {
+              if (value >= 1000000000 || value <= -1000000000) {
+                return value / 1e9 + 'bill';
+              } else if (value >= 1000000 || value <= -1000000) {
+                return value / 1e6 + 'mill';
+              } else if (value >= 1000 || value <= -1000) {
+                return value / 1e3 + 'k';
+              }
+              return value;
+            }
+          }
         }
-        return value;
-      } } } },
+      },
     }
   });
 
-
-
-  //to here
-
-  document.querySelectorAll('[data-behavior=greeting]').forEach(el => {
-    // set divs, spans, etc
-    el.innerText = currentGreeting
-
-    // set input elements
-    el.value = currentGreeting
-  })
 }
 
 // `nearInitPromise` gets called on page load

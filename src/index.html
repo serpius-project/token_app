@@ -12,22 +12,28 @@
 
 <body>
   <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-  <main id="signed-out-flow" style="display: none; text-align: center; vertical-align: center; margin-top: 30vh;">
-    <img src="/assets/logo.png" alt="Serpius" style="height: 30px; position: absolute; margin: 1em; left: 0px; top: 0px;">
+  <main id="signed-out-flow" style="display: none; text-align: center; vertical-align: center; margin-top: 33vh;">
+    <img src="/assets/logo.png" alt="Serpius"
+      style="height: 30px; position: absolute; margin: 1em; left: 0px; top: 0px;">
     <p style="text-align: center; margin: 2.5em;">Please connect your NEAR wallet </p>
     <img src="/assets/favicon.png" alt="Serpius" style="height: 60px; margin: 0px;">
-    <img src="/assets/loader.gif" alt="loading" style="height: 10px; margin-bottom: 25px; margin-left: 13px; margin-right: 10px;">
+    <img src="/assets/loader.gif" alt="loading"
+      style="height: 10px; margin-bottom: 25px; margin-left: 13px; margin-right: 10px;">
     <img src="/assets/near_solid_black.png" alt="near" style="height: 60px; margin: 0px;">
     <p style="text-align: center; margin-top: 2.5em">
       <button id="sign-in-button">Connect wallet</button>
     </p>
   </main>
 
+  <div id="blocker" style="z-index: 100; background-color: rgba(0, 0, 0, 0.4); width: 100%; height: 100%; position: absolute; left: 0; top: 0; display: none;">  </div>
   <div id="signed-in-flow" style="display: none">
-    <button class="button" style="float: right; border-top-left-radius: 0px; border-bottom-left-radius: 0px;" id="sign-out-button">
+    <button class="button" style="float: right; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
+      id="sign-out-button">
       Disconnect
     </button>
-    <label id="account_id" style="float: right; padding: 0.3em 0.75em; background-color: #5669e28a; color: white; vertical-align: top; margin-top: 2px; border-top-left-radius: 5px; border-bottom-left-radius: 5px;"> </label>
+    <label id="account_id"
+      style="float: right; padding: 0.3em 0.75em; background-color: #5669e28a; color: white; vertical-align: top; margin-top: 2px; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
+    </label>
     <img src="/assets/logo.png" alt="Serpius" style="height: 30px;">
     <main>
       <h1>
@@ -45,7 +51,8 @@
         <label class="Biglabel" id="l_balance"> </label>
         <div style="display: flex; align-items: center;">
           <label id="total_ser" class="p" style="font-size: 14px; margin-left: 20px;"></label>
-          <img src="/assets/near_bw.png" alt="NEAR" style="height: 14px; width: 14px; vertical-align: top; margin: 0px 0px 0px 20px;">
+          <img src="/assets/near_bw.png" alt="NEAR"
+            style="height: 14px; width: 14px; vertical-align: top; margin: 0px 0px 0px 20px;">
           <label id="total_ser_near" class="p" style="font-size: 14px; margin-left: 5px;"></label>
         </div>
       </div>
@@ -62,7 +69,7 @@
             value="Sell">
         </div>
         <input type="text" id="fname" name="fname"
-          style="margin: 1.2em 20px 0px 20px; border-radius: 0px; text-align: right; font-size: calc(0.7em + 0.2vw);"
+          style="margin: 0.8em 20px 0px 20px; border-radius: 0px; text-align: right; font-size: calc(0.7em + 0.2vw);"
           placeholder="amount (NEAR)" onkeypress="return validate_text()">
         <div class="btn-group">
           <input type="button" class="button_small" id="p25" value="25%"
@@ -74,9 +81,10 @@
           <input type="button" class="button_small" id="p100" value="100%"
             style="font-size: 10px; margin: 0px; border-radius: 0px;">
         </div>
-        <label style="font-size: 10px; margin: 0px 20px 0px 20px; text-align: right;"> Fees: 2% + Network </label>
+        <label id="conversion" style="font-size: 10px; margin: 0.2em 20px 0px 20px; text-align: right;"> </label>
+        <label style="font-size: 10px; margin: 0px 20px 0px 20px; text-align: right;"> 2% + Network Fees </label>
         <input type="button" class="button_buy_sell" id="approve" value="Approve"
-          style="position:absolute; bottom: 1.0em; left: 20px; margin: 0px;" disabled="true">
+          style="position:absolute; bottom: 0.7em; left: 20px; margin: 0px;" disabled="true" onclick="approve_func()">
       </div>
       <h2> Overview </h2>
       <div id="obj_chart2" class="graph-box">
@@ -121,6 +129,7 @@
   <script>
 
     var actual_action = "BUY";
+    document.getElementById("conversion").innerHTML = '1 SER &#8776 ' + commarize(window.ser_near) + ' NEAR';
 
     document.getElementById("buy").onclick = function () {
       document.getElementById("buy").style.backgroundColor = "black";
@@ -128,6 +137,7 @@
       document.getElementById("fname").placeholder = "amount (NEAR)";
       document.getElementById("fname").value = "";
       actual_action = "BUY";
+      document.getElementById("conversion").innerHTML = '1 SER &#8776 ' + commarize(window.ser_near) + ' NEAR';
 
       document.getElementById("p25").style.backgroundColor = "rgb(210, 210, 210)";
       document.getElementById("p50").style.backgroundColor = "rgb(210, 210, 210)";
@@ -142,6 +152,7 @@
       document.getElementById("fname").placeholder = "amount (SER)";
       document.getElementById("fname").value = "";
       actual_action = "SELL";
+      document.getElementById("conversion").innerHTML = '1 NEAR &#8776 ' + commarize(1.0 / window.ser_near) + ' SER';
 
       document.getElementById("p25").style.backgroundColor = "rgb(210, 210, 210)";
       document.getElementById("p50").style.backgroundColor = "rgb(210, 210, 210)";
@@ -157,9 +168,9 @@
       document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
 
       if (actual_action == "BUY") {
-        document.getElementById("fname").value = Math.round(window.near_asset * 0.25 * 1000000) / 1000000;
+        document.getElementById("fname").value = Math.floor(window.near_asset * 0.25 * 1000000) / 1000000;
       } else {
-        document.getElementById("fname").value = Math.round(window.serpius_asset * 0.25 * 1000000) / 1000000;
+        document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.25 * 1000000) / 1000000;
       }
       document.getElementById("approve").disabled = false;
 
@@ -172,9 +183,9 @@
       document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
 
       if (actual_action == "BUY") {
-        document.getElementById("fname").value = Math.round(window.near_asset * 0.5 * 1000000) / 1000000;
+        document.getElementById("fname").value = Math.floor(window.near_asset * 0.5 * 1000000) / 1000000;
       } else {
-        document.getElementById("fname").value = Math.round(window.serpius_asset * 0.5 * 1000000) / 1000000;
+        document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.5 * 1000000) / 1000000;
       }
       document.getElementById("approve").disabled = false;
 
@@ -187,9 +198,9 @@
       document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
 
       if (actual_action == "BUY") {
-        document.getElementById("fname").value = Math.round(window.near_asset * 0.75 * 1000000) / 1000000;
+        document.getElementById("fname").value = Math.floor(window.near_asset * 0.75 * 1000000) / 1000000;
       } else {
-        document.getElementById("fname").value = Math.round(window.serpius_asset * 0.75 * 1000000) / 1000000;
+        document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.75 * 1000000) / 1000000;
       }
       document.getElementById("approve").disabled = false;
 
@@ -202,19 +213,19 @@
       document.getElementById("p75").style.backgroundColor = "#E256AE";
 
       if (actual_action == "BUY") {
-        document.getElementById("fname").value = Math.round(window.near_asset * 1000000) / 1000000;
+        document.getElementById("fname").value = Math.floor(window.near_asset * 1000000) / 1000000;
       } else {
-        document.getElementById("fname").value = Math.round(window.serpius_asset * 1000000) / 1000000;
+        document.getElementById("fname").value = Math.floor(window.serpius_asset * 1000000) / 1000000;
       }
       document.getElementById("approve").disabled = false;
 
     }
 
     function validate_text() {
-      if ( document.getElementById("fname").value.indexOf('.') === -1 ){
-        return ( (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46);
-      }else{
-        return ( event.charCode >= 48 && event.charCode <= 57 );
+      if (document.getElementById("fname").value.indexOf('.') === -1) {
+        return ((event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46);
+      } else {
+        return (event.charCode >= 48 && event.charCode <= 57);
       }
     }
 
@@ -238,6 +249,28 @@
         document.getElementById("approve").disabled = false;
       }
     });
+
+    async function approve_func() {
+      value = BigInt(document.getElementById("fname").value * 10 ** 24).toString();
+      document.getElementById("fname").value = "";
+      document.getElementById("approve").disabled = true;
+      document.getElementById("p25").style.backgroundColor = "rgb(210, 210, 210)";
+      document.getElementById("p50").style.backgroundColor = "rgb(210, 210, 210)";
+      document.getElementById("p75").style.backgroundColor = "rgb(210, 210, 210)";
+      document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
+      document.body.style.cursor = 'progress';
+      document.getElementById("blocker").style.display = 'block';
+
+      if (actual_action == "BUY") {
+        let a = await contract.buy_token({}, "300000000000000", value);
+      } else {
+        let a = await contract.sell_token({ "tokens": value }, "300000000000000");
+      }
+      fetchBalance();
+      document.body.style.cursor = 'default';
+      document.getElementById("blocker").style.display = 'none';
+    }
+
 
   </script>
 
