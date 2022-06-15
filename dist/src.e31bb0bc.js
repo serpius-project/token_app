@@ -21199,8 +21199,8 @@ window.fetchBalance = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            //document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + window.accountId;
-            document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + '********.testnet';
+            document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + window.accountId; //document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + '********.testnet';
+
             _context.next = 3;
             return contract.ft_balance_of({
               account_id: window.accountId
@@ -21225,8 +21225,8 @@ window.fetchBalance = /*#__PURE__*/function () {
           case 13:
             near_balance = _context.sent;
             document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / Math.pow(10, 24)) / 1000 + ' NEAR';
-            window.near_asset = Math.round(near_balance.available * 100000000 / Math.pow(10, 24)) / 100000000;
-            window.serpius_asset = Math.round(balance * 100000000 / Math.pow(10, decimals)) / 100000000;
+            window.near_asset = Math.floor(near_balance.available * 100000000 / Math.pow(10, 24)) / 100000000;
+            window.serpius_asset = Math.floor(balance * 100000000 / Math.pow(10, decimals)) / 100000000;
             _context.next = 19;
             return contract.check_distro({});
 
@@ -21269,7 +21269,13 @@ window.fetchBalance = /*#__PURE__*/function () {
             document.getElementById("total_ser").innerHTML = '$ ' + commarize(dollar_serpius);
             document.getElementById("total_ser_near").innerHTML = commarize(Math.round(dollar_serpius * 100 / window.prices[0]) / 100);
             window.ser_near = ser_price / window.prices[0];
-            document.getElementById("conversion").innerHTML = '1 SER &#8776 ' + commarize(ser_price / window.prices[0]) + ' NEAR';
+
+            if (window.actual_action == "BUY") {
+              document.getElementById("conversion").innerHTML = '1 SER &#8776 ' + commarize(window.ser_near) + ' NEAR';
+            } else {
+              document.getElementById("conversion").innerHTML = '1 NEAR &#8776 ' + commarize(1.0 / window.ser_near) + ' SER';
+            }
+
             ctx = document.getElementById('chart').getContext('2d');
             chartStatus = Chart.getChart('chart');
 
@@ -21476,7 +21482,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52283" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59764" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

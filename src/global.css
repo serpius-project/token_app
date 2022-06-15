@@ -328,6 +328,11 @@ aside footer *:last-child {
   margin-left: 0;
 }
 
+
+a[href], input[type='submit'], input[type='image'], label[for], select, button, .pointer {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 960px) {
   .calculation-box {
     width: 45vw;

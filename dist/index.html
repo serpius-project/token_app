@@ -14,23 +14,31 @@
   <img class="logo_full" src="/logo.e9a9c890.png" alt="Serpius" style="height: 30px; position: absolute; margin: 1em; left: 0px; top: 0px;">
   <img class="logo_mobile" src="/favicon.6d47dbe5.png" alt="Serpius" style="height: 30px; position: absolute; margin: 1em; left: 0px; top: 0px;">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <main id="signed-out-flow" style="display: none; text-align: center; vertical-align: center; margin-top: 33vh;">
+  <main id="signed-out-flow" style="display: none; text-align: center; vertical-align: center; margin-top: 33vh;">
     <p style="text-align: center; margin: 2.5em;">Please connect your NEAR wallet </p>
-    <img src="/favicon.6d47dbe5.png" alt="Serpius" style="height: 60px; margin: 0px;">
-    <img src="/loader.f881bb11.gif" alt="loading" style="height: 10px; margin-bottom: 25px; margin-left: 13px; margin-right: 10px;">
-    <img src="/near_solid_black.540ab54b.png" alt="near" style="height: 60px; margin: 0px;">
+    <!-- <img src="/assets/favicon.png" alt="Serpius" style="height: 60px; margin: 0px;">
+    <img src="/assets/loader.gif" alt="loading"
+      style="height: 10px; margin-bottom: 25px; margin-left: 13px; margin-right: 10px;">
+    <img src="/assets/near_solid_black.png" alt="near" style="height: 60px; margin: 0px;"> -->
+    <img src="/serpius_near_color.d81f22d0.png" alt="near" style="height: 60px; margin: 0px;">
     <p style="text-align: center; margin-top: 2.5em">
       <button id="sign-in-button">Connect wallet</button>
     </p>
   </main>
 
-  <div id="blocker" style="z-index: 100; background-color: rgba(0, 0, 0, 0.4); width: 100%; height: 100%; position: absolute; left: 0; top: 0; display: none;">  </div>
+  <div id="blocker" style="z-index: 100; background-color: rgba(0, 0, 0, 0.4); width: 100%; height: 100vh; position: fixed; left: 0; top: 0; display: none; padding-top: calc(50vh - 30px); text-align: center;">
+    <img src="/favicon.6d47dbe5.png" alt="Serpius" style="height: 60px; margin: 0px;">
+    <img src="/loader.f881bb11.gif" alt="loading" style="height: 10px; margin-bottom: 25px; margin-left: 13px; margin-right: 10px;">
+    <img src="/near_solid_black.540ab54b.png" alt="near" style="height: 60px; margin: 0px;">
+  </div>
   <div id="signed-in-flow" style="display: none">
     <button class="button" style=" float:right; border-top-left-radius: 0px; border-bottom-left-radius: 0px; vertical-align: middle; margin-top: 0px;" id="sign-out-button">
       Disconnect
     </button>
-    <label id="account_id" style="float:right; padding: 0.3em 0.75em; background-color: #5669e28a; color: white; vertical-align: middle; margin-top: 0px; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
-    </label>
+    <a href="https://wallet.testnet.near.org">
+      <label class="pointer" id="account_id" style="float:right; padding: 0.3em 0.75em; background-color: #5669e28a; color: white; vertical-align: middle; margin-top: 0px; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
+      </label>
+    </a>
     <main>
       <h1>
         <h2> Your Assets </h2>
@@ -117,7 +125,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var actual_action = "BUY";
+window.actual_action = "BUY";
 document.getElementById("conversion").innerHTML = '1 SER &#8776 ' + commarize(window.ser_near) + ' NEAR';
 
 document.getElementById("buy").onclick = function () {
@@ -153,12 +161,14 @@ document.getElementById("p25").onclick = function () {
   document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
 
   if (actual_action == "BUY") {
-    document.getElementById("fname").value = Math.floor(window.near_asset * 0.25 * 1000000) / 1000000;
+    document.getElementById("fname").value = Math.floor(window.near_asset * 0.25 * 100000000) / 100000000;
   } else {
-    document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.25 * 1000000) / 1000000;
+    document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.25 * 100000000) / 100000000;
   }
 
-  document.getElementById("approve").disabled = false;
+  if (document.getElementById("fname").value > 0) {
+    document.getElementById("approve").disabled = false;
+  }
 };
 
 document.getElementById("p50").onclick = function () {
@@ -168,12 +178,14 @@ document.getElementById("p50").onclick = function () {
   document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
 
   if (actual_action == "BUY") {
-    document.getElementById("fname").value = Math.floor(window.near_asset * 0.5 * 1000000) / 1000000;
+    document.getElementById("fname").value = Math.floor(window.near_asset * 0.5 * 100000000) / 100000000;
   } else {
-    document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.5 * 1000000) / 1000000;
+    document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.5 * 100000000) / 100000000;
   }
 
-  document.getElementById("approve").disabled = false;
+  if (document.getElementById("fname").value > 0) {
+    document.getElementById("approve").disabled = false;
+  }
 };
 
 document.getElementById("p75").onclick = function () {
@@ -183,12 +195,14 @@ document.getElementById("p75").onclick = function () {
   document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
 
   if (actual_action == "BUY") {
-    document.getElementById("fname").value = Math.floor(window.near_asset * 0.75 * 1000000) / 1000000;
+    document.getElementById("fname").value = Math.floor(window.near_asset * 0.75 * 100000000) / 100000000;
   } else {
-    document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.75 * 1000000) / 1000000;
+    document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.75 * 100000000) / 100000000;
   }
 
-  document.getElementById("approve").disabled = false;
+  if (document.getElementById("fname").value > 0) {
+    document.getElementById("approve").disabled = false;
+  }
 };
 
 document.getElementById("p100").onclick = function () {
@@ -198,12 +212,14 @@ document.getElementById("p100").onclick = function () {
   document.getElementById("p75").style.backgroundColor = "#E256AE";
 
   if (actual_action == "BUY") {
-    document.getElementById("fname").value = Math.floor(window.near_asset * 1000000) / 1000000;
+    document.getElementById("fname").value = Math.floor((window.near_asset - 1) * 100000000) / 100000000;
   } else {
-    document.getElementById("fname").value = Math.floor(window.serpius_asset * 1000000) / 1000000;
+    document.getElementById("fname").value = Math.floor(window.serpius_asset * 100000000) / 100000000;
   }
 
-  document.getElementById("approve").disabled = false;
+  if (document.getElementById("fname").value > 0) {
+    document.getElementById("approve").disabled = false;
+  }
 };
 
 function validate_text() {
@@ -256,35 +272,39 @@ function _approve_func() {
             document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
             document.body.style.cursor = 'progress';
             document.getElementById("blocker").style.display = 'block';
+            document.documentElement.style.overflow = 'hidden';
+            document.documentElement.style.touchAction = 'none';
 
             if (!(actual_action == "BUY")) {
-              _context.next = 15;
+              _context.next = 17;
               break;
             }
 
-            _context.next = 12;
+            _context.next = 14;
             return contract.buy_token({}, "300000000000000", value);
 
-          case 12:
+          case 14:
             a = _context.sent;
-            _context.next = 18;
+            _context.next = 20;
             break;
 
-          case 15:
-            _context.next = 17;
+          case 17:
+            _context.next = 19;
             return contract.sell_token({
               "tokens": value
-            }, "300000000000000");
+            }, "300000000000000", "1");
 
-          case 17:
+          case 19:
             _a = _context.sent;
 
-          case 18:
+          case 20:
             fetchBalance();
             document.body.style.cursor = 'default';
             document.getElementById("blocker").style.display = 'none';
+            document.documentElement.style.overflow = 'visible';
+            document.documentElement.style.touchAction = 'auto';
 
-          case 21:
+          case 25:
           case "end":
             return _context.stop();
         }
