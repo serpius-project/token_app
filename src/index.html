@@ -227,7 +227,7 @@
       document.getElementById("p75").style.backgroundColor = "#E256AE";
 
       if (actual_action == "BUY") {
-        document.getElementById("fname").value = Math.floor((window.near_asset - 1) * 100000000) / 100000000;
+        document.getElementById("fname").value = Math.floor(window.near_asset * 100000000) / 100000000;
       } else {
         document.getElementById("fname").value = Math.floor(window.serpius_asset * 100000000) / 100000000;
       }
