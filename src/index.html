@@ -98,12 +98,12 @@
       </div>
       <h2> Overview </h2>
       <div id="obj_chart2" class="graph-box">
-        <p>SER-USD Price</p>
+        <p> SER/USD Price</p>
         <canvas id="chart2"
           style="margin: auto; width: 90%; height: 70%; margin-top: 2vh; margin-right: 30px; margin-left: 15px; max-height: 70%; max-width: 90%;"></canvas>
       </div>
       <div id="obj_chart" class="graph-box">
-        <p>Composition</p>
+        <p>Asset Allocation</p>
         <canvas id="chart"
           style="margin: auto; width: 80%; height: 60%; margin-top: 2vh; max-height: 70%; max-width: 80%;"></canvas>
       </div>
@@ -152,6 +152,7 @@
       document.getElementById("p50").style.backgroundColor = "rgb(210, 210, 210)";
       document.getElementById("p75").style.backgroundColor = "rgb(210, 210, 210)";
       document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
+      document.getElementById("approve").disabled = true;
 
     };
 
@@ -167,6 +168,7 @@
       document.getElementById("p50").style.backgroundColor = "rgb(210, 210, 210)";
       document.getElementById("p75").style.backgroundColor = "rgb(210, 210, 210)";
       document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
+      document.getElementById("approve").disabled = true;
 
     };
 
@@ -276,10 +278,12 @@
       document.documentElement.style.overflow = 'hidden';
       document.documentElement.style.touchAction = 'none';
 
-      if (actual_action == "BUY") {
+      if (actual_action == "BUY" && value > 0) {
         let a = await contract.buy_token({}, "300000000000000", value);
-      } else {
+      } else if (actual_action == "SELL" && value > 0) {
         let a = await contract.sell_token({ "tokens": value }, "300000000000000", "1");
+      } else {
+        alert('Error: value is zero.');
       }
       fetchBalance();
       document.body.style.cursor = 'default';

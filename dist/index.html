@@ -82,11 +82,11 @@
       </div>
       <h2> Overview </h2>
       <div id="obj_chart2" class="graph-box">
-        <p>SER-USD Price</p>
+        <p> SER/USD Price</p>
         <canvas id="chart2" style="margin: auto; width: 90%; height: 70%; margin-top: 2vh; margin-right: 30px; margin-left: 15px; max-height: 70%; max-width: 90%;"></canvas>
       </div>
       <div id="obj_chart" class="graph-box">
-        <p>Composition</p>
+        <p>Asset Allocation</p>
         <canvas id="chart" style="margin: auto; width: 80%; height: 60%; margin-top: 2vh; max-height: 70%; max-width: 80%;"></canvas>
       </div>
       <form style="display: none;">
@@ -139,6 +139,7 @@ document.getElementById("buy").onclick = function () {
   document.getElementById("p50").style.backgroundColor = "rgb(210, 210, 210)";
   document.getElementById("p75").style.backgroundColor = "rgb(210, 210, 210)";
   document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
+  document.getElementById("approve").disabled = true;
 };
 
 document.getElementById("sell").onclick = function () {
@@ -152,6 +153,7 @@ document.getElementById("sell").onclick = function () {
   document.getElementById("p50").style.backgroundColor = "rgb(210, 210, 210)";
   document.getElementById("p75").style.backgroundColor = "rgb(210, 210, 210)";
   document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
+  document.getElementById("approve").disabled = true;
 };
 
 document.getElementById("p25").onclick = function () {
@@ -275,7 +277,7 @@ function _approve_func() {
             document.documentElement.style.overflow = 'hidden';
             document.documentElement.style.touchAction = 'none';
 
-            if (!(actual_action == "BUY")) {
+            if (!(actual_action == "BUY" && value > 0)) {
               _context.next = 17;
               break;
             }
@@ -285,26 +287,36 @@ function _approve_func() {
 
           case 14:
             a = _context.sent;
-            _context.next = 20;
+            _context.next = 24;
             break;
 
           case 17:
-            _context.next = 19;
+            if (!(actual_action == "SELL" && value > 0)) {
+              _context.next = 23;
+              break;
+            }
+
+            _context.next = 20;
             return contract.sell_token({
               "tokens": value
             }, "300000000000000", "1");
 
-          case 19:
-            _a = _context.sent;
-
           case 20:
+            _a = _context.sent;
+            _context.next = 24;
+            break;
+
+          case 23:
+            alert('Error: value is zero.');
+
+          case 24:
             fetchBalance();
             document.body.style.cursor = 'default';
             document.getElementById("blocker").style.display = 'none';
             document.documentElement.style.overflow = 'visible';
             document.documentElement.style.touchAction = 'auto';
 
-          case 25:
+          case 29:
           case "end":
             return _context.stop();
         }
