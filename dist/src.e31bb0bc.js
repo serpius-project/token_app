@@ -21399,7 +21399,7 @@ window.fetchBalance = /*#__PURE__*/function () {
                   x: {
                     grid: {
                       display: true,
-                      drawOnChartArea: true
+                      drawOnChartArea: false
                     },
                     ticks: {
                       font: {
@@ -21482,7 +21482,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59264" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62446" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

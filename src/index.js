@@ -315,7 +315,7 @@ window.fetchBalance = async function fetchBalance() {
       },
       //      scales: { x: { type: 'time', time: {unit: 'millisecond', displayFormats: {quarter: 'YYYY'}}, grid: { display: false }, ticks: { font: { size: "12vw" } } }, y: { grid: { display: true }, ticks: { font: { size: "12vw" } } } },
       scales: {
-        x: { grid: { display: true, drawOnChartArea: true }, ticks: { font: { size: "11vw" }, maxRotation: 0, autoSkipPadding: 10 } }, y: {
+        x: { grid: { display: true, drawOnChartArea: false }, ticks: { font: { size: "11vw" }, maxRotation: 0, autoSkipPadding: 10 } }, y: {
           grid: { display: true, drawOnChartArea: true }, ticks: {
             font: { size: "11vw" }, callback: function (value, index, values) {
               if (value >= 1000000000 || value <= -1000000000) {
