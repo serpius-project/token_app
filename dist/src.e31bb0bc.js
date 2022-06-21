@@ -20876,7 +20876,7 @@ __exportStar(require("./browser-connect"), exports);
 require("error-polyfill");
 
 },{"./key_stores/browser-index":"../node_modules/near-api-js/lib/key_stores/browser-index.js","./common-index":"../node_modules/near-api-js/lib/common-index.js","./browser-connect":"../node_modules/near-api-js/lib/browser-connect.js","error-polyfill":"../node_modules/error-polyfill/index.js"}],"config.js":[function(require,module,exports) {
-var CONTRACT_NAME = "token.serpius_v0.testnet" || 'token.serpius_v0.testnet';
+var CONTRACT_NAME = "token.serpius_v0.testnet" || 'token.serpius_v0.testnet'; //const CONTRACT_NAME = process.env.CONTRACT_NAME || 'token.serpius.near'
 
 function getConfig(env) {
   switch (env) {
@@ -20885,7 +20885,7 @@ function getConfig(env) {
       return {
         networkId: 'mainnet',
         nodeUrl: 'https://rpc.mainnet.near.org',
-        contractName: CONTRACT_NAME,
+        contractName: 'token.serpius.near',
         walletUrl: 'https://wallet.near.org',
         helperUrl: 'https://helper.mainnet.near.org',
         explorerUrl: 'https://explorer.mainnet.near.org'
@@ -20896,7 +20896,7 @@ function getConfig(env) {
       return {
         networkId: 'testnet',
         nodeUrl: 'https://rpc.testnet.near.org',
-        contractName: CONTRACT_NAME,
+        contractName: 'token.serpius_v0.testnet',
         walletUrl: 'https://wallet.testnet.near.org',
         helperUrl: 'https://helper.testnet.near.org',
         explorerUrl: 'https://explorer.testnet.near.org'
@@ -20969,7 +20969,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var nearConfig = (0, _config.default)("development" || 'development'); // Initialize contract & set global variables
+//const nearConfig = getConfig(process.env.NODE_ENV || 'development')
+var nearConfig = (0, _config.default)('testnet'); // Initialize contract & set global variables
 
 function initContract() {
   return _initContract.apply(this, arguments);
@@ -21052,7 +21053,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var _getConfig = (0, _config.default)("development" || 'development'),
+//const { networkId } = getConfig(process.env.NODE_ENV || 'development')
+var _getConfig = (0, _config.default)('testnet'),
     networkId = _getConfig.networkId; // global variable used throughout
 
 
@@ -21482,7 +21484,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62446" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61340" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
