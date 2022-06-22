@@ -21234,16 +21234,15 @@ window.fetchBalance = /*#__PURE__*/function () {
 
           case 19:
             window.distro = _context.sent;
-            window.distro_s = window.distro.slice();
             window.distro[0] = window.distro[0] / Math.pow(10, 24);
             window.distro[1] = window.distro[1] / Math.pow(10, 6);
             window.distro[2] = window.distro[2] / Math.pow(10, 8);
-            window.distro[3] = window.distro[3] / Math.pow(10, 2); //  window.distro_s = window.distro;
-
-            window.distro_s[0] = window.distro_s[0] / Math.pow(10, 24);
-            window.distro_s[1] = Math.pow(10, -15) * window.distro_s[1] / Math.pow(10, 6);
-            window.distro_s[2] = window.distro_s[2] / Math.pow(10, 8);
-            window.distro_s[3] = 10 * window.distro_s[3] / Math.pow(10, 2);
+            window.distro[3] = window.distro[3] / Math.pow(10, 8);
+            window.distro_s = window.distro.slice();
+            window.distro_s[0] = window.distro_s[0];
+            window.distro_s[1] = Math.pow(10, -15) * window.distro_s[1];
+            window.distro_s[2] = window.distro_s[2];
+            window.distro_s[3] = 10 * window.distro_s[3];
             labels_pie_c = ['NEAR', 'BTC', 'ETH', 'USDC'];
             window.labels_pie = [];
             window.assets_pie = [];
@@ -21484,7 +21483,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61340" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61013" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

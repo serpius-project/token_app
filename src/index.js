@@ -164,18 +164,17 @@ window.fetchBalance = async function fetchBalance() {
   window.serpius_asset = Math.floor(balance * 100000000 / 10 ** decimals) / 100000000;
 
   window.distro = await contract.check_distro({});
-  window.distro_s = window.distro.slice();
-
   window.distro[0] = window.distro[0] / 10 ** 24;
   window.distro[1] = window.distro[1] / 10 ** 6;
   window.distro[2] = window.distro[2] / 10 ** 8;
-  window.distro[3] = window.distro[3] / 10 ** 2;
+  window.distro[3] = window.distro[3] / 10 ** 8;
 
-  //  window.distro_s = window.distro;
-  window.distro_s[0] = window.distro_s[0] / 10 ** 24;
-  window.distro_s[1] = (10 ** -15) * window.distro_s[1] / 10 ** 6;
-  window.distro_s[2] = window.distro_s[2] / 10 ** 8;
-  window.distro_s[3] = 10 * window.distro_s[3] / 10 ** 2;
+  window.distro_s = window.distro.slice();
+
+  window.distro_s[0] = window.distro_s[0];
+  window.distro_s[1] = (10 ** -15) * window.distro_s[1];
+  window.distro_s[2] = window.distro_s[2];
+  window.distro_s[3] = 10 * window.distro_s[3];
 
   let labels_pie_c = ['NEAR', 'BTC', 'ETH', 'USDC'];
   window.labels_pie = [];
