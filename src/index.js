@@ -105,44 +105,57 @@ function get_prices() {
   }
   rawFile.send(null);
 
-  coin_list = ["near", "bitcoin", "ethereum"];
-  now_date = Date.now() / 1000;
-  one_year_ago = (now_date * 1000 - 2629800000) / 1000;
   window.time_date = [];
   window.price_data = [];
 
-  for (let j = 0; j < coin_list.length; j++) {
-    rawFile = new XMLHttpRequest();
-    rawFile.open("GET", "https://api.coingecko.com/api/v3/coins/" + coin_list[j] + "/market_chart/range?vs_currency=usd&from=" + (one_year_ago).toString() + "&to=" + (now_date).toString(), false);
-    rawFile.onreadystatechange = function () {
-      if (rawFile.readyState === 4) {
-        if (rawFile.status === 200 || rawFile.status == 0) {
-          var allText = JSON.parse(rawFile.responseText);
-          for (let i = 0; i < allText['prices'].length; i++) {
-            if (j == 0) {
-              sdate = new Date(allText['prices'][i][0]);
-              window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
-              window.price_data[i] = (allText['prices'][i][1] * window.distro_s[0] + window.distro_s[coin_list.length]) * window.multi;
-            } else {
-              window.price_data[i] += allText['prices'][i][1] * window.distro_s[j] * window.multi;
-            }
-          }
+  rawFile = new XMLHttpRequest();
+  rawFile.open("GET", "https://ex.serpius.com/stats.json", false);
+  rawFile.onreadystatechange = function () {
+    if (rawFile.readyState === 4) {
+      if (rawFile.status === 200 || rawFile.status == 0) {
+        var allText = JSON.parse(rawFile.responseText);
+        for (let i = 0; i < allText['prices'].length; i++) {
+          sdate = new Date(allText['prices'][i][0]);
+          window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
+          window.price_data[i] = allText['prices'][i][1];
         }
       }
     }
-    rawFile.send(null);
   }
+  rawFile.send(null);
+
+  // for (let j = 0; j < coin_list.length; j++) {
+  //   rawFile = new XMLHttpRequest();
+  //   rawFile.open("GET", "https://api.coingecko.com/api/v3/coins/" + coin_list[j] + "/market_chart/range?vs_currency=usd&from=" + (one_year_ago).toString() + "&to=" + (now_date).toString(), false);
+  //   rawFile.onreadystatechange = function () {
+  //     if (rawFile.readyState === 4) {
+  //       if (rawFile.status === 200 || rawFile.status == 0) {
+  //         var allText = JSON.parse(rawFile.responseText);
+  //         for (let i = 0; i < allText['prices'].length; i++) {
+  //           if (j == 0) {
+  //             sdate = new Date(allText['prices'][i][0]);
+  //             window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
+  //             window.price_data[i] = (allText['prices'][i][1] * window.distro_s[0] + window.distro_s[coin_list.length]) * window.multi;
+  //           } else {
+  //             window.price_data[i] += allText['prices'][i][1] * window.distro_s[j] * window.multi;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   rawFile.send(null);
+  // }
 
 
 }
 
 window.commarize = function commarize(x) {
   // Alter numbers larger than 1k
-  if ( x >= 1e3 ) {
+  if (x >= 1e3) {
     var units = ["k", "M", "B", "T"];
     var order = Math.floor(Math.log(x) / Math.log(1000));
     var unitname = units[(order - 1)];
-    var num = Math.round(x * 100/ 1000 ** order) / 100;
+    var num = Math.round(x * 100 / 1000 ** order) / 100;
     // output number remainder + unitname
     return num + unitname
   }
@@ -156,7 +169,7 @@ window.fetchBalance = async function fetchBalance() {
 
   balance = await contract.ft_balance_of({ account_id: window.accountId })
   window.decimals = (await contract.ft_metadata({})).decimals
-  document.getElementById("l_balance").innerHTML = Math.round( balance * 1000 / 10 ** decimals )/1000 + ' SER'
+  document.getElementById("l_balance").innerHTML = Math.round(balance * 1000 / 10 ** decimals) / 1000 + ' SER'
   window.total_supply = await contract.ft_total_supply({});
   near_balance = await account.getAccountBalance();
   document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / 10 ** 24) / 1000 + ' NEAR';
@@ -169,20 +182,15 @@ window.fetchBalance = async function fetchBalance() {
   window.distro[2] = window.distro[2] / 10 ** 8;
   window.distro[3] = window.distro[3] / 10 ** 8;
 
-  window.distro_s = window.distro.slice();
-
-  window.distro_s[0] = window.distro_s[0];
-  window.distro_s[1] = (10 ** -15) * window.distro_s[1];
-  window.distro_s[2] = window.distro_s[2];
-  window.distro_s[3] = 10 * window.distro_s[3];
-
+  window.distro_s = await contract.check_distro_norm({});
+  
   let labels_pie_c = ['NEAR', 'BTC', 'ETH', 'USDC'];
   window.labels_pie = [];
   window.assets_pie = []
-  for (let i = 0; i <labels_pie_c.length; i++) {
-    if (window.distro[i] > 0){
-      window.labels_pie.push( labels_pie_c[i] );
-      window.assets_pie.push( window.distro_s[i] );
+  for (let i = 0; i < labels_pie_c.length; i++) {
+    if (window.distro[i] > 0) {
+      window.labels_pie.push(labels_pie_c[i]);
+      window.assets_pie.push(window.distro_s[i]);
     }
   }
 
@@ -195,16 +203,17 @@ window.fetchBalance = async function fetchBalance() {
 
   let total_value = 0;
   for (let i = 0; i < 4; i++) {
-    total_value += window.distro_s[i] * window.prices[i];
+    total_value += window.distro[i] * window.prices[i];
   }
   ser_price = total_value * window.multi;
   let dollar_serpius = Math.round(ser_price * balance * 100 / 10 ** decimals) / 100;
-  document.getElementById("total_ser").innerHTML = '$ ' + commarize( dollar_serpius );
-  document.getElementById("total_ser_near").innerHTML = commarize( Math.round(dollar_serpius * 100 / window.prices[0]) / 100 );
+  document.getElementById("total_ser").innerHTML = '$ ' + commarize(dollar_serpius);
+  document.getElementById("total_ser_near").innerHTML = commarize(Math.round(dollar_serpius * 100 / window.prices[0]) / 100);
+
   window.ser_near = ser_price / window.prices[0];
-  if (window.actual_action == "BUY"){
+  if (window.actual_action == "BUY") {
     document.getElementById("conversion").innerHTML = '1 SER &#8776 ' + commarize(window.ser_near) + ' NEAR';
-  }else{
+  } else {
     document.getElementById("conversion").innerHTML = '1 NEAR &#8776 ' + commarize(1.0 / window.ser_near) + ' SER';
   }
 

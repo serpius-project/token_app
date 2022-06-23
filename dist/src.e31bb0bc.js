@@ -21002,7 +21002,7 @@ function _initContract() {
             _context.next = 8;
             return new _nearApiJs.Contract(window.walletConnection.account(), nearConfig.contractName, {
               // View methods are read only. They don't modify the state, but usually return some value.
-              viewMethods: ['ft_balance_of', 'ft_metadata', 'check_distro', 'ft_total_supply'],
+              viewMethods: ['ft_balance_of', 'ft_metadata', 'check_distro', 'check_distro_norm', 'ft_total_supply'],
               // Change methods can modify the state. But you don't receive the returned value when called.
               changeMethods: ['buy_token', 'sell_token']
             });
@@ -21142,40 +21142,46 @@ function get_prices() {
   };
 
   rawFile.send(null);
-  coin_list = ["near", "bitcoin", "ethereum"];
-  now_date = Date.now() / 1000;
-  one_year_ago = (now_date * 1000 - 2629800000) / 1000;
   window.time_date = [];
   window.price_data = [];
+  rawFile = new XMLHttpRequest();
+  rawFile.open("GET", "https://ex.serpius.com/stats.json", false);
 
-  var _loop = function _loop(j) {
-    rawFile = new XMLHttpRequest();
-    rawFile.open("GET", "https://api.coingecko.com/api/v3/coins/" + coin_list[j] + "/market_chart/range?vs_currency=usd&from=" + one_year_ago.toString() + "&to=" + now_date.toString(), false);
+  rawFile.onreadystatechange = function () {
+    if (rawFile.readyState === 4) {
+      if (rawFile.status === 200 || rawFile.status == 0) {
+        var allText = JSON.parse(rawFile.responseText);
 
-    rawFile.onreadystatechange = function () {
-      if (rawFile.readyState === 4) {
-        if (rawFile.status === 200 || rawFile.status == 0) {
-          var allText = JSON.parse(rawFile.responseText);
-
-          for (var i = 0; i < allText['prices'].length; i++) {
-            if (j == 0) {
-              sdate = new Date(allText['prices'][i][0]);
-              window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
-              window.price_data[i] = (allText['prices'][i][1] * window.distro_s[0] + window.distro_s[coin_list.length]) * window.multi;
-            } else {
-              window.price_data[i] += allText['prices'][i][1] * window.distro_s[j] * window.multi;
-            }
-          }
+        for (var i = 0; i < allText['prices'].length; i++) {
+          sdate = new Date(allText['prices'][i][0]);
+          window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
+          window.price_data[i] = allText['prices'][i][1];
         }
       }
-    };
-
-    rawFile.send(null);
+    }
   };
 
-  for (var j = 0; j < coin_list.length; j++) {
-    _loop(j);
-  }
+  rawFile.send(null); // for (let j = 0; j < coin_list.length; j++) {
+  //   rawFile = new XMLHttpRequest();
+  //   rawFile.open("GET", "https://api.coingecko.com/api/v3/coins/" + coin_list[j] + "/market_chart/range?vs_currency=usd&from=" + (one_year_ago).toString() + "&to=" + (now_date).toString(), false);
+  //   rawFile.onreadystatechange = function () {
+  //     if (rawFile.readyState === 4) {
+  //       if (rawFile.status === 200 || rawFile.status == 0) {
+  //         var allText = JSON.parse(rawFile.responseText);
+  //         for (let i = 0; i < allText['prices'].length; i++) {
+  //           if (j == 0) {
+  //             sdate = new Date(allText['prices'][i][0]);
+  //             window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
+  //             window.price_data[i] = (allText['prices'][i][1] * window.distro_s[0] + window.distro_s[coin_list.length]) * window.multi;
+  //           } else {
+  //             window.price_data[i] += allText['prices'][i][1] * window.distro_s[j] * window.multi;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   rawFile.send(null);
+  // }
 }
 
 window.commarize = function commarize(x) {
@@ -21238,11 +21244,11 @@ window.fetchBalance = /*#__PURE__*/function () {
             window.distro[1] = window.distro[1] / Math.pow(10, 6);
             window.distro[2] = window.distro[2] / Math.pow(10, 8);
             window.distro[3] = window.distro[3] / Math.pow(10, 8);
-            window.distro_s = window.distro.slice();
-            window.distro_s[0] = window.distro_s[0];
-            window.distro_s[1] = Math.pow(10, -15) * window.distro_s[1];
-            window.distro_s[2] = window.distro_s[2];
-            window.distro_s[3] = 10 * window.distro_s[3];
+            _context.next = 26;
+            return contract.check_distro_norm({});
+
+          case 26:
+            window.distro_s = _context.sent;
             labels_pie_c = ['NEAR', 'BTC', 'ETH', 'USDC'];
             window.labels_pie = [];
             window.assets_pie = [];
@@ -21262,7 +21268,7 @@ window.fetchBalance = /*#__PURE__*/function () {
             total_value = 0;
 
             for (_i = 0; _i < 4; _i++) {
-              total_value += window.distro_s[_i] * window.prices[_i];
+              total_value += window.distro[_i] * window.prices[_i];
             }
 
             ser_price = total_value * window.multi;
@@ -21436,7 +21442,7 @@ window.fetchBalance = /*#__PURE__*/function () {
               }
             });
 
-          case 55:
+          case 53:
           case "end":
             return _context.stop();
         }
@@ -21483,7 +21489,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57833" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64665" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
