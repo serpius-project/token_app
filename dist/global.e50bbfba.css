@@ -406,6 +406,11 @@ a[href], input[type='submit'], input[type='image'], label[for], select, button, 
     .logo_mobile {
       display: block;
     }
+
+    h1 {
+      padding: 7vh 0 0.0em;
+    }
+    
   }
 
 }
