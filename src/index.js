@@ -107,6 +107,7 @@ function get_prices() {
 
   window.time_date = [];
   window.price_data = [];
+  window.price_data_btc = [];
 
   rawFile = new XMLHttpRequest();
   rawFile.open("GET", "https://ex.serpius.com/stats.json", false);
@@ -118,6 +119,7 @@ function get_prices() {
           sdate = new Date(allText['prices'][i][0]);
           window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
           window.price_data[i] = allText['prices'][i][1];
+          window.price_data_btc[i] = allText['prices'][i][2];
         }
       }
     }
@@ -178,9 +180,9 @@ window.fetchBalance = async function fetchBalance() {
 
   window.distro = await contract.check_distro({});
   window.distro[0] = window.distro[0] / 10 ** 24;
-  window.distro[1] = window.distro[1] / 10 ** 6;
-  window.distro[2] = window.distro[2] / 10 ** 8;
-  window.distro[3] = window.distro[3] / 10 ** 8;
+  window.distro[1] = window.distro[1] / 10 ** 8;
+  window.distro[2] = window.distro[2] / 10 ** 18;
+  window.distro[3] = window.distro[3] / 10 ** 6;
 
   window.distro_s = await contract.check_distro_norm({});
   
@@ -288,7 +290,7 @@ window.fetchBalance = async function fetchBalance() {
     data: {
       labels: window.time_date,
       datasets: [{
-        label: 'Price (USD)',
+        label: 'SER/USD',
         data: price_data,
         fill: true,
         backgroundColor: 'rgb(86, 104, 226, 0.5)',
@@ -296,14 +298,27 @@ window.fetchBalance = async function fetchBalance() {
         borderWidth: 2,
         borderColor: '#5668E2',
         pointRadius: 0,
+        yAxisID: 'y',
+      },
+      {
+        label: 'SER/BTC',
+        data: price_data_btc,
+        fill: true,
+        backgroundColor: '#e256af81',
+        tension: 0.1,
+        borderWidth: 2,
+        borderColor: '#E256AE',
+        pointRadius: 0,
+        yAxisID: 'y1',
       }]
     },
     options: {
       //        aspectRatio: 1.77,
       plugins: {
         legend: {
-          display: false,
-          position: 'right',
+          display: true,
+          position: 'top',
+          labels: {font: { size: "11vw" }}
         },
         title: {
           display: false,
@@ -324,8 +339,10 @@ window.fetchBalance = async function fetchBalance() {
       },
       //      scales: { x: { type: 'time', time: {unit: 'millisecond', displayFormats: {quarter: 'YYYY'}}, grid: { display: false }, ticks: { font: { size: "12vw" } } }, y: { grid: { display: true }, ticks: { font: { size: "12vw" } } } },
       scales: {
-        x: { grid: { display: true, drawOnChartArea: false }, ticks: { font: { size: "11vw" }, maxRotation: 0, autoSkipPadding: 10 } }, y: {
+        x: { grid: { display: true, drawOnChartArea: false }, ticks: { font: { size: "11vw" }, maxRotation: 0, autoSkipPadding: 10 } }, 
+        y: {
           grid: { display: true, drawOnChartArea: true }, ticks: {
+            count: 6,
             font: { size: "11vw" }, callback: function (value, index, values) {
               if (value >= 1000000000 || value <= -1000000000) {
                 return value / 1e9 + 'bill';
@@ -337,6 +354,22 @@ window.fetchBalance = async function fetchBalance() {
               return value;
             }
           }
+        },
+        y1: {
+          grid: { display: true, drawOnChartArea: false }, ticks: {
+            count: 6,
+            font: { size: "11vw" }, callback: function (value, index, values) {
+              if (value >= 1000000000 || value <= -1000000000) {
+                return value / 1e9 + 'bill';
+              } else if (value >= 1000000 || value <= -1000000) {
+                return value / 1e6 + 'mill';
+              } else if (value >= 1000 || value <= -1000) {
+                return value / 1e3 + 'k';
+              }
+              return Math.round( value * 100000 ) / 100000;
+            }
+          },
+          position: 'right'
         }
       },
     }

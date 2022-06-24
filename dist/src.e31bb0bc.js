@@ -20970,7 +20970,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 //const nearConfig = getConfig(process.env.NODE_ENV || 'development')
-var nearConfig = (0, _config.default)('testnet'); // Initialize contract & set global variables
+var nearConfig = (0, _config.default)('mainnet'); // Initialize contract & set global variables
 
 function initContract() {
   return _initContract.apply(this, arguments);
@@ -21144,6 +21144,7 @@ function get_prices() {
   rawFile.send(null);
   window.time_date = [];
   window.price_data = [];
+  window.price_data_btc = [];
   rawFile = new XMLHttpRequest();
   rawFile.open("GET", "https://ex.serpius.com/stats.json", false);
 
@@ -21156,6 +21157,7 @@ function get_prices() {
           sdate = new Date(allText['prices'][i][0]);
           window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
           window.price_data[i] = allText['prices'][i][1];
+          window.price_data_btc[i] = allText['prices'][i][2];
         }
       }
     }
@@ -21241,9 +21243,9 @@ window.fetchBalance = /*#__PURE__*/function () {
           case 19:
             window.distro = _context.sent;
             window.distro[0] = window.distro[0] / Math.pow(10, 24);
-            window.distro[1] = window.distro[1] / Math.pow(10, 6);
-            window.distro[2] = window.distro[2] / Math.pow(10, 8);
-            window.distro[3] = window.distro[3] / Math.pow(10, 8);
+            window.distro[1] = window.distro[1] / Math.pow(10, 8);
+            window.distro[2] = window.distro[2] / Math.pow(10, 18);
+            window.distro[3] = window.distro[3] / Math.pow(10, 6);
             _context.next = 26;
             return contract.check_distro_norm({});
 
@@ -21367,22 +21369,38 @@ window.fetchBalance = /*#__PURE__*/function () {
               data: {
                 labels: window.time_date,
                 datasets: [{
-                  label: 'Price (USD)',
+                  label: 'SER/USD',
                   data: price_data,
                   fill: true,
                   backgroundColor: 'rgb(86, 104, 226, 0.5)',
                   tension: 0.1,
                   borderWidth: 2,
                   borderColor: '#5668E2',
-                  pointRadius: 0
+                  pointRadius: 0,
+                  yAxisID: 'y'
+                }, {
+                  label: 'SER/BTC',
+                  data: price_data_btc,
+                  fill: true,
+                  backgroundColor: '#e256af81',
+                  tension: 0.1,
+                  borderWidth: 2,
+                  borderColor: '#E256AE',
+                  pointRadius: 0,
+                  yAxisID: 'y1'
                 }]
               },
               options: {
                 //        aspectRatio: 1.77,
                 plugins: {
                   legend: {
-                    display: false,
-                    position: 'right'
+                    display: true,
+                    position: 'top',
+                    labels: {
+                      font: {
+                        size: "11vw"
+                      }
+                    }
                   },
                   title: {
                     display: false,
@@ -21422,6 +21440,7 @@ window.fetchBalance = /*#__PURE__*/function () {
                       drawOnChartArea: true
                     },
                     ticks: {
+                      count: 6,
                       font: {
                         size: "11vw"
                       },
@@ -21437,6 +21456,30 @@ window.fetchBalance = /*#__PURE__*/function () {
                         return value;
                       }
                     }
+                  },
+                  y1: {
+                    grid: {
+                      display: true,
+                      drawOnChartArea: false
+                    },
+                    ticks: {
+                      count: 6,
+                      font: {
+                        size: "11vw"
+                      },
+                      callback: function callback(value, index, values) {
+                        if (value >= 1000000000 || value <= -1000000000) {
+                          return value / 1e9 + 'bill';
+                        } else if (value >= 1000000 || value <= -1000000) {
+                          return value / 1e6 + 'mill';
+                        } else if (value >= 1000 || value <= -1000) {
+                          return value / 1e3 + 'k';
+                        }
+
+                        return Math.round(value * 100000) / 100000;
+                      }
+                    },
+                    position: 'right'
                   }
                 }
               }
@@ -21489,7 +21532,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56585" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64940" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
