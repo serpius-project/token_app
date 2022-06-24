@@ -21254,7 +21254,7 @@ window.fetchBalance = /*#__PURE__*/function () {
             window.assets_pie = [];
 
             for (i = 0; i < labels_pie_c.length; i++) {
-              if (window.distro[i] > 0) {
+              if (window.distro_s[i] > 0) {
                 window.labels_pie.push(labels_pie_c[i]);
                 window.assets_pie.push(window.distro_s[i]);
               }
@@ -21489,7 +21489,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64665" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56585" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

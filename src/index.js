@@ -186,9 +186,9 @@ window.fetchBalance = async function fetchBalance() {
   
   let labels_pie_c = ['NEAR', 'BTC', 'ETH', 'USDC'];
   window.labels_pie = [];
-  window.assets_pie = []
+  window.assets_pie = [];
   for (let i = 0; i < labels_pie_c.length; i++) {
-    if (window.distro[i] > 0) {
+    if (window.distro_s[i] > 0) {
       window.labels_pie.push(labels_pie_c[i]);
       window.assets_pie.push(window.distro_s[i]);
     }
