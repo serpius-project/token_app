@@ -21146,7 +21146,7 @@ function get_prices() {
   window.price_data = [];
   window.price_data_btc = [];
   rawFile = new XMLHttpRequest();
-  rawFile.open("GET", "https://ex.serpius.com/stats.json", false);
+  rawFile.open("GET", "https://swap.serpius.com/stats.json", false);
 
   rawFile.onreadystatechange = function () {
     if (rawFile.readyState === 4) {
@@ -21532,7 +21532,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59008" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61685" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

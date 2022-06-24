@@ -110,7 +110,7 @@ function get_prices() {
   window.price_data_btc = [];
 
   rawFile = new XMLHttpRequest();
-  rawFile.open("GET", "https://ex.serpius.com/stats.json", false);
+  rawFile.open("GET", "https://swap.serpius.com/stats.json", false);
   rawFile.onreadystatechange = function () {
     if (rawFile.readyState === 4) {
       if (rawFile.status === 200 || rawFile.status == 0) {
