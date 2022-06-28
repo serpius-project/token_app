@@ -232,7 +232,7 @@ window.fetchBalance = async function fetchBalance() {
         data: window.assets_pie,
         backgroundColor: ['#E2CF56', '#56E289', '#5668E2', '#E256AE'],
         borderColor: '#ffffff',
-        borderWidth: 4,
+        borderWidth: 0,
         hoverOffset: 4,
       }]
     },
@@ -254,7 +254,8 @@ window.fetchBalance = async function fetchBalance() {
           color: '#696969',
           align: 'end',
           offset: 10,
-          font: { size: "12vw" }
+          font: { size: "12vw" },
+          display: 'auto'
         },
         legend: {
           display: true,
@@ -351,7 +352,7 @@ window.fetchBalance = async function fetchBalance() {
               } else if (value >= 1000 || value <= -1000) {
                 return value / 1e3 + 'k';
               }
-              return value;
+              return Math.round(value * 100000) / 100000;
             }
           }
         },
