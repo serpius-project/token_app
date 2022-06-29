@@ -3,7 +3,7 @@ import { initContract, login, logout } from './utils'
 
 import getConfig from './config'
 //const { networkId } = getConfig(process.env.NODE_ENV || 'development')
-const { networkId } = getConfig('testnet')
+const { networkId } = getConfig('mainnet')
 
 // global variable used throughout
 let currentGreeting
@@ -185,20 +185,30 @@ window.fetchBalance = async function fetchBalance() {
   window.distro[3] = window.distro[3] / 10 ** 6;
 
   window.distro_s = await contract.check_distro_norm({});
-  
+  get_prices();  
+  window.distro_real = [];
+  distro_real_norm = 0;
+  for (let i = 0; i < window.distro.length; i++) {
+    window.distro_real[i] = window.distro[i] * window.prices[i];   
+    distro_real_norm += window.distro_real[i];
+  }
+
+  for (let i = 0; i < window.distro.length; i++) {
+    window.distro_real[i] = Math.round( 1000 * window.distro_real[i] / distro_real_norm );   
+  }
+
   let labels_pie_c = ['NEAR', 'BTC', 'ETH', 'USDC'];
   window.labels_pie = [];
   window.assets_pie = [];
   for (let i = 0; i < labels_pie_c.length; i++) {
     if (window.distro_s[i] > 0) {
       window.labels_pie.push(labels_pie_c[i]);
-      window.assets_pie.push(window.distro_s[i]);
+      window.assets_pie.push(window.distro_real[i] / 10);
     }
   }
 
   window.multi = 1.0 / (total_supply / 10 ** decimals);
 
-  get_prices();
   let dollar_near = Math.round(near_balance.available * window.prices[0] * 100 / 10 ** 24) / 100;
   document.getElementById("total_usd").innerHTML = "$ " + commarize(dollar_near);
   //from here
@@ -253,9 +263,8 @@ window.fetchBalance = async function fetchBalance() {
           },
           color: '#696969',
           align: 'end',
-          offset: 10,
+          offset: 15,
           font: { size: "12vw" },
-          display: 'auto'
         },
         legend: {
           display: true,
@@ -294,7 +303,7 @@ window.fetchBalance = async function fetchBalance() {
         label: 'SER/USD',
         data: price_data,
         fill: true,
-        backgroundColor: 'rgb(86, 104, 226, 0.5)',
+        backgroundColor: 'rgb(86, 104, 226, 0.3)',
         tension: 0.1,
         borderWidth: 2,
         borderColor: '#5668E2',
@@ -305,7 +314,7 @@ window.fetchBalance = async function fetchBalance() {
         label: 'SER/BTC',
         data: price_data_btc,
         fill: true,
-        backgroundColor: '#e256af81',
+        backgroundColor: 'rgb(226, 86, 174, 0.3)',
         tension: 0.1,
         borderWidth: 2,
         borderColor: '#E256AE',
@@ -314,12 +323,38 @@ window.fetchBalance = async function fetchBalance() {
       }]
     },
     options: {
-      //        aspectRatio: 1.77,
+//      animation: false,
       plugins: {
         legend: {
+          onClick: function (e, legendItem, legend) {
+            const index = legendItem.datasetIndex;
+            const ci = legend.chart;
+            if (ci.isDatasetVisible(index)) {
+              ci.hide(index);
+              legendItem.hidden = true;
+              if ( index == 0 ) {
+                ci.options.scales.y.ticks.color = 'white';    
+                ci.options.scales.y.ticks.font.size = '1vw';    
+              }else{
+                ci.options.scales.y1.ticks.color = 'white';    
+                ci.options.scales.y1.ticks.font.size = '1vw';    
+              }
+            } else {
+              ci.show(index);
+              if ( index == 0 ) {
+                ci.options.scales.y.ticks.color = '#696969';    
+                ci.options.scales.y.ticks.font.size = '11vw';    
+              }else{
+                ci.options.scales.y1.ticks.color = '#696969';    
+                ci.options.scales.y1.ticks.font.size = '11vw';    
+              }
+              legendItem.hidden = false;
+            }
+            ci.update();
+          },
           display: true,
           position: 'top',
-          labels: {font: { size: "11vw" }}
+          labels: { font: { size: "11vw" }, color: '#696969' },
         },
         title: {
           display: false,
@@ -340,7 +375,7 @@ window.fetchBalance = async function fetchBalance() {
       },
       //      scales: { x: { type: 'time', time: {unit: 'millisecond', displayFormats: {quarter: 'YYYY'}}, grid: { display: false }, ticks: { font: { size: "12vw" } } }, y: { grid: { display: true }, ticks: { font: { size: "12vw" } } } },
       scales: {
-        x: { grid: { display: true, drawOnChartArea: false }, ticks: { font: { size: "11vw" }, maxRotation: 0, autoSkipPadding: 10 } }, 
+        x: { grid: { display: true, drawOnChartArea: false }, ticks: { font: { size: "11vw" }, color: '#696969', maxRotation: 0, autoSkipPadding: 10 } },
         y: {
           grid: { display: true, drawOnChartArea: true }, ticks: {
             count: 6,
@@ -353,13 +388,16 @@ window.fetchBalance = async function fetchBalance() {
                 return value / 1e3 + 'k';
               }
               return Math.round(value * 100000) / 100000;
-            }
+            },
+            color: '#696969'
           }
         },
         y1: {
           grid: { display: true, drawOnChartArea: false }, ticks: {
             count: 6,
-            font: { size: "11vw" }, callback: function (value, index, values) {
+            font: { size: "11vw" },
+            color: '#696969',
+            callback: function (value, index, values) {
               if (value >= 1000000000 || value <= -1000000000) {
                 return value / 1e9 + 'bill';
               } else if (value >= 1000000 || value <= -1000000) {
@@ -367,7 +405,7 @@ window.fetchBalance = async function fetchBalance() {
               } else if (value >= 1000 || value <= -1000) {
                 return value / 1e3 + 'k';
               }
-              return Math.round( value * 100000 ) / 100000;
+              return Math.round(value * 100000) / 100000;
             }
           },
           position: 'right'
