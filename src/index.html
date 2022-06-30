@@ -2,6 +2,15 @@
 <html>
 
 <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5NN2LEKGS2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-5NN2LEKGS2');
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="./assets/favicon.png" />
@@ -83,12 +92,9 @@
             id="sell" value="Sell">
         </div>
         <input type="number" id="fname" name="fname"
-            style="margin: 1vh 20px 0px 20px; border-radius: 0px; text-align: right; font-size: calc(0.7em + 0.6vh);"
-            placeholder="amount (NEAR)" onkeypress="return validate_text()" autocomplete="off" onpaste="return false;" ondrop="return false;" 
-            autocapitalize="off" 
-            autocomplete="off"
-            spellcheck="false" 
-            autocorrect="off">
+          style="margin: 1vh 20px 0px 20px; border-radius: 0px; text-align: right; font-size: calc(0.7em + 0.6vh);"
+          placeholder="amount (NEAR)" onkeypress="return validate_text()" autocomplete="off" onpaste="return false;"
+          ondrop="return false;" autocapitalize="off" autocomplete="off" spellcheck="false" autocorrect="off">
         <div class="btn-group">
           <input type="button" class="button_small" id="p25" value="25%" style="font-size: 10px; margin-left: 19px;">
           <input type="button" class="button_small" id="p50" value="50%" style="font-size: 10px; margin: 0px;">
@@ -96,7 +102,8 @@
           <input type="button" class="button_small" id="p100" value="100%" style="font-size: 10px; margin: 0px;">
         </div>
         <label id="conversion" style="font-size: 10px; margin: 0.25vh 20px 0px 20px; text-align: right;"> </label>
-        <label style="font-size: 10px; margin: 0px 20px 0px 20px; text-align: right;"> <del> 2% </del> + Network + DEX Fees </label>
+        <label style="font-size: 10px; margin: 0px 20px 0px 20px; text-align: right;"> <del> 2% </del> + Network + DEX
+          Fees </label>
         <input type="button" class="button_buy_sell" id="approve" value="Approve"
           style="position:absolute; bottom: 0.7em; left: 20px; margin: 0px;" disabled="true" onclick="approve_func()">
       </div>
@@ -137,7 +144,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
   <script src="./index.js"></script>
   <script>
 
@@ -187,7 +195,7 @@
       } else {
         document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.25 * 100000000) / 100000000;
       }
-      if (document.getElementById("fname").value > 0){
+      if (document.getElementById("fname").value > 0) {
         document.getElementById("approve").disabled = false;
       }
     }
@@ -203,7 +211,7 @@
       } else {
         document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.5 * 100000000) / 100000000;
       }
-      if (document.getElementById("fname").value > 0){
+      if (document.getElementById("fname").value > 0) {
         document.getElementById("approve").disabled = false;
       }
     }
@@ -219,7 +227,7 @@
       } else {
         document.getElementById("fname").value = Math.floor(window.serpius_asset * 0.75 * 100000000) / 100000000;
       }
-      if (document.getElementById("fname").value > 0){
+      if (document.getElementById("fname").value > 0) {
         document.getElementById("approve").disabled = false;
       }
     }
@@ -235,7 +243,7 @@
       } else {
         document.getElementById("fname").value = Math.floor(window.serpius_asset * 100000000) / 100000000;
       }
-      if (document.getElementById("fname").value > 0){
+      if (document.getElementById("fname").value > 0) {
         document.getElementById("approve").disabled = false;
       }
     }
@@ -275,7 +283,7 @@
       document.getElementById("p75").style.backgroundColor = "rgb(210, 210, 210)";
       document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
       document.body.style.cursor = 'progress';
-      document.getElementById("blocker").style.display = 'block';   
+      document.getElementById("blocker").style.display = 'block';
       document.documentElement.style.overflow = 'hidden';
       document.documentElement.style.touchAction = 'none';
 
