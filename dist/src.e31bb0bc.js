@@ -21269,8 +21269,10 @@ window.fetchBalance = /*#__PURE__*/function () {
             window.assets_pie = [];
 
             for (_i2 = 0; _i2 < labels_pie_c.length; _i2++) {
-              if (window.distro_s[_i2] > 0) {
-                window.labels_pie.push(labels_pie_c[_i2]);
+              if (window.distro_s[_i2] > -1) {
+                length1 = labels_pie_c[_i2].toString().length;
+                length2 = ((window.distro_real[_i2] / 10).toFixed(1) + '%').toString().length;
+                window.labels_pie.push(labels_pie_c[_i2].toString() + " \u2022 " + ((window.distro_real[_i2] / 10).toFixed(1) + '%').toString());
                 window.assets_pie.push(window.distro_real[_i2] / 10);
               }
             }
@@ -21307,13 +21309,13 @@ window.fetchBalance = /*#__PURE__*/function () {
             ;
             chart = new Chart(ctx, {
               type: 'doughnut',
-              plugins: [ChartDataLabels],
+              //    plugins: [ChartDataLabels],
               data: {
                 labels: window.labels_pie,
                 datasets: [{
                   //        data: [0.8, 0.5, 1.0, 1.2],
                   data: window.assets_pie,
-                  backgroundColor: ['#E2CF56', '#56E289', '#5668E2', '#E256AE'],
+                  backgroundColor: ['#E2CF56', '#E256AE', '#56E289', '#5668E2'],
                   borderColor: '#ffffff',
                   borderWidth: 0,
                   hoverOffset: 4
@@ -21321,9 +21323,17 @@ window.fetchBalance = /*#__PURE__*/function () {
               },
               options: {
                 //        aspectRatio: 1.77,
-                radius: '70%',
+                radius: '80%',
                 cutout: '80%',
                 plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: function label(context) {
+                        var label = context.label;
+                        return label;
+                      }
+                    }
+                  },
                   datalabels: {
                     formatter: function formatter(value, ctx) {
                       var sum = 0;
@@ -21347,7 +21357,10 @@ window.fetchBalance = /*#__PURE__*/function () {
                     labels: {
                       font: {
                         size: "12vw"
-                      }
+                      },
+                      textAlign: 'left',
+                      boxWidth: 10,
+                      boxHeight: 10
                     }
                   },
                   title: {
@@ -21579,7 +21592,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50201" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54117" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

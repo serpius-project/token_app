@@ -185,24 +185,26 @@ window.fetchBalance = async function fetchBalance() {
   window.distro[3] = window.distro[3] / 10 ** 6;
 
   window.distro_s = await contract.check_distro_norm({});
-  get_prices();  
+  get_prices();
   window.distro_real = [];
   distro_real_norm = 0;
   for (let i = 0; i < window.distro.length; i++) {
-    window.distro_real[i] = window.distro[i] * window.prices[i];   
+    window.distro_real[i] = window.distro[i] * window.prices[i];
     distro_real_norm += window.distro_real[i];
   }
 
   for (let i = 0; i < window.distro.length; i++) {
-    window.distro_real[i] = Math.round( 1000 * window.distro_real[i] / distro_real_norm );   
+    window.distro_real[i] = Math.round(1000 * window.distro_real[i] / distro_real_norm);
   }
 
   let labels_pie_c = ['NEAR', 'BTC', 'ETH', 'USDC'];
   window.labels_pie = [];
   window.assets_pie = [];
   for (let i = 0; i < labels_pie_c.length; i++) {
-    if (window.distro_s[i] > 0) {
-      window.labels_pie.push(labels_pie_c[i]);
+    if (window.distro_s[i] > -1) {
+      length1 = (labels_pie_c[i].toString()).length;
+      length2 = ((window.distro_real[i] / 10).toFixed(1) + '%').toString().length;
+      window.labels_pie.push(labels_pie_c[i].toString() + " \u2022 " + ((window.distro_real[i] / 10).toFixed(1) + '%').toString());
       window.assets_pie.push(window.distro_real[i] / 10);
     }
   }
@@ -234,13 +236,13 @@ window.fetchBalance = async function fetchBalance() {
   if (chartStatus != undefined) { chartStatus.destroy() };
   var chart = new Chart(ctx, {
     type: 'doughnut',
-    plugins: [ChartDataLabels],
+    //    plugins: [ChartDataLabels],
     data: {
       labels: window.labels_pie,
       datasets: [{
         //        data: [0.8, 0.5, 1.0, 1.2],
         data: window.assets_pie,
-        backgroundColor: ['#E2CF56', '#56E289', '#5668E2', '#E256AE'],
+        backgroundColor: ['#E2CF56', '#E256AE', '#56E289', '#5668E2'],
         borderColor: '#ffffff',
         borderWidth: 0,
         hoverOffset: 4,
@@ -248,9 +250,17 @@ window.fetchBalance = async function fetchBalance() {
     },
     options: {
       //        aspectRatio: 1.77,
-      radius: '70%',
+      radius: '80%',
       cutout: '80%',
       plugins: {
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              let label = context.label;
+              return label;
+            }
+          }
+        },
         datalabels: {
           formatter: (value, ctx) => {
             let sum = 0;
@@ -270,7 +280,10 @@ window.fetchBalance = async function fetchBalance() {
           display: true,
           position: 'right',
           labels: {
-            font: { size: "12vw" }
+            font: { size: "12vw" },
+            textAlign: 'left',
+            boxWidth: 10,
+            boxHeight: 10,
           }
         },
         title: {
@@ -323,7 +336,7 @@ window.fetchBalance = async function fetchBalance() {
       }]
     },
     options: {
-//      animation: false,
+      //      animation: false,
       plugins: {
         legend: {
           onClick: function (e, legendItem, legend) {
@@ -332,21 +345,21 @@ window.fetchBalance = async function fetchBalance() {
             if (ci.isDatasetVisible(index)) {
               ci.hide(index);
               legendItem.hidden = true;
-              if ( index == 0 ) {
-                ci.options.scales.y.ticks.color = 'white';    
-                ci.options.scales.y.ticks.font.size = '1vw';    
-              }else{
-                ci.options.scales.y1.ticks.color = 'white';    
-                ci.options.scales.y1.ticks.font.size = '1vw';    
+              if (index == 0) {
+                ci.options.scales.y.ticks.color = 'white';
+                ci.options.scales.y.ticks.font.size = '1vw';
+              } else {
+                ci.options.scales.y1.ticks.color = 'white';
+                ci.options.scales.y1.ticks.font.size = '1vw';
               }
             } else {
               ci.show(index);
-              if ( index == 0 ) {
-                ci.options.scales.y.ticks.color = '#696969';    
-                ci.options.scales.y.ticks.font.size = '11vw';    
-              }else{
-                ci.options.scales.y1.ticks.color = '#696969';    
-                ci.options.scales.y1.ticks.font.size = '11vw';    
+              if (index == 0) {
+                ci.options.scales.y.ticks.color = '#696969';
+                ci.options.scales.y.ticks.font.size = '11vw';
+              } else {
+                ci.options.scales.y1.ticks.color = '#696969';
+                ci.options.scales.y1.ticks.font.size = '11vw';
               }
               legendItem.hidden = false;
             }
