@@ -337,6 +337,7 @@ window.fetchBalance = async function fetchBalance() {
     },
     options: {
       //      animation: false,
+      interaction: {intersect: false},
       plugins: {
         legend: {
           onClick: function (e, legendItem, legend) {

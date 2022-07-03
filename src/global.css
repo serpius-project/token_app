@@ -35,7 +35,7 @@ h1 {
   background-repeat: no-repeat;
   background-size: auto 1.0em; */
   margin-top: 0;
-  padding: 10vh 0 0.0em;
+  padding: 7vh 0 0.0em;
   text-align: left;
 }
 
@@ -325,6 +325,7 @@ aside footer *:last-child {
   box-shadow: 0px 5px 15px 0px rgba(128, 128, 128, 0.2);
   margin-right: 1vh;
   margin-top: 1vh;
+  margin-bottom: 1vh;
   margin-left: 0;
 }
 
