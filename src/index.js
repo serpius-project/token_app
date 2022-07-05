@@ -166,7 +166,13 @@ window.commarize = function commarize(x) {
 
 // update global currentGreeting variable; update DOM with it
 window.fetchBalance = async function fetchBalance() {
-  document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + window.accountId;
+
+  let account_string = window.accountId.toString();
+  if ( account_string.length < 18 ) {
+    document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string;  
+  } else {
+    document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string.substring(0, 14) + "...";      
+  }
   //document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + '********.testnet';
 
   balance = await contract.ft_balance_of({ account_id: window.accountId })

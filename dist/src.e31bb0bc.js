@@ -21203,53 +21203,60 @@ window.commarize = function commarize(x) {
 
 window.fetchBalance = /*#__PURE__*/function () {
   var _fetchBalance = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var i, _i, labels_pie_c, _i2, dollar_near, total_value, _i3, dollar_serpius, ctx, chart, ctx2, chart2;
+    var account_string, i, _i, labels_pie_c, _i2, dollar_near, total_value, _i3, dollar_serpius, ctx, chart, ctx2, chart2;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + window.accountId; //document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + '********.testnet';
+            account_string = window.accountId.toString();
 
-            _context.next = 3;
+            if (account_string.length < 18) {
+              document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string;
+            } else {
+              document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string.substring(0, 14) + "...";
+            } //document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + '********.testnet';
+
+
+            _context.next = 4;
             return contract.ft_balance_of({
               account_id: window.accountId
             });
 
-          case 3:
+          case 4:
             balance = _context.sent;
-            _context.next = 6;
+            _context.next = 7;
             return contract.ft_metadata({});
 
-          case 6:
+          case 7:
             window.decimals = _context.sent.decimals;
             document.getElementById("l_balance").innerHTML = Math.round(balance * 1000 / Math.pow(10, decimals)) / 1000 + ' SER';
-            _context.next = 10;
+            _context.next = 11;
             return contract.ft_total_supply({});
 
-          case 10:
+          case 11:
             window.total_supply = _context.sent;
-            _context.next = 13;
+            _context.next = 14;
             return account.getAccountBalance();
 
-          case 13:
+          case 14:
             near_balance = _context.sent;
             document.getElementById("l_balance_near").innerHTML = Math.round(near_balance.available * 1000 / Math.pow(10, 24)) / 1000 + ' NEAR';
             window.near_asset = Math.floor(near_balance.available * 100000000 / Math.pow(10, 24)) / 100000000;
             window.serpius_asset = Math.floor(balance * 100000000 / Math.pow(10, decimals)) / 100000000;
-            _context.next = 19;
+            _context.next = 20;
             return contract.check_distro({});
 
-          case 19:
+          case 20:
             window.distro = _context.sent;
             window.distro[0] = window.distro[0] / Math.pow(10, 24);
             window.distro[1] = window.distro[1] / Math.pow(10, 8);
             window.distro[2] = window.distro[2] / Math.pow(10, 18);
             window.distro[3] = window.distro[3] / Math.pow(10, 6);
-            _context.next = 26;
+            _context.next = 27;
             return contract.check_distro_norm({});
 
-          case 26:
+          case 27:
             window.distro_s = _context.sent;
             get_prices();
             window.distro_real = [];
@@ -21548,7 +21555,7 @@ window.fetchBalance = /*#__PURE__*/function () {
               }
             });
 
-          case 57:
+          case 58:
           case "end":
             return _context.stop();
         }
@@ -21595,7 +21602,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50126" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61731" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
