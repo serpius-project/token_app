@@ -244,7 +244,7 @@ window.fetchBalance = async function fetchBalance() {
         data: window.assets_pie,
         backgroundColor: ['#E2CF56', '#E256AE', '#56E289', '#5668E2'],
         borderColor: '#ffffff',
-        borderWidth: 0,
+        borderWidth: 2,
         hoverOffset: 4,
       }]
     },
