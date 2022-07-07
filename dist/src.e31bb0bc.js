@@ -21155,7 +21155,9 @@ function get_prices() {
 
         for (var i = 0; i < allText['prices'].length; i++) {
           sdate = new Date(allText['prices'][i][0]);
-          window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
+          window.time_date[i] =
+          /*String(sdate.getDate()).padStart(2, '0') + "." +*/
+          String(sdate.getMonth() + 1).padStart(2, '0') + "." + String(sdate.getFullYear()).slice(2, 4);
           window.price_data[i] = allText['prices'][i][1];
           window.price_data_btc[i] = allText['prices'][i][2];
         }
@@ -21489,6 +21491,13 @@ window.fetchBalance = /*#__PURE__*/function () {
                 //      scales: { x: { type: 'time', time: {unit: 'millisecond', displayFormats: {quarter: 'YYYY'}}, grid: { display: false }, ticks: { font: { size: "12vw" } } }, y: { grid: { display: true }, ticks: { font: { size: "12vw" } } } },
                 scales: {
                   x: {
+                    title: {
+                      text: "Time (days)",
+                      display: false,
+                      font: {
+                        size: "11vw"
+                      }
+                    },
                     grid: {
                       display: true,
                       drawOnChartArea: false
@@ -21503,6 +21512,13 @@ window.fetchBalance = /*#__PURE__*/function () {
                     }
                   },
                   y: {
+                    title: {
+                      text: "SER/USD",
+                      display: false,
+                      font: {
+                        size: "11vw"
+                      }
+                    },
                     grid: {
                       display: true,
                       drawOnChartArea: true
@@ -21521,12 +21537,19 @@ window.fetchBalance = /*#__PURE__*/function () {
                           return value / 1e3 + 'k';
                         }
 
-                        return Math.round(value * 100000) / 100000;
+                        return (Math.round(value * 100000) / 100000).toFixed(1);
                       },
                       color: '#696969'
                     }
                   },
                   y1: {
+                    title: {
+                      text: "SER/BTC",
+                      display: false,
+                      font: {
+                        size: "11vw"
+                      }
+                    },
                     grid: {
                       display: true,
                       drawOnChartArea: false
@@ -21546,7 +21569,7 @@ window.fetchBalance = /*#__PURE__*/function () {
                           return value / 1e3 + 'k';
                         }
 
-                        return Math.round(value * 100000) / 100000;
+                        return (Math.round(value * 100000) / 100000).toFixed(5);
                       }
                     },
                     position: 'right'
@@ -21602,7 +21625,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61731" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58093" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

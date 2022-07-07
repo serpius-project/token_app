@@ -117,7 +117,7 @@ function get_prices() {
         var allText = JSON.parse(rawFile.responseText);
         for (let i = 0; i < allText['prices'].length; i++) {
           sdate = new Date(allText['prices'][i][0]);
-          window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "." + String(sdate.getMonth() + 1).padStart(2, '0');
+          window.time_date[i] = /*String(sdate.getDate()).padStart(2, '0') + "." +*/ String(sdate.getMonth() + 1).padStart(2, '0') + "." + String(sdate.getFullYear()).slice(2,4);
           window.price_data[i] = allText['prices'][i][1];
           window.price_data_btc[i] = allText['prices'][i][2];
         }
@@ -393,10 +393,11 @@ window.fetchBalance = async function fetchBalance() {
         },
         autoPadding: true,
       },
-      //      scales: { x: { type: 'time', time: {unit: 'millisecond', displayFormats: {quarter: 'YYYY'}}, grid: { display: false }, ticks: { font: { size: "12vw" } } }, y: { grid: { display: true }, ticks: { font: { size: "12vw" } } } },
+//      scales: { x: { type: 'time', time: {unit: 'millisecond', displayFormats: {quarter: 'YYYY'}}, grid: { display: false }, ticks: { font: { size: "12vw" } } }, y: { grid: { display: true }, ticks: { font: { size: "12vw" } } } },
       scales: {
-        x: { grid: { display: true, drawOnChartArea: false }, ticks: { font: { size: "11vw" }, color: '#696969', maxRotation: 0, autoSkipPadding: 10 } },
+        x: { title: { text: "Time (days)", display: false, font: {size: "11vw"} }, grid: { display: true, drawOnChartArea: false }, ticks: { font: { size: "11vw" }, color: '#696969', maxRotation: 0, autoSkipPadding: 10 } },
         y: {
+          title: { text: "SER/USD", display: false, font: {size: "11vw"} },
           grid: { display: true, drawOnChartArea: true }, ticks: {
             count: 6,
             font: { size: "11vw" }, callback: function (value, index, values) {
@@ -407,12 +408,13 @@ window.fetchBalance = async function fetchBalance() {
               } else if (value >= 1000 || value <= -1000) {
                 return value / 1e3 + 'k';
               }
-              return Math.round(value * 100000) / 100000;
+              return ( Math.round(value * 100000) / 100000 ).toFixed(1);
             },
             color: '#696969'
           }
         },
         y1: {
+          title: { text: "SER/BTC", display: false, font: {size: "11vw"} },
           grid: { display: true, drawOnChartArea: false }, ticks: {
             count: 6,
             font: { size: "11vw" },
@@ -425,7 +427,7 @@ window.fetchBalance = async function fetchBalance() {
               } else if (value >= 1000 || value <= -1000) {
                 return value / 1e3 + 'k';
               }
-              return Math.round(value * 100000) / 100000;
+              return (Math.round(value * 100000) / 100000).toFixed(5);
             }
           },
           position: 'right'

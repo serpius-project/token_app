@@ -15,7 +15,7 @@ html {
   background-color: var(--bg);
   color: var(--fg);
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-size: calc(0.7em + 0.6vh);
+  font-size: calc(13px + 0.3vh);
   line-height: 1.3;
 }
 
@@ -295,6 +295,7 @@ aside footer *:last-child {
   display: inline-flex;
   flex-flow: column;
   height: 20vh;
+  min-height: 140px;
   width: 31vh;
   position: relative;
   background-color: rgba(255, 255, 255, 1.0);
@@ -315,6 +316,7 @@ aside footer *:last-child {
   flex-flow: column;
   height: 33vh;
   width: 47.25vh;
+  min-height: 210px;
   position: relative;
   background-color: rgba(255, 255, 255, 1.0);
   border-width: 0px;
@@ -399,21 +401,43 @@ a[href], input[type='submit'], input[type='image'], label[for], select, button, 
     border-radius: 0;
   }
 
-  @media (max-width: 640px) and (min-width: 320px) {
-    .logo_full {
-      display: none;
-    }
-
-    .logo_mobile {
-      display: block;
-    }
-
-    h1 {
-      padding: 7vh 0 0.0em;
-    }
-    
+  .logo_full {
+    display: none;
   }
 
+  .logo_mobile {
+    display: block;
+  }
+
+  h1 {
+    padding: calc(4vh + 30px) 0 0.0em;
+  }
+ 
+  main {
+    margin: 0;
+    max-width: 100vh;
+  }
+
+}
+
+@media (max-width: 640px) and (min-width: 320px) {
+  .logo_full {
+    display: none;
+  }
+
+  .logo_mobile {
+    display: block;
+  }
+
+  h1 {
+    padding: calc(4vh + 30px) 0 0.0em;
+  }
+
+  main {
+    margin: 0;
+    max-width: 100vh;
+  }
+  
 }
 
 input::-webkit-outer-spin-button,
