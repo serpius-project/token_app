@@ -21326,7 +21326,7 @@ window.fetchBalance = /*#__PURE__*/function () {
                   data: window.assets_pie,
                   backgroundColor: ['#E2CF56', '#E256AE', '#56E289', '#5668E2'],
                   borderColor: '#ffffff',
-                  borderWidth: 2,
+                  borderWidth: 1,
                   hoverOffset: 4
                 }]
               },
@@ -21625,7 +21625,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53641" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64450" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
