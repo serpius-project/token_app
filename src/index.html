@@ -29,16 +29,19 @@
       style="height: 30px; position: absolute; margin: 1em; left: 0px; top: 0px;">
   </a>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <main id="signed-out-flow" style="display: none; text-align: center; vertical-align: center; margin-top: 33vh;">
-    <p style="text-align: center; margin: 2.5em;">Please connect your NEAR wallet </p>
+  <main id="signed-out-flow" style="display: none; text-align: center; vertical-align: center; padding-top: 36vh; height: calc(100vh - 30px);">
+    <!-- <p style="text-align: center; margin: 2.5em;">Please connect your NEAR wallet </p> -->
     <!-- <img src="/assets/favicon.png" alt="Serpius" style="height: 60px; margin: 0px;">
     <img src="/assets/loader.gif" alt="loading"
       style="height: 10px; margin-bottom: 25px; margin-left: 13px; margin-right: 10px;">
     <img src="/assets/near_solid_black.png" alt="near" style="height: 60px; margin: 0px;"> -->
-    <img src="/assets/serpius_near_color.png" alt="near" style="height: 60px; margin: 0px;">
+    <img src="/assets/serpius_near_color.png" alt="near" style="height: 60px; margin: auto;">
     <p style="text-align: center; margin-top: 2.5em">
-      <button id="sign-in-button">Connect wallet</button>
+      <button id="sign-in-button">Connect your wallet</button>
     </p>
+    <footer style="margin-top: 3vh; font-size: 13px; text-align: center; color: var(--gray); bottom: calc(13px + 1em); position: absolute; width: 100vw; left: 0;">
+      <p2>© copyright 2022 | All rights reserved.</p2>
+    </footer>
   </main>
 
   <div id="blocker"
@@ -115,7 +118,7 @@
       <div id="obj_chart2" class="graph-box" style="vertical-align: middle;">
         <p> Price </p>
         <canvas id="chart2"
-          style="margin: auto; width: 90%; height: 80%; margin-top: 0vh; margin-right: 30px; margin-left: 15px; max-height: 80%; max-width: 90%;"></canvas>
+          style="margin: auto; width: 90%; height: 80%; margin-top: 0vh; margin-right: 15px; margin-left: 15px; max-height: 80%; max-width: 90%;"></canvas>
       </div>
       <div id="obj_chart" class="graph-box" style="vertical-align: middle;">
         <p> Updated Asset Allocation</p>
@@ -134,11 +137,11 @@
       <p2>
         The assets in the portfolio correspond to their wrapped versions in the NEAR protocol. Thus, for instance, BTC stands for the wBTC token, which is pegged to BTC. 
         We use Ref.finance as Decentralized EXchange (DEX).
-        This is a beta version App and therefore users require authorization to fully interact with the on-chain smart contract. 
+        This is a beta version App and therefore users require to be whitelisted to fully interact with the on-chain smart contract. 
         Serpius is not a financial advisor. Risks when using DeFi protocols include smart contract risk and volatility. Do your own research before investing.
       </p2>
       </div>  
-      <footer style="margin-top: 6vh; font-size: 13px; text-align: center; color: var(--gray);">
+      <footer style="margin-top: 7vh; font-size: 13px; text-align: center; color: var(--gray);">
         <p2>© copyright 2022 | All rights reserved.</p2>
       </footer>
     </main>
@@ -154,7 +157,7 @@
     </footer>
   </aside>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
   <script
     src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
