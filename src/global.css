@@ -24,10 +24,11 @@ html {
   /* background: linear-gradient(45deg, rgb(185, 184, 218) 0%, rgb(225, 255, 255) 100%);  */
   /* background: radial-gradient(circle, rgb(185, 184, 218) 0%, rgb(255, 255, 255) 100%); */
   background: linear-gradient(180deg, rgb(255, 255, 255, 0.4) 0%, rgb(185, 184, 218, 0.4) 100%);
+  min-height: 100%;
 }
 
 body {
-  margin: 0;
+  margin: auto;
   padding: 1em;
 }
 
@@ -303,7 +304,7 @@ aside footer *:last-child {
   flex-flow: column;
   height: 20vh;
   min-height: 140px;
-  width: 31vh;
+  width: 32vh;
   position: relative;
   background-color: rgba(255, 255, 255, 1.0);
   border-width: 0px;
@@ -312,17 +313,17 @@ aside footer *:last-child {
   border-radius: 5px;
   z-index: 1;
   box-shadow: 0px 5px 15px 0px rgba(128, 128, 128, 0.4);
-  margin-right: 1vh;
+  margin-right: 0.5vh;
   margin-top: 1vh;
   margin-bottom: 1vh;
-  margin-left: 0;
+  margin-left: 0.5vh;
 }
 
 .graph-box {
   display: inline-flex;
   flex-flow: column;
   height: 33vh;
-  width: 47.25vh;
+  width: 48.75vh;
   min-height: 210px;
   position: relative;
   background-color: rgba(255, 255, 255, 1.0);
@@ -332,16 +333,16 @@ aside footer *:last-child {
   border-radius: 5px;
   z-index: 1;
   box-shadow: 0px 5px 15px 0px rgba(128, 128, 128, 0.4); 
-  margin-right: 1vh;
+  margin-right: 0.5vh;
   margin-top: 1vh;
   margin-bottom: 1vh;
-  margin-left: 0;
+  margin-left: 0.5vh;
 }
 
 .text-box {
   display: inline-flex;
   flex-flow: column;
-  width: 96vh;
+  width: 99vh;
   position: relative;
   background-color: rgba(255, 255, 255, 0.0);
   border-width: 0px;
@@ -349,10 +350,10 @@ aside footer *:last-child {
   text-align: left;
   border-radius: 5px;
   z-index: 1;
-  margin-right: 1vh;
+  margin-right: 0.5vh;
   margin-top: 1vh;
   margin-bottom: 1vh;
-  margin-left: 0;
+  margin-left: 0.5vh;
 }
 
 
@@ -362,17 +363,17 @@ a[href], input[type='submit'], input[type='image'], label[for], select, button, 
 
 @media screen and (max-width: 960px) {
   .calculation-box {
-    width: 45vw;
+    width: calc(50% - 1.25vh);
     /* The width is 100%, when the viewport is 800px or smaller */
   }
 
   .graph-box {
-    width: 96vw;
+    width: calc(100% - 1vh);
     /* The width is 100%, when the viewport is 800px or smaller */
   }
 
   .text-box {
-    width: 96vw;
+    width: calc(100% - 1vh);
     /* The width is 100%, when the viewport is 800px or smaller */
   }
 
@@ -404,18 +405,24 @@ a[href], input[type='submit'], input[type='image'], label[for], select, button, 
 
 @media screen and (max-width: 680px) {
   .calculation-box {
-    width: 92vw;
+    width: 100%;
     left: 0px;
     top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
   }
 
   .graph-box {
-    width: 92vw;
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
     /* The width is 100%, when the viewport is 800px or smaller */
   }
 
   .text-box {
-    width: 92vw;
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
     /* The width is 100%, when the viewport is 800px or smaller */
   }
 
