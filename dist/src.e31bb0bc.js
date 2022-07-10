@@ -21154,10 +21154,10 @@ function get_prices() {
         var allText = JSON.parse(rawFile.responseText);
 
         for (var i = 0; i < allText['prices'].length; i++) {
-          sdate = new Date(allText['prices'][i][0]);
-          window.time_date[i] =
-          /*String(sdate.getDate()).padStart(2, '0') + "." +*/
-          String(sdate.getMonth() + 1).padStart(2, '0') + "." + String(sdate.getFullYear()).slice(2, 4);
+          sdate = new Date(allText['prices'][i][0]); //          window.time_date[i] = sdate; //parseInt(allText['prices'][i][0]);
+
+          window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "/" + String(sdate.getMonth() + 1).padStart(2, '0') + "/" + String(sdate.getFullYear()).slice(2, 4); //          window.time_date[i] = /*String(sdate.getDate()).padStart(2, '0') + "." +*/ String(sdate.getMonth() + 1).padStart(2, '0') + "." + String(sdate.getFullYear()).slice(2,4);
+
           window.price_data[i] = allText['prices'][i][1];
           window.price_data_btc[i] = allText['prices'][i][2];
         }
@@ -21331,7 +21331,7 @@ window.fetchBalance = /*#__PURE__*/function () {
                   hoverOffset: 4,
                   rotation: -20,
                   spacing: 0,
-                  borderRadius: 5
+                  borderRadius: 6
                 }]
               },
               options: {
@@ -21434,6 +21434,23 @@ window.fetchBalance = /*#__PURE__*/function () {
                   intersect: false
                 },
                 plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: function label(context) {
+                        var label = context.dataset.label || '';
+
+                        if (label) {
+                          label += ': ';
+                        }
+
+                        if (context.parsed.y !== null) {
+                          label += context.parsed.y.toFixed(6);
+                        }
+
+                        return label;
+                      }
+                    }
+                  },
                   legend: {
                     onClick: function onClick(e, legendItem, legend) {
                       var index = legendItem.datasetIndex;
@@ -21492,7 +21509,7 @@ window.fetchBalance = /*#__PURE__*/function () {
                   },
                   autoPadding: true
                 },
-                //      scales: { x: { type: 'time', time: {unit: 'millisecond', displayFormats: {quarter: 'YYYY'}}, grid: { display: false }, ticks: { font: { size: "12vw" } } }, y: { grid: { display: true }, ticks: { font: { size: "12vw" } } } },
+                //      scales: { x: { type: 'time', time: { parser: "yyyy-MM-dd" }, grid: { display: false }, ticks: { font: { size: "11vw" } } } },
                 scales: {
                   x: {
                     title: {
@@ -21512,7 +21529,11 @@ window.fetchBalance = /*#__PURE__*/function () {
                       },
                       color: '#696969',
                       maxRotation: 0,
-                      autoSkipPadding: 10
+                      autoSkipPadding: 10,
+                      callback: function callback(value, index, values) {
+                        var data1 = window.time_date[value];
+                        return data1.slice(3, 8);
+                      }
                     }
                   },
                   y: {
@@ -21629,7 +21650,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52193" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52814" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

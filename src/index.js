@@ -117,7 +117,9 @@ function get_prices() {
         var allText = JSON.parse(rawFile.responseText);
         for (let i = 0; i < allText['prices'].length; i++) {
           sdate = new Date(allText['prices'][i][0]);
-          window.time_date[i] = /*String(sdate.getDate()).padStart(2, '0') + "." +*/ String(sdate.getMonth() + 1).padStart(2, '0') + "." + String(sdate.getFullYear()).slice(2,4);
+          //          window.time_date[i] = sdate; //parseInt(allText['prices'][i][0]);
+          window.time_date[i] = String(sdate.getDate()).padStart(2, '0') + "/" + String(sdate.getMonth() + 1).padStart(2, '0') + "/" + String(sdate.getFullYear()).slice(2, 4);
+          //          window.time_date[i] = /*String(sdate.getDate()).padStart(2, '0') + "." +*/ String(sdate.getMonth() + 1).padStart(2, '0') + "." + String(sdate.getFullYear()).slice(2,4);
           window.price_data[i] = allText['prices'][i][1];
           window.price_data_btc[i] = allText['prices'][i][2];
         }
@@ -168,10 +170,10 @@ window.commarize = function commarize(x) {
 window.fetchBalance = async function fetchBalance() {
 
   let account_string = window.accountId.toString();
-  if ( account_string.length < 18 ) {
-    document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string;  
+  if (account_string.length < 18) {
+    document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string;
   } else {
-    document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string.substring(0, 14) + "...";      
+    document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string.substring(0, 14) + "...";
   }
   //document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + '********.testnet';
 
@@ -255,7 +257,7 @@ window.fetchBalance = async function fetchBalance() {
         hoverOffset: 4,
         rotation: -20,
         spacing: 0,
-        borderRadius: 5
+        borderRadius: 6
       }]
     },
     options: {
@@ -347,8 +349,23 @@ window.fetchBalance = async function fetchBalance() {
     },
     options: {
       //      animation: false,
-      interaction: {intersect: false},
+      interaction: { intersect: false },
       plugins: {
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              let label = context.dataset.label || '';
+
+              if (label) {
+                label += ': ';
+              }
+              if (context.parsed.y !== null) {
+                label += context.parsed.y.toFixed(6);
+              }
+              return label;
+            }
+          }
+        },
         legend: {
           onClick: function (e, legendItem, legend) {
             const index = legendItem.datasetIndex;
@@ -397,14 +414,26 @@ window.fetchBalance = async function fetchBalance() {
         },
         autoPadding: true,
       },
-//      scales: { x: { type: 'time', time: {unit: 'millisecond', displayFormats: {quarter: 'YYYY'}}, grid: { display: false }, ticks: { font: { size: "12vw" } } }, y: { grid: { display: true }, ticks: { font: { size: "12vw" } } } },
+      //      scales: { x: { type: 'time', time: { parser: "yyyy-MM-dd" }, grid: { display: false }, ticks: { font: { size: "11vw" } } } },
       scales: {
-        x: { title: { text: "Time (days)", display: false, font: {size: "11vw"} }, grid: { display: true, drawOnChartArea: false }, ticks: { font: { size: "11vw" }, color: '#696969', maxRotation: 0, autoSkipPadding: 10 } },
+        x: {
+          title: { text: "Time (days)", display: false, font: { size: "11vw" } },
+          grid: { display: true, drawOnChartArea: false },
+          ticks: {
+            font: { size: "11vw" }, color: '#696969', maxRotation: 0, autoSkipPadding: 10,
+            callback: function (value, index, values) {
+              let data1 = window.time_date[value];
+              return data1.slice(3, 8);
+            },
+          }
+        },
         y: {
-          title: { text: "SER/USD", display: false, font: {size: "11vw"} },
-          grid: { display: true, drawOnChartArea: true }, ticks: {
+          title: { text: "SER/USD", display: false, font: { size: "11vw" } },
+          grid: { display: true, drawOnChartArea: true },
+          ticks: {
             count: 6,
-            font: { size: "11vw" }, callback: function (value, index, values) {
+            font: { size: "11vw" },
+            callback: function (value, index, values) {
               if (value >= 1000000000 || value <= -1000000000) {
                 return value / 1e9 + 'bill';
               } else if (value >= 1000000 || value <= -1000000) {
@@ -412,13 +441,13 @@ window.fetchBalance = async function fetchBalance() {
               } else if (value >= 1000 || value <= -1000) {
                 return value / 1e3 + 'k';
               }
-              return ( Math.round(value * 100000) / 100000 ).toFixed(1);
+              return (Math.round(value * 100000) / 100000).toFixed(1);
             },
             color: '#696969'
           }
         },
         y1: {
-          title: { text: "SER/BTC", display: false, font: {size: "11vw"} },
+          title: { text: "SER/BTC", display: false, font: { size: "11vw" } },
           grid: { display: true, drawOnChartArea: false }, ticks: {
             count: 6,
             font: { size: "11vw" },
