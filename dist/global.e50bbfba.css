@@ -304,7 +304,7 @@ aside footer *:last-child {
   flex-flow: column;
   height: 20vh;
   min-height: 140px;
-  width: 32vh;
+  width: 31.5vh;
   position: relative;
   background-color: rgba(255, 255, 255, 1.0);
   border-width: 0px;
@@ -323,7 +323,7 @@ aside footer *:last-child {
   display: inline-flex;
   flex-flow: column;
   height: 33vh;
-  width: 48.75vh;
+  width: 48vh;
   min-height: 210px;
   position: relative;
   background-color: rgba(255, 255, 255, 1.0);
@@ -342,7 +342,7 @@ aside footer *:last-child {
 .text-box {
   display: inline-flex;
   flex-flow: column;
-  width: 99vh;
+  width: 97.5vh;
   position: relative;
   background-color: rgba(255, 255, 255, 0.0);
   border-width: 0px;
