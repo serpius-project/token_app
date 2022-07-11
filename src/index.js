@@ -251,7 +251,7 @@ window.fetchBalance = async function fetchBalance() {
         //        data: [0.8, 0.5, 1.0, 1.2],
         data: window.assets_pie,
         backgroundColor: ['#E2CF56', '#E256AE', '#56E289', '#5668E2'],
-        borderColor: 'rgb(255, 255, 255, 1.0)',
+        borderColor: '#F6F6FA',
         borderWidth: 2,
         offset: 0,
         hoverOffset: 4,
