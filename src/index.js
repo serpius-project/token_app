@@ -396,6 +396,7 @@ window.fetchBalance = async function fetchBalance() {
           display: true,
           position: 'top',
           labels: { font: { size: "11vw" }, color: '#696969' },
+          align: 'start'
         },
         title: {
           display: false,
@@ -425,9 +426,10 @@ window.fetchBalance = async function fetchBalance() {
               let data1 = window.time_date[value];
               return data1.slice(3, 8);
             },
-          }
+          },
         },
         y: {
+          grace: '5%',
           title: { text: "SER/USD", display: false, font: { size: "11vw" } },
           grid: { display: true, drawOnChartArea: true },
           ticks: {
@@ -447,6 +449,7 @@ window.fetchBalance = async function fetchBalance() {
           }
         },
         y1: {
+          grace: '5%',
           title: { text: "SER/BTC", display: false, font: { size: "11vw" } },
           grid: { display: true, drawOnChartArea: false }, ticks: {
             count: 6,

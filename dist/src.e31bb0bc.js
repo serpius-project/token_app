@@ -21490,7 +21490,8 @@ window.fetchBalance = /*#__PURE__*/function () {
                         size: "11vw"
                       },
                       color: '#696969'
-                    }
+                    },
+                    align: 'start'
                   },
                   title: {
                     display: false,
@@ -21537,6 +21538,7 @@ window.fetchBalance = /*#__PURE__*/function () {
                     }
                   },
                   y: {
+                    grace: '5%',
                     title: {
                       text: "SER/USD",
                       display: false,
@@ -21568,6 +21570,7 @@ window.fetchBalance = /*#__PURE__*/function () {
                     }
                   },
                   y1: {
+                    grace: '5%',
                     title: {
                       text: "SER/BTC",
                       display: false,
@@ -21650,7 +21653,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56841" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57201" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
