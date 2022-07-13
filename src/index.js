@@ -239,6 +239,10 @@ window.fetchBalance = async function fetchBalance() {
     document.getElementById("conversion").innerHTML = '1 NEAR &#8776 ' + commarize(1.0 / window.ser_near) + ' SER';
   }
 
+  let last_rb = await contract.check_last_rb_time({});
+  last_rb = new Date( last_rb / 1000000 );
+  document.getElementById("last_rebalance").innerHTML = "Last update: " + last_rb.toLocaleString();
+
   var ctx = document.getElementById('chart').getContext('2d');
   chartStatus = Chart.getChart('chart');
   if (chartStatus != undefined) { chartStatus.destroy() };

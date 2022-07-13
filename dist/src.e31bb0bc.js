@@ -21002,7 +21002,7 @@ function _initContract() {
             _context.next = 8;
             return new _nearApiJs.Contract(window.walletConnection.account(), nearConfig.contractName, {
               // View methods are read only. They don't modify the state, but usually return some value.
-              viewMethods: ['ft_balance_of', 'ft_metadata', 'check_distro', 'check_distro_norm', 'ft_total_supply'],
+              viewMethods: ['ft_balance_of', 'ft_metadata', 'check_distro', 'check_distro_norm', 'ft_total_supply', 'check_last_rb_time'],
               // Change methods can modify the state. But you don't receive the returned value when called.
               changeMethods: ['buy_token', 'sell_token']
             });
@@ -21205,7 +21205,7 @@ window.commarize = function commarize(x) {
 
 window.fetchBalance = /*#__PURE__*/function () {
   var _fetchBalance = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var account_string, i, _i, labels_pie_c, _i2, dollar_near, total_value, _i3, dollar_serpius, ctx, chart, ctx2, chart2;
+    var account_string, i, _i, labels_pie_c, _i2, dollar_near, total_value, _i3, dollar_serpius, last_rb, ctx, chart, ctx2, chart2;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -21308,6 +21308,13 @@ window.fetchBalance = /*#__PURE__*/function () {
               document.getElementById("conversion").innerHTML = '1 NEAR &#8776 ' + commarize(1.0 / window.ser_near) + ' SER';
             }
 
+            _context.next = 50;
+            return contract.check_last_rb_time({});
+
+          case 50:
+            last_rb = _context.sent;
+            last_rb = new Date(last_rb / 1000000);
+            document.getElementById("last_rebalance").innerHTML = "Last update: " + last_rb.toLocaleString();
             ctx = document.getElementById('chart').getContext('2d');
             chartStatus = Chart.getChart('chart');
 
@@ -21606,7 +21613,7 @@ window.fetchBalance = /*#__PURE__*/function () {
               }
             });
 
-          case 58:
+          case 63:
           case "end":
             return _context.stop();
         }
@@ -21653,7 +21660,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57598" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58700" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
