@@ -143,7 +143,7 @@ button {
   border: none;
   color: #efefef;
   cursor: pointer;
-  padding: 0.3em 0.75em;
+  padding: 0.2em 0.75em;
   transition: transform 30ms;
 }
 
@@ -451,7 +451,7 @@ a[href], input[type='submit'], input[type='image'], label[for], select, button, 
   }
 
   h1 {
-    padding: calc(4vh + 30px) 0 0.0em;
+    padding: calc(4vh + 20px) 0 0.0em;
   }
  
   main {
@@ -471,7 +471,7 @@ a[href], input[type='submit'], input[type='image'], label[for], select, button, 
   }
 
   h1 {
-    padding: calc(4vh + 30px) 0 0.0em;
+    padding: calc(4vh + 20px) 0 0.0em;
   }
 
   main {
