@@ -240,8 +240,8 @@ window.fetchBalance = async function fetchBalance() {
   document.getElementById("near_2").innerHTML = "<strong>NEAR </strong>$" + window.prices[0].toFixed(2);
   document.getElementById("ser_1").innerHTML = "<strong>SER </strong>$" + ser_price.toFixed(2);
   document.getElementById("ser_2").innerHTML = "<strong>SER </strong>$" + ser_price.toFixed(2);
-  document.getElementById("supply_1").innerHTML = "<strong>Supply </strong>" + (total_supply / 10 ** decimals).toFixed(2);
-  document.getElementById("supply_2").innerHTML = "<strong>Supply </strong>" + (total_supply / 10 ** decimals).toFixed(2);
+  document.getElementById("supply_1").innerHTML = "<strong>SPLY </strong>" + (total_supply / 10 ** decimals).toFixed(2);
+  document.getElementById("supply_2").innerHTML = "<strong>SPLY </strong>" + (total_supply / 10 ** decimals).toFixed(2);
   document.getElementById("mc_1").innerHTML = "<strong>MC </strong>$" + (total_supply * ser_price / 10 ** decimals).toFixed(2);
   document.getElementById("mc_2").innerHTML = "<strong>MC </strong>$" + (total_supply * ser_price / 10 ** decimals).toFixed(2);
 

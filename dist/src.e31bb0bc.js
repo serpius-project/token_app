@@ -21308,8 +21308,8 @@ window.fetchBalance = /*#__PURE__*/function () {
             document.getElementById("near_2").innerHTML = "<strong>NEAR </strong>$" + window.prices[0].toFixed(2);
             document.getElementById("ser_1").innerHTML = "<strong>SER </strong>$" + ser_price.toFixed(2);
             document.getElementById("ser_2").innerHTML = "<strong>SER </strong>$" + ser_price.toFixed(2);
-            document.getElementById("supply_1").innerHTML = "<strong>Supply </strong>" + (total_supply / Math.pow(10, decimals)).toFixed(2);
-            document.getElementById("supply_2").innerHTML = "<strong>Supply </strong>" + (total_supply / Math.pow(10, decimals)).toFixed(2);
+            document.getElementById("supply_1").innerHTML = "<strong>SPLY </strong>" + (total_supply / Math.pow(10, decimals)).toFixed(2);
+            document.getElementById("supply_2").innerHTML = "<strong>SPLY </strong>" + (total_supply / Math.pow(10, decimals)).toFixed(2);
             document.getElementById("mc_1").innerHTML = "<strong>MC </strong>$" + (total_supply * ser_price / Math.pow(10, decimals)).toFixed(2);
             document.getElementById("mc_2").innerHTML = "<strong>MC </strong>$" + (total_supply * ser_price / Math.pow(10, decimals)).toFixed(2);
             window.ser_near = ser_price / window.prices[0];
@@ -21674,7 +21674,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53627" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64629" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
