@@ -87,8 +87,8 @@ gtag('config', 'G-5NN2LEKGS2');</script>
       </div>
       <div class="calculation-box" style="display: inline-flex; background-image: url(/serpius_near.4c585a72.png); vertical-align: middle;">
         <div class="btn-group" style="background-color: rgb(210, 210, 210); border-top-left-radius: 5px; border-top-right-radius: 5px;">
-          <input type="button" class="button_buy_sell" style="background-color: black; border-radius: 0px; border-top-left-radius: 5px; height: 100%;" id="buy" value="Buy">
-          <input type="button" class="button_buy_sell" style="background-color: rgb(210, 210, 210); border-radius: 0px; border-top-right-radius: 5px; height: 100%;" id="sell" value="Sell">
+          <input type="button" class="button_buy_sell" style="background-color: black; border-radius: 0px; border-top-left-radius: 5px; height: 100%;" id="buy" value="Buy SER">
+          <input type="button" class="button_buy_sell" style="background-color: rgb(210, 210, 210); border-radius: 0px; border-top-right-radius: 5px; height: 100%;" id="sell" value="Sell SER">
         </div>
         <input type="number" id="fname" name="fname" style="margin: 1vh 20px 0px 20px; border-radius: 0px; text-align: right; font-size: calc(0.7em + 0.6vh);" placeholder="amount (NEAR)" onkeypress="return validate_text()" autocomplete="off" onpaste="return false;" ondrop="return false;" autocapitalize="off" spellcheck="false" autocorrect="off">
         <div class="btn-group">
@@ -103,6 +103,22 @@ gtag('config', 'G-5NN2LEKGS2');</script>
         <input type="button" class="button_buy_sell" id="approve" value="Approve" style="position:absolute; bottom: 0.7em; left: 20px; margin: 0px;" disabled="true" onclick="approve_func()">
       </div>
       <h2> Overview </h2>
+
+      <div class="hwrap"><div class="hmove">
+        <div id="btc_1" class="hitem"><strong>BTC</strong></div>
+        <div id="eth_1" class="hitem"><strong>ETH</strong></div>
+        <div id="near_1" class="hitem"><strong>NEAR</strong></div>
+        <div id="ser_1" class="hitem"><strong>SER</strong></div>
+        <div id="supply_1" class="hitem"><strong>Supply</strong></div>
+        <div id="mc_1" class="hitem"><strong>MC</strong></div>
+        <div id="btc_2" class="hitem"><strong>BTC</strong></div>
+        <div id="eth_2" class="hitem"><strong>ETH</strong></div>
+        <div id="near_2" class="hitem"><strong>NEAR</strong></div>
+        <div id="ser_2" class="hitem"><strong>SER</strong></div>
+        <div id="supply_2" class="hitem"><strong>Supply</strong></div>
+        <div id="mc_2" class="hitem"><strong>MC</strong></div>
+      </div></div>      
+
       <div id="obj_chart2" class="graph-box" style="vertical-align: middle;">
         <canvas id="chart2" style="margin: auto; width: 90%; height: calc(100% - 2em); margin: auto; max-height: calc(100% - 2em); max-width: 90%;"></canvas>
       </div>
@@ -192,7 +208,7 @@ document.getElementById("sell").onclick = function () {
 };
 
 document.getElementById("p25").onclick = function () {
-  document.getElementById("p25").style.backgroundColor = "#E256AE";
+  document.getElementById("p25").style.backgroundColor = "#D752AB";
   document.getElementById("p50").style.backgroundColor = "rgb(210, 210, 210)";
   document.getElementById("p75").style.backgroundColor = "rgb(210, 210, 210)";
   document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
@@ -209,8 +225,8 @@ document.getElementById("p25").onclick = function () {
 };
 
 document.getElementById("p50").onclick = function () {
-  document.getElementById("p50").style.backgroundColor = "#E256AE";
-  document.getElementById("p25").style.backgroundColor = "#E256AE";
+  document.getElementById("p50").style.backgroundColor = "#D752AB";
+  document.getElementById("p25").style.backgroundColor = "#D752AB";
   document.getElementById("p75").style.backgroundColor = "rgb(210, 210, 210)";
   document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
 
@@ -226,9 +242,9 @@ document.getElementById("p50").onclick = function () {
 };
 
 document.getElementById("p75").onclick = function () {
-  document.getElementById("p75").style.backgroundColor = "#E256AE";
-  document.getElementById("p25").style.backgroundColor = "#E256AE";
-  document.getElementById("p50").style.backgroundColor = "#E256AE";
+  document.getElementById("p75").style.backgroundColor = "#D752AB";
+  document.getElementById("p25").style.backgroundColor = "#D752AB";
+  document.getElementById("p50").style.backgroundColor = "#D752AB";
   document.getElementById("p100").style.backgroundColor = "rgb(210, 210, 210)";
 
   if (actual_action == "BUY") {
@@ -243,10 +259,10 @@ document.getElementById("p75").onclick = function () {
 };
 
 document.getElementById("p100").onclick = function () {
-  document.getElementById("p100").style.backgroundColor = "#E256AE";
-  document.getElementById("p25").style.backgroundColor = "#E256AE";
-  document.getElementById("p50").style.backgroundColor = "#E256AE";
-  document.getElementById("p75").style.backgroundColor = "#E256AE";
+  document.getElementById("p100").style.backgroundColor = "#D752AB";
+  document.getElementById("p25").style.backgroundColor = "#D752AB";
+  document.getElementById("p50").style.backgroundColor = "#D752AB";
+  document.getElementById("p75").style.backgroundColor = "#D752AB";
 
   if (actual_action == "BUY") {
     document.getElementById("fname").value = Math.floor(window.near_asset * 100000000) / 100000000;

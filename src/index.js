@@ -232,6 +232,20 @@ window.fetchBalance = async function fetchBalance() {
   document.getElementById("total_ser").innerHTML = '$ ' + commarize(dollar_serpius);
   document.getElementById("total_ser_near").innerHTML = commarize(Math.round(dollar_serpius * 100 / window.prices[0]) / 100);
 
+  document.getElementById("btc_1").innerHTML = "<strong>BTC </strong>$" + window.prices[1].toFixed(0);
+  document.getElementById("btc_2").innerHTML = "<strong>BTC </strong>$" + window.prices[1].toFixed(0);
+  document.getElementById("eth_1").innerHTML = "<strong>ETH </strong>$" + window.prices[2].toFixed(0);
+  document.getElementById("eth_2").innerHTML = "<strong>ETH </strong>$" + window.prices[2].toFixed(0);
+  document.getElementById("near_1").innerHTML = "<strong>NEAR </strong>$" + window.prices[0].toFixed(2);
+  document.getElementById("near_2").innerHTML = "<strong>NEAR </strong>$" + window.prices[0].toFixed(2);
+  document.getElementById("ser_1").innerHTML = "<strong>SER </strong>$" + ser_price.toFixed(2);
+  document.getElementById("ser_2").innerHTML = "<strong>SER </strong>$" + ser_price.toFixed(2);
+  document.getElementById("supply_1").innerHTML = "<strong>Supply </strong>" + (total_supply / 10 ** decimals).toFixed(2);
+  document.getElementById("supply_2").innerHTML = "<strong>Supply </strong>" + (total_supply / 10 ** decimals).toFixed(2);
+  document.getElementById("mc_1").innerHTML = "<strong>MC </strong>$" + (total_supply * ser_price / 10 ** decimals).toFixed(2);
+  document.getElementById("mc_2").innerHTML = "<strong>MC </strong>$" + (total_supply * ser_price / 10 ** decimals).toFixed(2);
+
+
   window.ser_near = ser_price / window.prices[0];
   if (window.actual_action == "BUY") {
     document.getElementById("conversion").innerHTML = '1 SER &#8776 ' + commarize(window.ser_near) + ' NEAR';
@@ -254,7 +268,8 @@ window.fetchBalance = async function fetchBalance() {
       datasets: [{
         //        data: [0.8, 0.5, 1.0, 1.2],
         data: window.assets_pie,
-        backgroundColor: ['#E2CF56', '#E256AE', '#56E289', '#5668E2'],
+//        backgroundColor: ['#E2CF56', '#E256AE', '#56E289', '#5668E2'],
+        backgroundColor: ['#FF9621', '#D752AB', '#31A354', '#5668E2'],
         borderColor: '#F6F6FA',
         borderWidth: 2,
         offset: 0,
@@ -343,10 +358,11 @@ window.fetchBalance = async function fetchBalance() {
         label: 'SER/BTC',
         data: price_data_btc,
         fill: true,
-        backgroundColor: 'rgb(226, 86, 174, 0.3)',
+//        backgroundColor: 'rgb(226, 86, 174, 0.3)',
+        backgroundColor: 'rgb(215, 82, 171, 0.3)',
         tension: 0.1,
         borderWidth: 2,
-        borderColor: '#E256AE',
+        borderColor: '#D752AB',
         pointRadius: 0,
         yAxisID: 'y1',
       }]

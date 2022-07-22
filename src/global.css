@@ -86,7 +86,7 @@ a:active,
   margin-right: 0;
   font: inherit;
   outline: none;
-  background-color: #E256AE;
+  background-color: #D752AB;
   border-radius: 5px;
   border: none;
   color: white;
@@ -356,6 +356,38 @@ aside footer *:last-child {
   margin-left: 0.5vh;
 }
 
+/* (A) FIXED WRAPPER */
+.hwrap {
+  overflow: hidden; /* HIDE SCROLL BAR */
+  background: rgba(255, 255, 255, 0);
+  width: 97.5vh;
+  margin-top: 0;
+  font-size: calc(11px + 0.3vw);
+  color: #696969;
+  margin-bottom: 1vh;
+}
+ 
+/* (B) MOVING TICKER WRAPPER */
+.hmove { display: flex; }
+
+/* (C) ITEMS - INTO A LONG HORIZONTAL ROW */
+.hitem {
+  flex-shrink: 0;
+  width: 25%;
+  box-sizing: border-box;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+}
+ 
+/* (D) ANIMATION - MOVE ITEMS FROM RIGHT TO LEFT */
+/* 4 ITEMS -400%, CHANGE THIS IF YOU ADD/REMOVE ITEMS */
+@keyframes tickerh {
+  0% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(-200%, 0, 0); }
+}
+.hmove { animation: tickerh linear 15s infinite; animation-play-state: running; }
+.hmove:hover { animation-play-state:paused; }
 
 a[href], input[type='submit'], input[type='image'], label[for], select, button, .pointer {
   cursor: pointer;
@@ -375,6 +407,10 @@ a[href], input[type='submit'], input[type='image'], label[for], select, button, 
   .text-box {
     width: calc(100% - 1vh);
     /* The width is 100%, when the viewport is 800px or smaller */
+  }
+
+  .hwrap {
+    width: calc(100% - 1vh);
   }
 
   .button_buy_sell {
@@ -425,6 +461,26 @@ a[href], input[type='submit'], input[type='image'], label[for], select, button, 
     margin-right: 0px;
     /* The width is 100%, when the viewport is 800px or smaller */
   }
+  .hwrap {
+    width: 100%;
+  }
+
+  .hitem {
+    flex-shrink: 0;
+    width: 33%;
+    box-sizing: border-box;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+  }
+   
+  /* (D) ANIMATION - MOVE ITEMS FROM RIGHT TO LEFT */
+  /* 4 ITEMS -400%, CHANGE THIS IF YOU ADD/REMOVE ITEMS */
+  @keyframes tickerh {
+    0% { transform: translate3d(0%, 0, 0); }
+    100% { transform: translate3d(-198%, 0, 0); }
+  }
+  .hmove { animation: tickerh linear 12s infinite; }
 
   .button_buy_sell {
     border-radius: 0px;

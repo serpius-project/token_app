@@ -21300,6 +21300,18 @@ window.fetchBalance = /*#__PURE__*/function () {
             dollar_serpius = Math.round(ser_price * balance * 100 / Math.pow(10, decimals)) / 100;
             document.getElementById("total_ser").innerHTML = '$ ' + commarize(dollar_serpius);
             document.getElementById("total_ser_near").innerHTML = commarize(Math.round(dollar_serpius * 100 / window.prices[0]) / 100);
+            document.getElementById("btc_1").innerHTML = "<strong>BTC </strong>$" + window.prices[1].toFixed(0);
+            document.getElementById("btc_2").innerHTML = "<strong>BTC </strong>$" + window.prices[1].toFixed(0);
+            document.getElementById("eth_1").innerHTML = "<strong>ETH </strong>$" + window.prices[2].toFixed(0);
+            document.getElementById("eth_2").innerHTML = "<strong>ETH </strong>$" + window.prices[2].toFixed(0);
+            document.getElementById("near_1").innerHTML = "<strong>NEAR </strong>$" + window.prices[0].toFixed(2);
+            document.getElementById("near_2").innerHTML = "<strong>NEAR </strong>$" + window.prices[0].toFixed(2);
+            document.getElementById("ser_1").innerHTML = "<strong>SER </strong>$" + ser_price.toFixed(2);
+            document.getElementById("ser_2").innerHTML = "<strong>SER </strong>$" + ser_price.toFixed(2);
+            document.getElementById("supply_1").innerHTML = "<strong>Supply </strong>" + (total_supply / Math.pow(10, decimals)).toFixed(2);
+            document.getElementById("supply_2").innerHTML = "<strong>Supply </strong>" + (total_supply / Math.pow(10, decimals)).toFixed(2);
+            document.getElementById("mc_1").innerHTML = "<strong>MC </strong>$" + (total_supply * ser_price / Math.pow(10, decimals)).toFixed(2);
+            document.getElementById("mc_2").innerHTML = "<strong>MC </strong>$" + (total_supply * ser_price / Math.pow(10, decimals)).toFixed(2);
             window.ser_near = ser_price / window.prices[0];
 
             if (window.actual_action == "BUY") {
@@ -21308,10 +21320,10 @@ window.fetchBalance = /*#__PURE__*/function () {
               document.getElementById("conversion").innerHTML = '1 NEAR &#8776 ' + commarize(1.0 / window.ser_near) + ' SER';
             }
 
-            _context.next = 50;
+            _context.next = 62;
             return contract.check_last_rb_time({});
 
-          case 50:
+          case 62:
             last_rb = _context.sent;
             last_rb = new Date(last_rb / 1000000);
             document.getElementById("last_rebalance").innerHTML = "Last update: " + last_rb.toLocaleString();
@@ -21331,7 +21343,8 @@ window.fetchBalance = /*#__PURE__*/function () {
                 datasets: [{
                   //        data: [0.8, 0.5, 1.0, 1.2],
                   data: window.assets_pie,
-                  backgroundColor: ['#E2CF56', '#E256AE', '#56E289', '#5668E2'],
+                  //        backgroundColor: ['#E2CF56', '#E256AE', '#56E289', '#5668E2'],
+                  backgroundColor: ['#FF9621', '#D752AB', '#31A354', '#5668E2'],
                   borderColor: '#F6F6FA',
                   borderWidth: 2,
                   offset: 0,
@@ -21427,10 +21440,11 @@ window.fetchBalance = /*#__PURE__*/function () {
                   label: 'SER/BTC',
                   data: price_data_btc,
                   fill: true,
-                  backgroundColor: 'rgb(226, 86, 174, 0.3)',
+                  //        backgroundColor: 'rgb(226, 86, 174, 0.3)',
+                  backgroundColor: 'rgb(215, 82, 171, 0.3)',
                   tension: 0.1,
                   borderWidth: 2,
-                  borderColor: '#E256AE',
+                  borderColor: '#D752AB',
                   pointRadius: 0,
                   yAxisID: 'y1'
                 }]
@@ -21613,7 +21627,7 @@ window.fetchBalance = /*#__PURE__*/function () {
               }
             });
 
-          case 63:
+          case 75:
           case "end":
             return _context.stop();
         }
@@ -21660,7 +21674,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58429" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49996" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
