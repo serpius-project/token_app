@@ -21214,9 +21214,9 @@ window.fetchBalance = /*#__PURE__*/function () {
             account_string = window.accountId.toString();
 
             if (account_string.length < 18) {
-              document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string;
+              document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true" style="padding-right: 0.5em;"></i>' + " " + account_string;
             } else {
-              document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string.substring(0, 12) + "...";
+              document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true" style="padding-right: 0.5em;"></i>' + " " + account_string.substring(0, 12) + "...";
             } //document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + '********.testnet';
 
 
@@ -21674,7 +21674,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52304" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62580" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

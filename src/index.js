@@ -171,9 +171,9 @@ window.fetchBalance = async function fetchBalance() {
 
   let account_string = window.accountId.toString();
   if (account_string.length < 18) {
-    document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string;
+    document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true" style="padding-right: 0.5em;"></i>' + " " + account_string;
   } else {
-    document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string.substring(0, 12) + "...";
+    document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true" style="padding-right: 0.5em;"></i>' + " " + account_string.substring(0, 12) + "...";
   }
   //document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + '********.testnet';
 
