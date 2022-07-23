@@ -21216,7 +21216,7 @@ window.fetchBalance = /*#__PURE__*/function () {
             if (account_string.length < 18) {
               document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string;
             } else {
-              document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string.substring(0, 14) + "...";
+              document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + account_string.substring(0, 12) + "...";
             } //document.getElementById("account_id").innerHTML = '<i class="fa fa-user-circle" aria-hidden="true"></i>' + " " + '********.testnet';
 
 
@@ -21674,7 +21674,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64629" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52304" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
